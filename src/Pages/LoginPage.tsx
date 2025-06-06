@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { getUserFromToken } from "../lib/auth";
 import api from "../lib/axios";
 import axios from "axios";
-import { Loader2 } from "lucide-react"; // Loader moderno
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
     const navigate = useNavigate();
@@ -14,7 +14,6 @@ export default function LoginPage() {
 
     const user = getUserFromToken();
 
-    // Redirige automáticamente si ya hay sesión activa
     useEffect(() => {
         if (user) {
             navigate("/admin");
@@ -23,15 +22,8 @@ export default function LoginPage() {
         }
     }, [user, navigate]);
 
-    const validateEmail = (email: string) => {
-        const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return regex.test(email);
-    };
-
-    const validatePassword = (password: string) => {
-        const regex = /^[A-Za-z0-9]{8,}$/;
-        return regex.test(password);
-    };
+    const validateEmail = (email: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const validatePassword = (password: string) => /^[A-Za-z0-9]{8,}$/.test(password);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -42,15 +34,20 @@ export default function LoginPage() {
         }
 
         if (!validatePassword(password)) {
-            setError(
-                "La contraseña debe tener al menos 8 caracteres y solo puede contener letras y números"
-            );
+            setError("La contraseña debe tener al menos 8 caracteres y solo puede contener letras y números");
             return;
         }
 
         try {
             const res = await api.post("/login", { email, password });
-            localStorage.setItem("token", res.data.token);
+            const token = res.data?.token;
+
+            if (!token) {
+                setError("No se recibió el token del servidor.");
+                return;
+            }
+
+            localStorage.setItem("token", token);
             navigate("/admin");
         } catch (err) {
             if (axios.isAxiosError(err)) {
@@ -67,58 +64,54 @@ export default function LoginPage() {
         }
     };
 
-    // Mostrar loader mientras se verifica el token
     if (checkingSession) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-gray-100">
-                <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+            <div className="min-h-screen flex items-center justify-center bg-background">
+                <Loader2 className="h-10 w-10 animate-spin text-primary" />
             </div>
         );
     }
 
     return (
-        <div
-            className="min-h-screen flex items-center justify-center bg-cover bg-center px-4"
-            style={{ backgroundImage: `url('/tu-imagen.jpg')` }}
-        >
-            <div className="bg-white bg-opacity-80 p-10 rounded-2xl shadow-xl max-w-md w-full">
-                <h1 className="text-2xl font-bold text-center mb-6">
-                    Iniciar sesión en <span className="text-blue-600">ConsHer</span>
+        <div className="min-h-screen flex items-center justify-center bg-background px-4">
+            <div className="bg-card p-8 rounded-xl shadow-lg w-full max-w-md border border-border">
+                <h1 className="text-2xl font-bold text-center text-foreground mb-2">
+                    Iniciar sesión en <span className="text-primary">ConsHer</span>
                 </h1>
-                <p className="text-center text-gray-700 text-sm mb-4">
+                <p className="text-center text-muted-foreground text-sm mb-6">
                     Construcción de viviendas de calidad al alcance de todos.
                 </p>
 
-                {error && <div className="text-red-600 text-sm mb-4">{error}</div>}
+                {error && (
+                    <div className="text-red-500 text-sm mb-4 text-center">{error}</div>
+                )}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium">
-                            Correo electrónico
-                        </label>
+                        <label className="block text-sm mb-1 text-foreground">Correo electrónico</label>
                         <input
                             type="email"
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            className="w-full px-4 py-2 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                             required
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium">Contraseña</label>
+                        <label className="block text-sm mb-1 text-foreground">Contraseña</label>
                         <input
                             type="password"
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            className="w-full px-4 py-2 rounded-md border border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary"
                             required
                         />
                     </div>
 
                     <button
                         type="submit"
-                        className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+                        className="w-full bg-primary text-primary-foreground py-2 rounded-md hover:bg-primary/90 transition"
                     >
                         Iniciar sesión
                     </button>
@@ -126,7 +119,7 @@ export default function LoginPage() {
                     <button
                         type="button"
                         onClick={() => navigate("/")}
-                        className="w-full mt-2 text-blue-600 underline text-sm hover:text-blue-800"
+                        className="w-full text-sm text-primary hover:underline mt-2"
                     >
                         ← Volver al inicio
                     </button>
