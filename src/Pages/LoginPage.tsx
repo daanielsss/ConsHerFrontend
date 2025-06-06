@@ -48,9 +48,11 @@ export default function LoginPage() {
             }
 
             localStorage.setItem("token", token);
-            navigate("/admin");
+            navigate("/");
         } catch (err) {
             if (axios.isAxiosError(err)) {
+                console.log("Error de axios:", err.response);
+
                 if (err.response?.status === 401) {
                     setError("Correo o contraseña incorrectos");
                 } else if (err.response?.status === 500) {
