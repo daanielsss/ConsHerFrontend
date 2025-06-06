@@ -93,7 +93,7 @@ export default function HomePage() {
             <div className="relative">
                 <img
                     src="/images/hero.jpg"
-                    alt="ConsHer Hero"
+                    //
                     className="w-full max-h-[600px] object-cover"
                 />
                 <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center">
