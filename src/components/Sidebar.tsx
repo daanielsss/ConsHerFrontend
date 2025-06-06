@@ -13,8 +13,13 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getUserFromToken } from "@/lib/auth";
 import { useSidebar } from "@/context/SidebarContext";
 
+interface User {
+    email: string;
+    name?: string; // ← Se agrega name opcional
+}
+
 export default function Sidebar() {
-    const user = getUserFromToken();
+    const user = getUserFromToken() as User | null;
     const navigate = useNavigate();
     const location = useLocation();
     const { expanded, toggleSidebar } = useSidebar();
@@ -37,7 +42,7 @@ export default function Sidebar() {
     return (
         <aside
             className={`h-screen fixed top-0 left-0 bg-primary text-primary-foreground flex flex-col transition-all duration-300 z-50
-          ${expanded ? "w-56" : "w-16"}`}
+            ${expanded ? "w-56" : "w-16"}`}
         >
             <div className="flex flex-col h-full justify-between">
                 {/* Header del sidebar */}
@@ -52,9 +57,9 @@ export default function Sidebar() {
                     {/* Perfil */}
                     <div className="flex flex-col items-center mt-6 mb-4 px-2">
                         <UserCircle size={40} className="text-accent-foreground" />
-                        {expanded && user && (
+                        {expanded && (
                             <div className="mt-2 text-center">
-                                <p className="text-sm font-semibold">{user.name || "Admin"}</p>
+                                <p className="text-sm font-semibold">{user.name ?? "Admin"}</p>
                                 <p className="text-xs text-muted-foreground">{user.email}</p>
                             </div>
                         )}
@@ -67,10 +72,10 @@ export default function Sidebar() {
                                 key={item.path}
                                 to={item.path}
                                 className={`flex items-center justify-between px-4 py-3 transition text-sm font-medium rounded-md
-                    ${location.pathname === item.path
+                                ${location.pathname === item.path
                                         ? "bg-accent text-accent-foreground font-semibold"
                                         : "hover:bg-accent hover:text-accent-foreground"}
-                    ${!expanded ? "justify-center" : ""}`}
+                                ${!expanded ? "justify-center" : ""}`}
                             >
                                 {expanded ? (
                                     <>
