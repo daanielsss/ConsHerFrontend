@@ -4,6 +4,15 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import api from "@/lib/axios";
 
+// ✅ INTERFAZ TIPADA
+interface Proyecto {
+    _id: string;
+    nombre: string;
+    direccion: string;
+    fechaInicio: string;
+    estado: string;
+}
+
 export default function AdminGastos() {
     const [showForm, setShowForm] = useState(false);
     const [form, setForm] = useState({
@@ -17,7 +26,7 @@ export default function AdminGastos() {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
-    const { data: proyectos, isLoading } = useQuery("proyectos", async () => {
+    const { data: proyectos, isLoading } = useQuery<Proyecto[]>("proyectos", async () => {
         const res = await api.get("/proyectos");
         return res.data;
     });
@@ -116,14 +125,16 @@ export default function AdminGastos() {
                 {isLoading ? (
                     <p className="text-muted-foreground">Cargando proyectos...</p>
                 ) : (
-                    proyectos?.map((proyecto: any) => (
+                    proyectos?.map((proyecto) => (
                         <div
                             key={proyecto._id}
                             className="border p-4 rounded shadow bg-card text-card-foreground space-y-1"
                         >
                             <h4 className="text-lg font-semibold">{proyecto.nombre}</h4>
                             <p className="text-sm">📍 {proyecto.direccion}</p>
-                            <p className="text-sm">📅 {new Date(proyecto.fechaInicio).toLocaleDateString()}</p>
+                            <p className="text-sm">
+                                📅 {new Date(proyecto.fechaInicio).toLocaleDateString()}
+                            </p>
                             <p className="text-sm font-medium">Estado: {proyecto.estado}</p>
                             <button
                                 onClick={() => navigate(`/admin/gastos/${proyecto._id}`)}

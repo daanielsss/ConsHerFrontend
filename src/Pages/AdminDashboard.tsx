@@ -3,11 +3,21 @@ import { useNavigate } from "react-router-dom";
 import api from "@/lib/axios";
 import { Pencil, Trash2, Plus } from "lucide-react";
 
+// ✅ Interfaz para tipar las casas correctamente
+interface House {
+    _id: string;
+    title: string;
+    address: string;
+    price: number;
+    status: string;
+    images?: string[];
+}
+
 export default function AdminDashboard() {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const { data: houses, isLoading } = useQuery("houses", async () => {
+    const { data: houses, isLoading } = useQuery<House[]>("houses", async () => {
         const res = await api.get("/houses");
         return res.data;
     });
@@ -44,45 +54,46 @@ export default function AdminDashboard() {
 
             {isLoading ? (
                 <p className="text-muted-foreground">Cargando casas...</p>
-            ) : houses?.length === 0 ? (
+            ) : houses && houses.length === 0 ? (
                 <p className="text-muted-foreground">No hay casas registradas.</p>
             ) : (
                 <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-                    {houses.map((house: any) => (
-                        <div key={house._id} className="rounded-xl shadow border bg-card overflow-hidden">
-                            {house.images?.length > 0 && (
-                                <img
-                                    src={house.images[0]}
-                                    alt={house.title}
-                                    className="w-full h-48 object-cover"
-                                />
-                            )}
+                    {houses &&
+                        houses.map((house) => (
+                            <div key={house._id} className="rounded-xl shadow border bg-card overflow-hidden">
+                                {house.images?.[0] && (
+                                    <img
+                                        src={house.images[0]}
+                                        alt={house.title}
+                                        className="w-full h-48 object-cover"
+                                    />
+                                )}
 
-                            <div className="p-4 space-y-2">
-                                <h3 className="text-lg font-semibold text-foreground">{house.title}</h3>
-                                <p className="text-sm text-muted-foreground">{house.address}</p>
-                                <p className="text-sm font-medium ">
-                                    ${Number(house.price).toLocaleString("en-US")}
-                                </p>
+                                <div className="p-4 space-y-2">
+                                    <h3 className="text-lg font-semibold text-foreground">{house.title}</h3>
+                                    <p className="text-sm text-muted-foreground">{house.address}</p>
+                                    <p className="text-sm font-medium">
+                                        ${Number(house.price).toLocaleString("en-US")}
+                                    </p>
 
-                                <div className="flex justify-end gap-2 mt-4">
-                                    <button
-                                        onClick={() => navigate(`/admin/houses/${house._id}/editar`)}
-                                        className="text-sm flex items-center gap-1 px-3 py-1 rounded bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                                    >
-                                        <Pencil size={14} /> Editar
-                                    </button>
+                                    <div className="flex justify-end gap-2 mt-4">
+                                        <button
+                                            onClick={() => navigate(`/admin/houses/${house._id}/editar`)}
+                                            className="text-sm flex items-center gap-1 px-3 py-1 rounded bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                                        >
+                                            <Pencil size={14} /> Editar
+                                        </button>
 
-                                    <button
-                                        onClick={() => handleDelete(house._id)}
-                                        className="text-sm flex items-center gap-1 px-3 py-1 rounded bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                    >
-                                        <Trash2 size={14} /> Eliminar
-                                    </button>
+                                        <button
+                                            onClick={() => handleDelete(house._id)}
+                                            className="text-sm flex items-center gap-1 px-3 py-1 rounded bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                                        >
+                                            <Trash2 size={14} /> Eliminar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
                 </div>
             )}
         </div>
