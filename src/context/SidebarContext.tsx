@@ -3,13 +3,13 @@ import { createContext, useContext, useState, useEffect } from "react";
 type SidebarContextType = {
     expanded: boolean;
     toggleSidebar: () => void;
+    setExpanded: (value: boolean) => void; // ✅ agregado
 };
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export const SidebarProvider = ({ children }: { children: React.ReactNode }) => {
     const [expanded, setExpanded] = useState<boolean>(() => {
-        // Obtener valor guardado en localStorage o default (true)
         const saved = localStorage.getItem("sidebarExpanded");
         return saved ? JSON.parse(saved) : true;
     });
@@ -21,7 +21,7 @@ export const SidebarProvider = ({ children }: { children: React.ReactNode }) => 
     const toggleSidebar = () => setExpanded(prev => !prev);
 
     return (
-        <SidebarContext.Provider value={{ expanded, toggleSidebar }}>
+        <SidebarContext.Provider value={{ expanded, toggleSidebar, setExpanded }}>
             {children}
         </SidebarContext.Provider>
     );
