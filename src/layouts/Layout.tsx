@@ -11,15 +11,14 @@ type Props = {
 
 function Layout({ showHero = false }: Props) {
   const { expanded } = useSidebar();
-  const user = getUserFromToken(); // ← validamos si hay sesión activa
+  const user = getUserFromToken();
 
   return (
     <div className="flex min-h-screen">
-      {/* Sidebar solo si hay sesión iniciada */}
       {user && <Sidebar />}
 
       <div
-        className={`flex-1 flex flex-col transition-all duration-300 ${user ? (expanded ? "pl-56" : "pl-16") : ""
+        className={`flex-1 flex flex-col transition-all duration-300 ${user ? (expanded ? "pl-56 pr-4" : "pl-4 pr-4") : ""
           }`}
       >
         <Header />
@@ -30,10 +29,10 @@ function Layout({ showHero = false }: Props) {
             <Outlet />
           </div>
         </main>
-
       </div>
     </div>
   );
 }
 
 export default Layout;
+
