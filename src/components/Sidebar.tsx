@@ -38,6 +38,7 @@ export default function Sidebar() {
         navigate("/login");
     };
 
+    // Ocultar sidebar automáticamente en pantallas pequeñas
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth < 768) setExpanded(false);
@@ -51,22 +52,30 @@ export default function Sidebar() {
 
     return (
         <>
-            {/* FAB: Botón flotante visible solo en móvil */}
+            {/* Botón flotante para abrir sidebar */}
             {!expanded && (
                 <button
-                    className="md:hidden fixed top-4 left-4 z-50 bg-primary text-white rounded-full p-2 shadow-lg"
+                    className="fixed top-4 left-4 z-50 bg-primary text-white rounded-full p-2 shadow-lg"
                     onClick={toggleSidebar}
                 >
                     <PanelLeftOpen />
                 </button>
             )}
 
-            {/* Sidebar con slide-in/out */}
+            {/* Overlay oscuro al abrir en cualquier tamaño */}
+            {expanded && (
+                <div
+                    className="fixed inset-0 z-30 bg-black/40 md:bg-transparent"
+                    onClick={() => setExpanded(false)}
+                />
+            )}
+
+            {/* Sidebar con slide universal */}
             <aside
                 className={`
-                    fixed top-0 left-0 h-screen z-40 bg-primary text-primary-foreground flex flex-col transition-transform duration-300
-                    transform ${expanded ? "translate-x-0" : "-translate-x-full"} w-56
-                    md:translate-x-0 md:w-56
+                    fixed top-0 left-0 h-screen w-56 z-40 bg-primary text-primary-foreground flex flex-col
+                    transform transition-transform duration-300
+                    ${expanded ? "translate-x-0" : "-translate-x-full"}
                 `}
             >
                 <div className="flex flex-col h-full justify-between">
@@ -94,9 +103,7 @@ export default function Sidebar() {
                                 <Link
                                     key={item.path}
                                     to={item.path}
-                                    onClick={() => {
-                                        if (window.innerWidth < 768) setExpanded(false);
-                                    }}
+                                    onClick={() => setExpanded(false)}
                                     className={`flex items-center justify-between px-4 py-3 transition text-sm font-medium rounded-md
                                         ${location.pathname === item.path
                                             ? "bg-accent text-accent-foreground font-semibold"
