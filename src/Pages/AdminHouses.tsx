@@ -1,7 +1,8 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "@/lib/axios";
 import { useDropzone } from "react-dropzone";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
+import axios from "axios";
 
 const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_UPLOAD_URL;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
@@ -87,7 +88,7 @@ export default function AdminHouses() {
         e.preventDefault();
 
         try {
-            const response = await axios.post("/api/houses", {
+            const response = await api.post("/houses", {
                 ...form,
                 price: Number(form.price),
                 bedrooms: Number(form.bedrooms),
