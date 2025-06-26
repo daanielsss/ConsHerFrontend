@@ -55,7 +55,7 @@ export default function AdminCalculator() {
     };
 
     return (
-        <div className="space-y-6 px-4 pt-1 pb-8 max-w-6xl mx-auto">
+        <div className="space-y-6 px-4 pt--5 pb-8 max-w-6xl mx-auto">
             <div className="bg-card rounded-xl shadow-md p-4 sm:p-6">
                 <h2 className="text-xl font-bold mb-4 text-foreground">Calculadora de Materiales</h2>
 
