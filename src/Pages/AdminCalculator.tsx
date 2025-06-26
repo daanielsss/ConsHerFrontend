@@ -55,41 +55,45 @@ export default function AdminCalculator() {
     };
 
     return (
-        <div className="space-y-6 px-4 py-8 max-w-6xl mx-auto">
+        <div className="space-y-6 px-4 pt-4 pb-8 max-w-6xl mx-auto">
             <div className="bg-card rounded-xl shadow-md p-4 sm:p-6">
                 <h2 className="text-xl font-bold mb-4 text-foreground">Calculadora de Materiales</h2>
 
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-foreground mb-1">
-                        Metros cuadrados de construcción
-                    </label>
-                    <input
-                        type="number"
-                        value={metrosConstruccion}
-                        onChange={(e) => setMetrosConstruccion(Number(e.target.value))}
-                        className="w-full border border-border rounded-md bg-background text-foreground px-3 py-2"
-                    />
+                <div className="grid sm:grid-cols-2 gap-4 items-end mb-6">
+                    <div>
+                        <label className="block text-sm font-medium text-foreground mb-1">
+                            Metros cuadrados de construcción
+                        </label>
+                        <input
+                            type="number"
+                            value={metrosConstruccion}
+                            onChange={(e) => setMetrosConstruccion(Number(e.target.value))}
+                            className="w-full border border-border rounded-md bg-background text-foreground px-3 py-2"
+                        />
+                    </div>
+
+                    <div className="text-left sm:text-right text-lg font-bold text-foreground">
+                        Total estimado: ${totalGlobal.toFixed(2)}
+                    </div>
                 </div>
 
-                {/* Total estimado arriba */}
-                <div className="text-right text-lg font-bold text-foreground mb-4">
-                    Total estimado: ${totalGlobal.toFixed(2)}
-                </div>
-
-                {/* Tarjetas de materiales más compactas */}
-                <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                     {materiales.map((mat, idx) => {
                         const cantidad = calcularCantidad(mat.baseCantidad);
                         return (
-                            <div key={mat.name} className="border border-border rounded-lg p-3 bg-muted text-muted-foreground">
-                                <h4 className="font-semibold text-foreground mb-2 text-sm sm:text-base">{mat.name}</h4>
-                                <p className="text-xs sm:text-sm mb-1">
-                                    Cantidad estimada: <strong>{cantidad.toFixed(2)} {mat.unidad}</strong>
+                            <div
+                                key={mat.name}
+                                className="border border-border rounded-lg p-3 bg-muted text-muted-foreground text-xs sm:text-sm"
+                            >
+                                <h4 className="font-semibold text-foreground mb-1">{mat.name}</h4>
+                                <p className="mb-1">
+                                    Cantidad estimada:{" "}
+                                    <strong>{cantidad.toFixed(2)} {mat.unidad}</strong>
                                 </p>
-                                <label className="block text-xs mb-1">Precio por {mat.unidad}:</label>
+                                <label className="block mb-0.5 text-[0.7rem] sm:text-xs">Precio por {mat.unidad}:</label>
                                 <input
                                     type="number"
-                                    className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-1 text-xs"
+                                    className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-2 text-xs sm:text-sm"
                                     onChange={(e) => handlePrecioChange(idx, parseFloat(e.target.value))}
                                 />
                                 <p className="text-xs sm:text-sm">
@@ -102,25 +106,25 @@ export default function AdminCalculator() {
             </div>
 
             {/* Botón flotante para calculadora tradicional */}
-            <div className="fixed bottom-4 right-4 z-50">
+            <div className="fixed bottom-6 right-6 z-50">
                 <button
-                    className="bg-primary text-primary-foreground p-2 sm:p-3 rounded-full shadow-lg hover:bg-primary/90 transition"
+                    className="bg-primary text-primary-foreground p-3 rounded-full shadow-lg hover:bg-primary/90 transition"
                     onClick={() => setShowCalc(!showCalc)}
                 >
-                    {showCalc ? <X size={18} /> : <Calculator size={18} />}
+                    {showCalc ? <X /> : <Calculator />}
                 </button>
             </div>
 
             {/* Calculadora tradicional flotante */}
             {showCalc && (
-                <div className="fixed bottom-20 right-4 w-60 sm:w-64 bg-card border border-border shadow-xl rounded-xl p-3 z-50">
+                <div className="fixed bottom-20 right-6 w-64 bg-card border border-border shadow-xl rounded-xl p-4 z-50">
                     <h3 className="font-semibold mb-2 text-foreground">Calculadora</h3>
                     <input
                         className="w-full border border-border rounded mb-3 px-2 py-1 text-right bg-background text-foreground"
                         value={calcValue}
                         readOnly
                     />
-                    <div className="grid grid-cols-4 gap-1 sm:gap-2">
+                    <div className="grid grid-cols-4 gap-2">
                         {["7", "8", "9", "/",
                             "4", "5", "6", "*",
                             "1", "2", "3", "-",
@@ -128,14 +132,14 @@ export default function AdminCalculator() {
                                 <button
                                     key={btn}
                                     onClick={() => handleCalcInput(btn)}
-                                    className="bg-accent text-accent-foreground hover:bg-primary hover:text-white rounded px-2 py-1 text-center text-xs font-bold"
+                                    className="bg-accent text-accent-foreground hover:bg-primary hover:text-white rounded px-2 py-2 text-center text-sm font-bold"
                                 >
                                     {btn}
                                 </button>
                             ))}
                         <button
                             onClick={() => handleCalcInput("C")}
-                            className="col-span-4 bg-destructive text-destructive-foreground py-1 rounded font-bold text-sm"
+                            className="col-span-4 bg-destructive text-destructive-foreground py-2 rounded font-bold"
                         >
                             Limpiar
                         </button>
