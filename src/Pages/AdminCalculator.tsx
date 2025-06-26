@@ -18,7 +18,7 @@ const MATERIAL_DATA = [
 ];
 
 export default function AdminCalculator() {
-    const [metrosConstruccion, setMetrosConstruccion] = useState(0);
+    const [metrosConstruccion, setMetrosConstruccion] = useState<string>("");
     const [materiales, setMateriales] = useState(MATERIAL_DATA);
     const [showCalc, setShowCalc] = useState(false);
     const [calcValue, setCalcValue] = useState("");
@@ -29,8 +29,11 @@ export default function AdminCalculator() {
         setMateriales(copia);
     };
 
-    const calcularCantidad = (base: number) =>
-        (metrosConstruccion * base) / 190;
+    const calcularCantidad = (base: number) => {
+        const metros = parseFloat(metrosConstruccion);
+        if (isNaN(metros)) return 0;
+        return (metros * base) / 190;
+    };
 
     const totalPorMaterial = (cantidad: number, precio: number) =>
         (cantidad * precio).toFixed(2);
@@ -66,15 +69,26 @@ export default function AdminCalculator() {
                             Metros cuadrados de construcción
                         </label>
                         <input
-                            type="number"
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
                             value={metrosConstruccion}
-                            onChange={(e) => setMetrosConstruccion(Number(e.target.value))}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
+                                    setMetrosConstruccion(value);
+                                }
+                            }}
                             className="w-full border border-border rounded-md bg-background text-foreground px-3 py-2"
                         />
                     </div>
 
                     <div className="text-left sm:text-right text-lg font-bold text-foreground">
-                        Total estimado: ${totalGlobal.toFixed(2)}
+                        Total estimado: ${totalGlobal.toLocaleString("en-US", {
+                            style: "decimal",
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        })}
                     </div>
                 </div>
 
