@@ -27,8 +27,8 @@ export default function Sidebar() {
 
     const navItems = [
         { label: "Inicio", icon: <Home />, path: "/" },
-        { label: "Propiedades", icon: <Building />, path: "/admin/houses" },
-        { label: "Panel", icon: <LayoutDashboard />, path: "/admin" },
+        { label: "Panel", icon: <LayoutDashboard />, path: "/admin/houses" },
+        { label: "Propiedades", icon: <Building />, path: "/admin" },
         { label: "Calculadora", icon: <Ruler />, path: "/admin/calculadora" },
         { label: "Gastos", icon: <BarChart2 />, path: "/admin/gastos" },
     ];
