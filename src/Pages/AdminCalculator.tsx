@@ -36,7 +36,7 @@ export default function AdminCalculator() {
     };
 
     const totalPorMaterial = (cantidad: number, precio: number) =>
-        (cantidad * precio).toFixed(2);
+        cantidad * precio;
 
     const totalGlobal = materiales.reduce((acc, mat) => {
         const cantidad = calcularCantidad(mat.baseCantidad);
@@ -60,7 +60,9 @@ export default function AdminCalculator() {
     return (
         <div className="space-y-6 px-4 pt-4 pb-10 max-w-6xl mx-auto">
             <div className="bg-card rounded-xl shadow-md p-4 sm:p-6">
-                <h2 className="text-xl font-bold mb-4 text-foreground">Calculadora de Materiales</h2>
+                <h2 className="text-xl font-bold mb-4 text-foreground">
+                    Calculadora de Materiales
+                </h2>
 
                 {/* Campo de metros cuadrados + total estimado */}
                 <div className="grid sm:grid-cols-2 gap-4 items-end mb-6">
@@ -105,14 +107,20 @@ export default function AdminCalculator() {
                                 <p className="mb-1">
                                     Cantidad estimada: <strong>{cantidad.toFixed(2)} {mat.unidad}</strong>
                                 </p>
-                                <label className="block mb-0.5 text-[0.7rem] sm:text-xs">Precio por {mat.unidad}:</label>
+                                <label className="block mb-0.5 text-[0.7rem] sm:text-xs">
+                                    Precio por {mat.unidad}:
+                                </label>
                                 <input
                                     type="number"
                                     className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-2 text-xs sm:text-sm"
                                     onChange={(e) => handlePrecioChange(idx, parseFloat(e.target.value))}
                                 />
                                 <p className="text-xs sm:text-sm">
-                                    Total: <strong>${totalPorMaterial(cantidad, mat.precio)}</strong>
+                                    Total: <strong>${totalPorMaterial(cantidad, mat.precio).toLocaleString("en-US", {
+                                        style: "decimal",
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    })}</strong>
                                 </p>
                             </div>
                         );
