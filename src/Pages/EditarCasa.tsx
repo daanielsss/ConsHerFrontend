@@ -143,12 +143,12 @@ export default function EditarCasa() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {[
                         { label: "Título", name: "title" },
-                        { label: "Ubicación", name: "address" },
                         { label: "Precio", name: "price", type: "number" },
                         { label: "Recámaras", name: "bedrooms", type: "number" },
                         { label: "Baños", name: "bathrooms", type: "number" },
                         { label: "Área construida (m²)", name: "area", type: "number" },
                         { label: "Terreno (m²)", name: "landSize", type: "number" },
+                        { label: "Ubicación", name: "address" },
                     ].map((field) => (
                         <div key={field.name}>
                             <label className="block text-sm font-medium text-foreground mb-1">
