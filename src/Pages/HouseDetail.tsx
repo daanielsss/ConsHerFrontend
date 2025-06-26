@@ -2,15 +2,15 @@ import { useParams, Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import api from "@/lib/axios";
 import { useState } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
-// Icono personalizado para evitar errores de imagen
-const icon = L.icon({
-    iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
+// Icono personalizado (casita usando emoji)
+const houseIcon = L.divIcon({
+    html: '🏠',
+    iconSize: [24, 24],
+    className: "text-[24px]",
 });
 
 export default function HouseDetail() {
@@ -117,9 +117,13 @@ export default function HouseDetail() {
                     >
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution="&copy; OpenStreetMap contributors"
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         />
-                        <Marker position={[house.lat, house.lng]} icon={icon} />
+                        <Marker position={[house.lat, house.lng]} icon={houseIcon}>
+                            <Popup>
+                                {house.title}
+                            </Popup>
+                        </Marker>
                     </MapContainer>
                 </section>
             ) : (

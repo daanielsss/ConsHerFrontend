@@ -3,7 +3,26 @@ import api from "@/lib/axios";
 import { useDropzone } from "react-dropzone";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import axios from "axios";
-import MapSelector from "@/components/MapSelector";
+import {
+    MapContainer,
+    TileLayer,
+    Marker,
+    Popup,
+    useMapEvents
+} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+
+// Icono personalizado estilo “casita”
+const houseIcon = new L.DivIcon({
+    className: "custom-house-icon",
+    html: `<div style="background: #2563eb; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; color: white; font-size: 16px;">
+              <div style="transform: rotate(45deg); font-weight: bold;">🏠</div>
+          </div>`,
+    iconSize: [30, 42],
+    iconAnchor: [15, 42],
+    popupAnchor: [0, -42]
+});
 
 const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_UPLOAD_URL;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
@@ -120,6 +139,16 @@ export default function AdminHouses() {
         }
     };
 
+    // Componente para seleccionar en el mapa
+    const ClickHandler = () => {
+        useMapEvents({
+            click(e) {
+                setPosition([e.latlng.lat, e.latlng.lng]);
+            }
+        });
+        return null;
+    };
+
     return (
         <div className="bg-card shadow-md rounded-xl p-4 sm:p-6 max-w-5xl mx-auto space-y-6">
             <h2 className="text-2xl font-bold text-foreground">Agregar Nueva Casa</h2>
@@ -148,13 +177,33 @@ export default function AdminHouses() {
                         </div>
                     ))}
 
+                    {/* Mapa interactivo */}
                     <div className="col-span-1 md:col-span-2">
                         <label className="block text-sm font-medium text-foreground mb-1">
                             Ubicación en el mapa (haz clic para establecer)
                         </label>
-                        <MapSelector position={position} onChange={setPosition} />
+                        <div className="rounded-md overflow-hidden h-64 sm:h-80 md:h-96 z-0">
+                            <MapContainer
+                                center={position || [22.7709, -102.5832]}
+                                zoom={15}
+                                scrollWheelZoom={true}
+                                className="h-full w-full z-0"
+                            >
+                                <TileLayer
+                                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                                />
+                                <ClickHandler />
+                                {position && (
+                                    <Marker position={position} icon={houseIcon}>
+                                        <Popup>{form.title || "Nueva Casa"}</Popup>
+                                    </Marker>
+                                )}
+                            </MapContainer>
+                        </div>
                     </div>
 
+                    {/* Estado */}
                     <div>
                         <label className="block text-sm font-medium text-foreground mb-1">Estado</label>
                         <select
@@ -169,6 +218,7 @@ export default function AdminHouses() {
                         </select>
                     </div>
 
+                    {/* Imágenes */}
                     <div className="col-span-1 md:col-span-2">
                         <label className="block text-sm font-medium text-foreground mb-1">
                             Imágenes (puedes arrastrar o seleccionar)
@@ -237,6 +287,7 @@ export default function AdminHouses() {
                     </div>
                 </div>
 
+                {/* Descripción */}
                 <div>
                     <label className="block text-sm font-medium text-foreground mb-1">Descripción</label>
                     <textarea

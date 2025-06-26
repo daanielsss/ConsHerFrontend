@@ -169,7 +169,11 @@ export default function EditarCasa() {
                         <label className="block text-sm font-medium text-foreground mb-1">
                             Ubicación en el mapa (haz clic para cambiar)
                         </label>
-                        <MapSelector position={position} onChange={setPosition} />
+                        <MapSelector
+                            position={position}
+                            onChange={setPosition}
+                            popupLabel={form.title}
+                        />
                     </div>
 
                     <div>
