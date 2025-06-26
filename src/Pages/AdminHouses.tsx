@@ -3,11 +3,11 @@ import api from "@/lib/axios";
 import { useDropzone } from "react-dropzone";
 import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
 import axios from "axios";
+import MapSelector from "@/components/MapSelector";
 
 const CLOUDINARY_URL = import.meta.env.VITE_CLOUDINARY_UPLOAD_URL;
 const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET;
 
-// ✅ Tipado del formulario
 interface CasaForm {
     title: string;
     description: string;
@@ -35,6 +35,7 @@ export default function AdminHouses() {
         images: [],
     });
 
+    const [position, setPosition] = useState<[number, number] | null>(null);
     const [uploading, setUploading] = useState(false);
 
     const handleChange = (
@@ -73,7 +74,6 @@ export default function AdminHouses() {
         multiple: true,
     });
 
-    // ✅ Tipado correcto de evento de reordenamiento
     const handleReorder = (result: DropResult) => {
         if (!result.destination) return;
 
@@ -95,6 +95,8 @@ export default function AdminHouses() {
                 bathrooms: Number(form.bathrooms),
                 area: Number(form.area),
                 landSize: Number(form.landSize),
+                lat: position?.[0] || null,
+                lng: position?.[1] || null,
             });
 
             console.log("Casa guardada:", response.data);
@@ -111,6 +113,7 @@ export default function AdminHouses() {
                 landSize: "",
                 images: [],
             });
+            setPosition(null);
         } catch (err) {
             console.error("Error al guardar casa:", err);
             alert("Error al guardar casa. Revisa consola.");
@@ -118,7 +121,7 @@ export default function AdminHouses() {
     };
 
     return (
-        <div className="bg-card shadow-md rounded-xl p-6 max-w-4xl mx-auto space-y-6">
+        <div className="bg-card shadow-md rounded-xl p-4 sm:p-6 max-w-5xl mx-auto space-y-6">
             <h2 className="text-2xl font-bold text-foreground">Agregar Nueva Casa</h2>
 
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -145,6 +148,13 @@ export default function AdminHouses() {
                         </div>
                     ))}
 
+                    <div className="col-span-1 md:col-span-2">
+                        <label className="block text-sm font-medium text-foreground mb-1">
+                            Ubicación en el mapa (haz clic para establecer)
+                        </label>
+                        <MapSelector position={position} onChange={setPosition} />
+                    </div>
+
                     <div>
                         <label className="block text-sm font-medium text-foreground mb-1">Estado</label>
                         <select
@@ -159,11 +169,14 @@ export default function AdminHouses() {
                         </select>
                     </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-foreground mb-1">Imágenes (puedes arrastrar o seleccionar)</label>
+                    <div className="col-span-1 md:col-span-2">
+                        <label className="block text-sm font-medium text-foreground mb-1">
+                            Imágenes (puedes arrastrar o seleccionar)
+                        </label>
                         <div
                             {...getRootProps()}
-                            className={`border-2 border-dashed rounded-md p-4 text-center cursor-pointer ${isDragActive ? 'bg-muted' : ''}`}
+                            className={`border-2 border-dashed rounded-md p-4 text-center cursor-pointer ${isDragActive ? "bg-muted" : ""
+                                }`}
                         >
                             <input {...getInputProps()} />
                             <p className="text-sm text-muted-foreground">
@@ -173,7 +186,9 @@ export default function AdminHouses() {
                             </p>
                         </div>
 
-                        {uploading && <p className="text-sm text-muted-foreground mt-1">Subiendo imágenes...</p>}
+                        {uploading && (
+                            <p className="text-sm text-muted-foreground mt-1">Subiendo imágenes...</p>
+                        )}
 
                         <DragDropContext onDragEnd={handleReorder}>
                             <Droppable droppableId="images" direction="horizontal">
@@ -181,7 +196,7 @@ export default function AdminHouses() {
                                     <div
                                         ref={provided.innerRef}
                                         {...provided.droppableProps}
-                                        className="mt-2 grid grid-cols-3 gap-2"
+                                        className="mt-2 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2"
                                     >
                                         {form.images.map((img, index) => (
                                             <Draggable key={img} draggableId={img} index={index}>
@@ -195,7 +210,7 @@ export default function AdminHouses() {
                                                         <img
                                                             src={img}
                                                             alt={`Imagen ${index + 1}`}
-                                                            className="h-24 w-full object-cover rounded-md border"
+                                                            className="h-24 sm:h-32 w-full object-cover rounded-md border"
                                                         />
                                                         <button
                                                             type="button"

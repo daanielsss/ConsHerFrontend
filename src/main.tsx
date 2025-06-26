@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { Toaster } from './components/ui/sonner'
 import { BrowserRouter } from 'react-router-dom'
 import { SidebarProvider } from './context/SidebarContext'
+import 'leaflet/dist/leaflet.css';
+
 
 const queryClient = new QueryClient({
   defaultOptions: {

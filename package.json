@@ -23,6 +23,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "jwt-decode": "^4.0.0",
+    "leaflet": "^1.9.4",
     "lucide-react": "^0.370.0",
     "next-themes": "^0.3.0",
     "react": "^18.2.0",
@@ -30,6 +31,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.51.3",
+    "react-leaflet": "^4.2.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.22.3",
     "react-sortablejs": "^6.1.4",
@@ -40,6 +42,7 @@
     "zod": "^3.23.5"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.9.19",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.66",
     "@types/react-beautiful-dnd": "^13.1.8",
