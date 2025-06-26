@@ -55,10 +55,11 @@ export default function AdminCalculator() {
     };
 
     return (
-        <div className="space-y-6 px-4 pt--5 pb-8 max-w-6xl mx-auto">
+        <div className="space-y-6 px-4 pt-4 pb-10 max-w-6xl mx-auto">
             <div className="bg-card rounded-xl shadow-md p-4 sm:p-6">
                 <h2 className="text-xl font-bold mb-4 text-foreground">Calculadora de Materiales</h2>
 
+                {/* Campo de metros cuadrados + total estimado */}
                 <div className="grid sm:grid-cols-2 gap-4 items-end mb-6">
                     <div>
                         <label className="block text-sm font-medium text-foreground mb-1">
@@ -77,7 +78,8 @@ export default function AdminCalculator() {
                     </div>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                {/* Materiales */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                     {materiales.map((mat, idx) => {
                         const cantidad = calcularCantidad(mat.baseCantidad);
                         return (
@@ -87,8 +89,7 @@ export default function AdminCalculator() {
                             >
                                 <h4 className="font-semibold text-foreground mb-1">{mat.name}</h4>
                                 <p className="mb-1">
-                                    Cantidad estimada:{" "}
-                                    <strong>{cantidad.toFixed(2)} {mat.unidad}</strong>
+                                    Cantidad estimada: <strong>{cantidad.toFixed(2)} {mat.unidad}</strong>
                                 </p>
                                 <label className="block mb-0.5 text-[0.7rem] sm:text-xs">Precio por {mat.unidad}:</label>
                                 <input
