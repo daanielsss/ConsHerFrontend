@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Calculator, X } from "lucide-react";
 
 const MATERIAL_DATA = [
@@ -18,34 +18,27 @@ const MATERIAL_DATA = [
 ];
 
 export default function AdminCalculator() {
-    const [metrosConstruccion, setMetrosConstruccion] = useState<string>("");
+    const [metrosConstruccion, setMetrosConstruccion] = useState(0);
     const [materiales, setMateriales] = useState(MATERIAL_DATA);
     const [showCalc, setShowCalc] = useState(false);
     const [calcValue, setCalcValue] = useState("");
-    const [totalGlobal, setTotalGlobal] = useState(0);
-
-    const calcularCantidad = (base: number) => {
-        const metros = parseFloat(metrosConstruccion);
-        if (isNaN(metros)) return 0;
-        return (metros * base) / 190;
-    };
-
-    const totalPorMaterial = (cantidad: number, precio: number) => cantidad * precio;
 
     const handlePrecioChange = (index: number, value: number) => {
-        const nuevaLista = materiales.map((mat, i) =>
-            i === index ? { ...mat, precio: value } : mat
-        );
-        setMateriales(nuevaLista);
+        const copia = [...materiales];
+        copia[index].precio = value;
+        setMateriales(copia);
     };
 
-    useEffect(() => {
-        const total = materiales.reduce((acc, mat) => {
-            const cantidad = calcularCantidad(mat.baseCantidad);
-            return acc + cantidad * (mat.precio || 0);
-        }, 0);
-        setTotalGlobal(total);
-    }, [materiales, metrosConstruccion]);
+    const calcularCantidad = (base: number) =>
+        (metrosConstruccion * base) / 190;
+
+    const totalPorMaterial = (cantidad: number, precio: number) =>
+        (cantidad * precio).toFixed(2);
+
+    const totalGlobal = materiales.reduce((acc, mat) => {
+        const cantidad = calcularCantidad(mat.baseCantidad);
+        return acc + cantidad * (mat.precio || 0);
+    }, 0);
 
     const handleCalcInput = (val: string) => {
         if (val === "C") return setCalcValue("");
@@ -62,85 +55,51 @@ export default function AdminCalculator() {
     };
 
     return (
-        <div className="space-y-6 px-4 pt-4 pb-10 max-w-6xl mx-auto">
-            <div className="bg-card rounded-xl shadow-md p-4 sm:p-6">
-                <h2 className="text-xl font-bold mb-4 text-foreground">
-                    Calculadora de Materiales
-                </h2>
+        <div className="space-y-6 px-4 py-8 max-w-6xl mx-auto">
+            <div className="bg-card rounded-xl shadow-md p-6">
+                <h2 className="text-xl font-bold mb-4 text-foreground">Calculadora de Materiales</h2>
 
-                <div className="grid sm:grid-cols-2 gap-4 items-end mb-6">
-                    <div>
-                        <label className="block text-sm font-medium text-foreground mb-1">
-                            Metros cuadrados de construcción
-                        </label>
-                        <input
-                            type="number"
-                            value={metrosConstruccion}
-                            onChange={(e) => setMetrosConstruccion(e.target.value)}
-                            className="w-full border border-border rounded-md bg-background text-foreground px-3 py-2"
-                        />
-                    </div>
-
-                    <div className="text-left sm:text-right text-lg font-bold text-foreground">
-                        Total estimado: ${totalGlobal.toLocaleString("en-US", {
-                            style: "decimal",
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2,
-                        })}
-                    </div>
+                <div className="mb-4">
+                    <label className="block text-sm font-medium text-foreground mb-1">
+                        Metros cuadrados de construcción
+                    </label>
+                    <input
+                        type="number"
+                        value={metrosConstruccion}
+                        onChange={(e) => setMetrosConstruccion(Number(e.target.value))}
+                        className="w-full border border-border rounded-md bg-background text-foreground px-3 py-2"
+                    />
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {materiales.map((mat, idx) => {
                         const cantidad = calcularCantidad(mat.baseCantidad);
-                        const totalMaterial = totalPorMaterial(cantidad, mat.precio);
                         return (
-                            <div
-                                key={mat.name}
-                                className="border border-border rounded-lg p-3 bg-muted text-muted-foreground text-xs sm:text-sm"
-                            >
-                                <h4 className="font-semibold text-foreground mb-1">
-                                    {mat.name}
-                                </h4>
-                                <p className="mb-1">
-                                    Cantidad estimada:{" "}
-                                    <strong>
-                                        {cantidad.toLocaleString("en-US", {
-                                            style: "decimal",
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2,
-                                        })}{" "}
-                                        {mat.unidad}
-                                    </strong>
+                            <div key={mat.name} className="border border-border rounded-lg p-4 bg-muted text-muted-foreground">
+                                <h4 className="font-semibold text-foreground mb-2">{mat.name}</h4>
+                                <p className="text-sm mb-1">
+                                    Cantidad estimada: <strong>{cantidad.toFixed(2)} {mat.unidad}</strong>
                                 </p>
-                                <label className="block mb-0.5 text-[0.7rem] sm:text-xs">
-                                    Precio por {mat.unidad}:
-                                </label>
+                                <label className="block text-xs mb-1">Precio por {mat.unidad}:</label>
                                 <input
                                     type="number"
-                                    value={mat.precio}
-                                    onChange={(e) => {
-                                        const val = parseFloat(e.target.value);
-                                        handlePrecioChange(idx, isNaN(val) ? 0 : val);
-                                    }}
-                                    className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-2 text-xs sm:text-sm"
+                                    className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-2"
+                                    onChange={(e) => handlePrecioChange(idx, parseFloat(e.target.value))}
                                 />
-                                <p className="text-xs sm:text-sm">
-                                    Total:{" "}
-                                    <strong>
-                                        ${totalMaterial.toLocaleString("en-US", {
-                                            style: "decimal",
-                                            minimumFractionDigits: 2,
-                                            maximumFractionDigits: 2,
-                                        })}
-                                    </strong>
+                                <p className="text-sm">
+                                    Total: <strong>${totalPorMaterial(cantidad, mat.precio)}</strong>
                                 </p>
                             </div>
                         );
                     })}
                 </div>
+
+                <div className="text-right mt-6 text-lg font-bold text-foreground">
+                    Total estimado: ${totalGlobal.toFixed(2)}
+                </div>
             </div>
 
+            {/* Botón flotante para calculadora tradicional */}
             <div className="fixed bottom-6 right-6 z-50">
                 <button
                     className="bg-primary text-primary-foreground p-3 rounded-full shadow-lg hover:bg-primary/90 transition"
@@ -150,6 +109,7 @@ export default function AdminCalculator() {
                 </button>
             </div>
 
+            {/* Calculadora tradicional flotante */}
             {showCalc && (
                 <div className="fixed bottom-20 right-6 w-64 bg-card border border-border shadow-xl rounded-xl p-4 z-50">
                     <h3 className="font-semibold mb-2 text-foreground">Calculadora</h3>
