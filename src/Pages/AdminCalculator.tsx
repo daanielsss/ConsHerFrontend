@@ -24,10 +24,12 @@ export default function AdminCalculator() {
     const [calcValue, setCalcValue] = useState("");
 
     const handlePrecioChange = (index: number, value: number) => {
-        const copia = [...materiales];
-        copia[index].precio = value;
-        setMateriales(copia);
+        const nuevaLista = materiales.map((mat, i) =>
+            i === index ? { ...mat, precio: value } : mat
+        );
+        setMateriales(nuevaLista);
     };
+
 
     const calcularCantidad = (base: number) => {
         const metros = parseFloat(metrosConstruccion);
