@@ -3,7 +3,6 @@ import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import api from "@/lib/axios";
 
-// ✅ Declaramos la interfaz Casa
 interface Casa {
     _id: string;
     title: string;
@@ -22,28 +21,19 @@ export default function HomePage() {
         return res.data;
     });
 
+    const preventa = houses?.filter((h) => h.status === "preventa") || [];
+    const disponibles = houses?.filter((h) => h.status === "disponible") || [];
+    const vendidas = houses?.filter((h) => h.status === "vendida") || [];
+
     useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => setVisible(entry.isIntersecting),
-            { threshold: 0.1 }
-        );
-
-        if (footerRef.current) {
-            observer.observe(footerRef.current);
-        }
-
+        const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
+            threshold: 0.1,
+        });
+        if (footerRef.current) observer.observe(footerRef.current);
         return () => {
-            if (footerRef.current) {
-                // eslint-disable-next-line react-hooks/exhaustive-deps
-                observer.unobserve(footerRef.current);
-            }
+            if (footerRef.current) observer.unobserve(footerRef.current);
         };
     }, []);
-
-    // ✅ Usamos la interfaz Casa en lugar de any
-    const preventa = houses?.filter((h: Casa) => h.status === "preventa") || [];
-    const disponibles = houses?.filter((h: Casa) => h.status === "disponible") || [];
-    const vendidas = houses?.filter((h: Casa) => h.status === "vendida") || [];
 
     const Section = ({
         title,
@@ -54,8 +44,8 @@ export default function HomePage() {
         casas: Casa[];
         emptyText: string;
     }) => (
-        <section className="mb-10">
-            <h2 className="text-2xl font-bold mb-4 text-foreground">{title}</h2>
+        <section className="mb-16">
+            <h2 className="text-3xl font-semibold mb-6 text-foreground border-b pb-2">{title}</h2>
             {casas.length === 0 ? (
                 <p className="text-muted-foreground">{emptyText}</p>
             ) : (
@@ -64,7 +54,7 @@ export default function HomePage() {
                         <Link
                             to={`/casa/${house._id}`}
                             key={house._id}
-                            className="rounded-xl border shadow bg-card overflow-hidden hover:shadow-lg transition"
+                            className="rounded-xl border bg-card shadow hover:shadow-xl transition overflow-hidden"
                         >
                             {house.images?.[0] && (
                                 <img
@@ -74,9 +64,9 @@ export default function HomePage() {
                                 />
                             )}
                             <div className="p-4 space-y-1">
-                                <h3 className="text-lg font-semibold text-foreground">{house.title}</h3>
+                                <h3 className="text-xl font-bold text-foreground">{house.title}</h3>
                                 <p className="text-sm text-muted-foreground">{house.address}</p>
-                                <p className="text-sm font-medium mt-1 text-primary">
+                                <p className="text-base font-medium text-primary">
                                     ${Number(house.price).toLocaleString("en-US")}
                                 </p>
                             </div>
@@ -89,25 +79,46 @@ export default function HomePage() {
 
     return (
         <div className="min-h-screen flex flex-col justify-between">
-            {/* Hero personalizado con mensaje */}
+            {/* Sección principal con imagen y logo */}
             <div className="relative">
                 <img
-                    src="/images/hero.jpg"
-                    //
-                    className="w-full max-h-[600px] object-cover"
+                    src="/images/home_banner.jpg" // <- sustituye con tu imagen principal
+                    className="w-full max-h-[700px] object-cover"
+                    alt="Imagen principal"
                 />
-                <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center">
-                    <h1 className="text-4xl md:text-5xl text-white font-bold mb-2 text-center">
-                        Bienvenido a ConsHer
-                    </h1>
-                    <p className="text-white text-lg text-center px-4">
-                        Construcción de viviendas de calidad, al alcance de todos.
+                <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center px-4">
+                    <img src="/logo.png" alt="Logo" className="h-24 mb-4" />
+                    <h1 className="text-white text-5xl font-extrabold tracking-wide">CONS-HER</h1>
+                    <p className="text-white text-lg mt-2 max-w-2xl">
+                        Construcción y venta de viviendas con estilo, calidad y confianza.
                     </p>
                 </div>
             </div>
 
+            {/* Sección de bienvenida */}
+            <section className="py-16 px-4 max-w-5xl mx-auto text-center">
+                <h2 className="text-4xl font-semibold mb-4">Bienvenido a ConsHer</h2>
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                    Somos una empresa dedicada a la construcción de viviendas de calidad. Nuestro objetivo es
+                    brindar a las familias espacios funcionales, modernos y accesibles. Explora nuestro
+                    catálogo de casas disponibles y encuentra tu próximo hogar.
+                </p>
+            </section>
+
+            {/* Sección para insertar imágenes institucionales */}
+            <section className="px-4 max-w-6xl mx-auto mb-20">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="bg-gray-100 aspect-[4/3] rounded-lg flex items-center justify-center text-muted-foreground">
+                        Imagen institucional 1
+                    </div>
+                    <div className="bg-gray-100 aspect-[4/3] rounded-lg flex items-center justify-center text-muted-foreground">
+                        Imagen institucional 2
+                    </div>
+                </div>
+            </section>
+
             {/* Secciones de casas */}
-            <main className="px-4 py-10 space-y-10 max-w-7xl mx-auto">
+            <main className="px-4 max-w-7xl mx-auto">
                 {isLoading ? (
                     <p className="text-muted-foreground text-center">Cargando catálogo...</p>
                 ) : (
@@ -118,7 +129,7 @@ export default function HomePage() {
                             emptyText="No hay casas en preventa actualmente."
                         />
                         <Section
-                            title="🏡 Casas en Venta"
+                            title="🏡 Casas Disponibles"
                             casas={disponibles}
                             emptyText="No hay casas disponibles actualmente."
                         />
@@ -140,8 +151,8 @@ export default function HomePage() {
                 <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 text-white">
                     <span className="text-2xl font-bold tracking-tight">ConsHer</span>
                     <div className="mt-4 md:mt-0 flex flex-col md:flex-row gap-4 text-sm text-white">
-                        <span>Contacto: contacto@consher.mx</span>
-                        <span>Tel: (55) 1234 5678</span>
+                        <span>📧 contacto@consher.mx</span>
+                        <span>📞 (55) 1234 5678</span>
                         <span className="hover:underline cursor-pointer">Política de privacidad</span>
                         <span className="hover:underline cursor-pointer">Términos del servicio</span>
                     </div>
