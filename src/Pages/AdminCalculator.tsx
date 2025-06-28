@@ -71,16 +71,9 @@ export default function AdminCalculator() {
                             Metros cuadrados de construcción
                         </label>
                         <input
-                            type="text"
-                            inputMode="numeric"
-                            pattern="[0-9]*"
+                            type="number"
                             value={metrosConstruccion}
-                            onChange={(e) => {
-                                const value = e.target.value;
-                                if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
-                                    setMetrosConstruccion(value);
-                                }
-                            }}
+                            onChange={(e) => setMetrosConstruccion(e.target.value)}
                             className="w-full border border-border rounded-md bg-background text-foreground px-3 py-2"
                         />
                     </div>
@@ -98,6 +91,7 @@ export default function AdminCalculator() {
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                     {materiales.map((mat, idx) => {
                         const cantidad = calcularCantidad(mat.baseCantidad);
+                        const totalMaterial = totalPorMaterial(cantidad, mat.precio);
                         return (
                             <div
                                 key={mat.name}
@@ -105,7 +99,12 @@ export default function AdminCalculator() {
                             >
                                 <h4 className="font-semibold text-foreground mb-1">{mat.name}</h4>
                                 <p className="mb-1">
-                                    Cantidad estimada: <strong>{cantidad.toFixed(2)} {mat.unidad}</strong>
+                                    Cantidad estimada: <strong>{cantidad.toLocaleString("en-US", {
+                                        style: "decimal",
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    })} {mat.unidad}</strong>
+
                                 </p>
                                 <label className="block mb-0.5 text-[0.7rem] sm:text-xs">
                                     Precio por {mat.unidad}:
@@ -113,10 +112,13 @@ export default function AdminCalculator() {
                                 <input
                                     type="number"
                                     className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-2 text-xs sm:text-sm"
-                                    onChange={(e) => handlePrecioChange(idx, parseFloat(e.target.value))}
+                                    onChange={(e) => {
+                                        const val = parseFloat(e.target.value);
+                                        handlePrecioChange(idx, isNaN(val) ? 0 : val);
+                                    }}
                                 />
                                 <p className="text-xs sm:text-sm">
-                                    Total: <strong>${totalPorMaterial(cantidad, mat.precio).toLocaleString("en-US", {
+                                    Total: <strong>${totalMaterial.toLocaleString("en-US", {
                                         style: "decimal",
                                         minimumFractionDigits: 2,
                                         maximumFractionDigits: 2,
