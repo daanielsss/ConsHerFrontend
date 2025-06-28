@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calculator, X } from "lucide-react";
 
 const MATERIAL_DATA = [
@@ -22,6 +22,15 @@ export default function AdminCalculator() {
     const [materiales, setMateriales] = useState(MATERIAL_DATA);
     const [showCalc, setShowCalc] = useState(false);
     const [calcValue, setCalcValue] = useState("");
+    const [totalGlobal, setTotalGlobal] = useState(0);
+
+    const calcularCantidad = (base: number) => {
+        const metros = parseFloat(metrosConstruccion);
+        if (isNaN(metros)) return 0;
+        return (metros * base) / 190;
+    };
+
+    const totalPorMaterial = (cantidad: number, precio: number) => cantidad * precio;
 
     const handlePrecioChange = (index: number, value: number) => {
         const nuevaLista = materiales.map((mat, i) =>
@@ -30,20 +39,13 @@ export default function AdminCalculator() {
         setMateriales(nuevaLista);
     };
 
-
-    const calcularCantidad = (base: number) => {
-        const metros = parseFloat(metrosConstruccion);
-        if (isNaN(metros)) return 0;
-        return (metros * base) / 190;
-    };
-
-    const totalPorMaterial = (cantidad: number, precio: number) =>
-        cantidad * precio;
-
-    const totalGlobal = materiales.reduce((acc, mat) => {
-        const cantidad = calcularCantidad(mat.baseCantidad);
-        return acc + cantidad * (mat.precio || 0);
-    }, 0);
+    useEffect(() => {
+        const total = materiales.reduce((acc, mat) => {
+            const cantidad = calcularCantidad(mat.baseCantidad);
+            return acc + cantidad * (mat.precio || 0);
+        }, 0);
+        setTotalGlobal(total);
+    }, [materiales, metrosConstruccion]);
 
     const handleCalcInput = (val: string) => {
         if (val === "C") return setCalcValue("");
@@ -66,7 +68,6 @@ export default function AdminCalculator() {
                     Calculadora de Materiales
                 </h2>
 
-                {/* Campo de metros cuadrados + total estimado */}
                 <div className="grid sm:grid-cols-2 gap-4 items-end mb-6">
                     <div>
                         <label className="block text-sm font-medium text-foreground mb-1">
@@ -89,7 +90,6 @@ export default function AdminCalculator() {
                     </div>
                 </div>
 
-                {/* Materiales */}
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                     {materiales.map((mat, idx) => {
                         const cantidad = calcularCantidad(mat.baseCantidad);
@@ -99,32 +99,41 @@ export default function AdminCalculator() {
                                 key={mat.name}
                                 className="border border-border rounded-lg p-3 bg-muted text-muted-foreground text-xs sm:text-sm"
                             >
-                                <h4 className="font-semibold text-foreground mb-1">{mat.name}</h4>
+                                <h4 className="font-semibold text-foreground mb-1">
+                                    {mat.name}
+                                </h4>
                                 <p className="mb-1">
-                                    Cantidad estimada: <strong>{cantidad.toLocaleString("en-US", {
-                                        style: "decimal",
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                    })} {mat.unidad}</strong>
-
+                                    Cantidad estimada:{" "}
+                                    <strong>
+                                        {cantidad.toLocaleString("en-US", {
+                                            style: "decimal",
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2,
+                                        })}{" "}
+                                        {mat.unidad}
+                                    </strong>
                                 </p>
                                 <label className="block mb-0.5 text-[0.7rem] sm:text-xs">
                                     Precio por {mat.unidad}:
                                 </label>
                                 <input
                                     type="number"
-                                    className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-2 text-xs sm:text-sm"
+                                    value={mat.precio}
                                     onChange={(e) => {
                                         const val = parseFloat(e.target.value);
                                         handlePrecioChange(idx, isNaN(val) ? 0 : val);
                                     }}
+                                    className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-2 text-xs sm:text-sm"
                                 />
                                 <p className="text-xs sm:text-sm">
-                                    Total: <strong>${totalMaterial.toLocaleString("en-US", {
-                                        style: "decimal",
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2,
-                                    })}</strong>
+                                    Total:{" "}
+                                    <strong>
+                                        ${totalMaterial.toLocaleString("en-US", {
+                                            style: "decimal",
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2,
+                                        })}
+                                    </strong>
                                 </p>
                             </div>
                         );
@@ -132,7 +141,6 @@ export default function AdminCalculator() {
                 </div>
             </div>
 
-            {/* Botón flotante para calculadora tradicional */}
             <div className="fixed bottom-6 right-6 z-50">
                 <button
                     className="bg-primary text-primary-foreground p-3 rounded-full shadow-lg hover:bg-primary/90 transition"
@@ -142,7 +150,6 @@ export default function AdminCalculator() {
                 </button>
             </div>
 
-            {/* Calculadora tradicional flotante */}
             {showCalc && (
                 <div className="fixed bottom-20 right-6 w-64 bg-card border border-border shadow-xl rounded-xl p-4 z-50">
                     <h3 className="font-semibold mb-2 text-foreground">Calculadora</h3>
