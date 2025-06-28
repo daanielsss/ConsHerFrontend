@@ -18,7 +18,7 @@ const MATERIAL_DATA = [
 ];
 
 export default function AdminCalculator() {
-    const [metrosConstruccion, setMetrosConstruccion] = useState(0);
+    const [metrosConstruccion, setMetrosConstruccion] = useState<string>("");
     const [materiales, setMateriales] = useState(MATERIAL_DATA);
     const [showCalc, setShowCalc] = useState(false);
     const [calcValue, setCalcValue] = useState("");
@@ -29,11 +29,14 @@ export default function AdminCalculator() {
         setMateriales(copia);
     };
 
-    const calcularCantidad = (base: number) =>
-        (metrosConstruccion * base) / 190;
+    const calcularCantidad = (base: number) => {
+        const metros = parseFloat(metrosConstruccion);
+        if (isNaN(metros)) return 0;
+        return (metros * base) / 190;
+    };
 
     const totalPorMaterial = (cantidad: number, precio: number) =>
-        (cantidad * precio).toFixed(2);
+        cantidad * precio;
 
     const totalGlobal = materiales.reduce((acc, mat) => {
         const cantidad = calcularCantidad(mat.baseCantidad);
@@ -55,47 +58,73 @@ export default function AdminCalculator() {
     };
 
     return (
-        <div className="space-y-6 px-4 py-8 max-w-6xl mx-auto">
-            <div className="bg-card rounded-xl shadow-md p-6">
-                <h2 className="text-xl font-bold mb-4 text-foreground">Calculadora de Materiales</h2>
+        <div className="space-y-6 px-4 pt-4 pb-10 max-w-6xl mx-auto">
+            <div className="bg-card rounded-xl shadow-md p-4 sm:p-6">
+                <h2 className="text-xl font-bold mb-4 text-foreground">
+                    Calculadora de Materiales
+                </h2>
 
-                <div className="mb-4">
-                    <label className="block text-sm font-medium text-foreground mb-1">
-                        Metros cuadrados de construcción
-                    </label>
-                    <input
-                        type="number"
-                        value={metrosConstruccion}
-                        onChange={(e) => setMetrosConstruccion(Number(e.target.value))}
-                        className="w-full border border-border rounded-md bg-background text-foreground px-3 py-2"
-                    />
+                {/* Campo de metros cuadrados + total estimado */}
+                <div className="grid sm:grid-cols-2 gap-4 items-end mb-6">
+                    <div>
+                        <label className="block text-sm font-medium text-foreground mb-1">
+                            Metros cuadrados de construcción
+                        </label>
+                        <input
+                            type="text"
+                            inputMode="numeric"
+                            pattern="[0-9]*"
+                            value={metrosConstruccion}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
+                                    setMetrosConstruccion(value);
+                                }
+                            }}
+                            className="w-full border border-border rounded-md bg-background text-foreground px-3 py-2"
+                        />
+                    </div>
+
+                    <div className="text-left sm:text-right text-lg font-bold text-foreground">
+                        Total estimado: ${totalGlobal.toLocaleString("en-US", {
+                            style: "decimal",
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                        })}
+                    </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Materiales */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                     {materiales.map((mat, idx) => {
                         const cantidad = calcularCantidad(mat.baseCantidad);
                         return (
-                            <div key={mat.name} className="border border-border rounded-lg p-4 bg-muted text-muted-foreground">
-                                <h4 className="font-semibold text-foreground mb-2">{mat.name}</h4>
-                                <p className="text-sm mb-1">
+                            <div
+                                key={mat.name}
+                                className="border border-border rounded-lg p-3 bg-muted text-muted-foreground text-xs sm:text-sm"
+                            >
+                                <h4 className="font-semibold text-foreground mb-1">{mat.name}</h4>
+                                <p className="mb-1">
                                     Cantidad estimada: <strong>{cantidad.toFixed(2)} {mat.unidad}</strong>
                                 </p>
-                                <label className="block text-xs mb-1">Precio por {mat.unidad}:</label>
+                                <label className="block mb-0.5 text-[0.7rem] sm:text-xs">
+                                    Precio por {mat.unidad}:
+                                </label>
                                 <input
                                     type="number"
-                                    className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-2"
+                                    className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-2 text-xs sm:text-sm"
                                     onChange={(e) => handlePrecioChange(idx, parseFloat(e.target.value))}
                                 />
-                                <p className="text-sm">
-                                    Total: <strong>${totalPorMaterial(cantidad, mat.precio)}</strong>
+                                <p className="text-xs sm:text-sm">
+                                    Total: <strong>${totalPorMaterial(cantidad, mat.precio).toLocaleString("en-US", {
+                                        style: "decimal",
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2,
+                                    })}</strong>
                                 </p>
                             </div>
                         );
                     })}
-                </div>
-
-                <div className="text-right mt-6 text-lg font-bold text-foreground">
-                    Total estimado: ${totalGlobal.toFixed(2)}
                 </div>
             </div>
 
