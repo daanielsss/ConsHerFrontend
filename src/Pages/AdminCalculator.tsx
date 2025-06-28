@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Calculator, X } from "lucide-react";
 
 const MATERIAL_DATA = [
@@ -23,6 +23,11 @@ export default function AdminCalculator() {
     const [showCalc, setShowCalc] = useState(false);
     const [calcValue, setCalcValue] = useState("");
 
+    // Forzar actualización al cambiar metrosConstruccion
+    useEffect(() => {
+        setMateriales([...materiales]);
+    }, [metrosConstruccion]);
+
     const handlePrecioChange = (index: number, value: number) => {
         const copia = [...materiales];
         copia[index].precio = value;
@@ -31,7 +36,7 @@ export default function AdminCalculator() {
 
     const calcularCantidad = (base: number) => {
         const metros = parseFloat(metrosConstruccion);
-        if (isNaN(metros)) return 0;
+        if (isNaN(metros) || metros <= 0) return 0;
         return (metros * base) / 190;
     };
 
@@ -72,16 +77,22 @@ export default function AdminCalculator() {
                         </label>
                         <input
                             type="text"
-                            inputMode="numeric"
-                            pattern="[0-9]*"
+                            inputMode="decimal"
                             value={metrosConstruccion}
-                            onChange={(e) => {
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 const value = e.target.value;
+                                console.log("Input value:", value); // Depuración
                                 if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
                                     setMetrosConstruccion(value);
                                 }
                             }}
-                            className="w-full border border-border rounded-md bg-background text-foreground px-3 py-2"
+                            onInput={(e: React.FormEvent<HTMLInputElement>) => {
+                                const value = (e.target as HTMLInputElement).value;
+                                if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
+                                    setMetrosConstruccion(value);
+                                }
+                            }}
+                            className="w-full border border-border rounded-md bg-background text-foreground px-3 py-2 text-sm"
                         />
                     </div>
 
@@ -113,7 +124,7 @@ export default function AdminCalculator() {
                                 <input
                                     type="number"
                                     className="w-full border border-border bg-background text-foreground rounded-md px-2 py-1 mb-2 text-xs sm:text-sm"
-                                    onChange={(e) => handlePrecioChange(idx, parseFloat(e.target.value))}
+                                    onChange={(e) => handlePrecioChange(idx, parseFloat(e.target.value) || 0)}
                                 />
                                 <p className="text-xs sm:text-sm">
                                     Total: <strong>${totalPorMaterial(cantidad, mat.precio).toLocaleString("en-US", {
