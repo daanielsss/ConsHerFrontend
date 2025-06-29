@@ -82,7 +82,7 @@ export default function HomePage() {
             {/* Sección principal con imagen y logo */}
             <div className="relative">
                 <img
-                    src="/images/home_banner.jpg" // <- sustituye con tu imagen principal
+                    src="icon.png" // <- sustituye con tu imagen principal
                     className="w-full max-h-[700px] object-cover"
                     alt="Imagen principal"
                 />

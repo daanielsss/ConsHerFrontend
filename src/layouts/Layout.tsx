@@ -1,15 +1,10 @@
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 import Sidebar from "@/components/Sidebar";
 import { Outlet } from "react-router-dom";
 import { useSidebar } from "@/context/SidebarContext";
 import { getUserFromToken } from "@/lib/auth";
 
-type Props = {
-  showHero?: boolean;
-};
-
-function Layout({ showHero = false }: Props) {
+function Layout() {
   const { expanded } = useSidebar();
   const user = getUserFromToken();
 
@@ -22,7 +17,6 @@ function Layout({ showHero = false }: Props) {
           }`}
       >
         <Header />
-        {showHero && <Hero />}
 
         <main className="flex-1">
           <div className="max-w-7xl mx-auto px-4 pt-[5.5rem] pb-10">
@@ -35,4 +29,3 @@ function Layout({ showHero = false }: Props) {
 }
 
 export default Layout;
-
