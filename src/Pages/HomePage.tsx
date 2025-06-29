@@ -82,12 +82,12 @@ export default function HomePage() {
             {/* Sección principal con imagen y logo */}
             <div className="relative">
                 <img
-                    src="icon.png" // <- sustituye con tu imagen principal
+                    src="" // <- sustituye con tu imagen principal
                     className="w-full max-h-[700px] object-cover"
                     alt="Imagen principal"
                 />
                 <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center px-4">
-                    <img src="/logo.png" alt="Logo" className="h-24 mb-4" />
+                    <img src="" alt="" className="h-24 mb-4" />
                     <h1 className="text-white text-5xl font-extrabold tracking-wide">CONS-HER</h1>
                     <p className="text-white text-lg mt-2 max-w-2xl">
                         Construcción y venta de viviendas con estilo, calidad y confianza.
