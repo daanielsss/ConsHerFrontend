@@ -83,8 +83,7 @@ export default function HomePage() {
             <div className="relative">
                 <img
                     src="" // <- sustituye con tu imagen principal
-                    className="w-full max-h-[700px] object-cover"
-                    alt="Imagen principal"
+
                 />
                 <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center px-4">
                     <img src="" alt="" className="h-24 mb-4" />
