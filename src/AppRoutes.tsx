@@ -17,7 +17,7 @@ const AppRoutes = () => {
     return (
         <Routes>
             {/* Layout público */}
-            <Route >
+            <Route element={<Layout showHero={true} />}>
                 <Route path="/" element={<HomePage />} />
             </Route>
 
