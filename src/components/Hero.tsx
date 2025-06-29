@@ -1,4 +1,4 @@
-import hero from '../assets/hero.png';
+import hero from '../assets/hero1.png';
 
 export default function Hero() {
     return (
