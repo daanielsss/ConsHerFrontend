@@ -26,7 +26,7 @@ function Layout({ showHero = false }: Props) {
         {showHero && <Hero />}
 
         <main className="flex-1">
-          <div className="max-w-7xl mx-auto px-4 pt-[5.5rem] pb-10">
+          <div className="max-w-7xl mx-auto px-4 pt-max pb-10">
             <Outlet />
           </div>
         </main>
