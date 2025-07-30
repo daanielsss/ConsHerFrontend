@@ -4,11 +4,7 @@ import { Outlet } from "react-router-dom";
 import { useSidebar } from "@/context/SidebarContext";
 import { getUserFromToken } from "@/lib/auth";
 
-type Props = {
-  showHero?: boolean;
-};
-
-function Layout({ showHero = false }: Props) {
+function Layout() {
   const { expanded } = useSidebar();
   const user = getUserFromToken(); // ← validamos si hay sesión activa
 
@@ -22,14 +18,12 @@ function Layout({ showHero = false }: Props) {
           }`}
       >
         <Header />
-        {showHero}
 
         <main className="flex-1">
           <div className="max-w-7xl mx-auto px-4 pt-max pb-10">
             <Outlet />
           </div>
         </main>
-
       </div>
     </div>
   );
