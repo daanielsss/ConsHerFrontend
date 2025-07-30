@@ -46,7 +46,7 @@ export default function Header() {
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className=" hover:text-primary-foreground flex items-center gap-1 text-sm font-medium"
+            className=" hover:border-primary flex items-center gap-1 text-sm font-medium"
           >
             <LogIn size={16} />
             Iniciar sesión
