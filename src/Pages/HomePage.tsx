@@ -82,7 +82,7 @@ export default function HomePage() {
             {/* Imagen principal fullscreen */}
             <div className="relative w-full h-screen">
                 <img
-                    src="/frontend/src/assets/Principal.png"
+                    src="/frontend/public/Principal.png"
                     alt="Hero principal"
                     className="w-full h-full object-cover"
                 />
