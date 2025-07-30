@@ -79,10 +79,11 @@ export default function HomePage() {
 
     return (
         <div className="min-h-screen flex flex-col justify-between">
-            {/* Imagen principal a pantalla completa */}
+            {/* Imagen principal fullscreen */}
             <div className="relative w-full h-screen">
-                <img src="Principal.png"
-                    alt="ConsHer Hero"
+                <img
+                    src="/frontend/src/assets/Principal.png"
+                    alt="Hero principal"
                     className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center px-4">
@@ -92,6 +93,9 @@ export default function HomePage() {
                     </p>
                 </div>
             </div>
+
+            {/* Espaciador para que no se encime el contenido */}
+            <div className="h-screen" />
 
             {/* Sección de bienvenida */}
             <section className="py-16 px-4 max-w-5xl mx-auto text-center">
