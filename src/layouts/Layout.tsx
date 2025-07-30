@@ -1,5 +1,4 @@
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 import Sidebar from "@/components/Sidebar";
 import { Outlet } from "react-router-dom";
 import { useSidebar } from "@/context/SidebarContext";
@@ -23,7 +22,7 @@ function Layout({ showHero = false }: Props) {
           }`}
       >
         <Header />
-        {showHero && <Hero />}
+        {showHero}
 
         <main className="flex-1">
           <div className="max-w-7xl mx-auto px-4 pt-max pb-10">
