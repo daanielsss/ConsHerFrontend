@@ -79,16 +79,16 @@ export default function HomePage() {
 
     return (
         <div className="min-h-screen flex flex-col justify-between">
-            {/* Sección principal con imagen y logo */}
-            <div className="relative">
-                <img
-                    src="" // <- sustituye con tu imagen principal
-
+            {/* Imagen principal a pantalla completa */}
+            <div className="relative w-full h-screen">
+                <img src="Principal.png"
+                    alt="ConsHer Hero"
+                    className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center px-4">
-                    <h1 className=" text-5xl font-extrabold tracking-wide">CONS-HER</h1>
+                    <h1 className="text-white text-5xl font-extrabold tracking-wide">CONS-HER</h1>
                     <p className="text-white text-lg mt-2 max-w-2xl">
-                        Construcción y venta de viviendas con estilo, calidad y confianza.
+                        Desarrollo & Construcciones de calidad, confianza y estilo.
                     </p>
                 </div>
             </div>
