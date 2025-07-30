@@ -1,4 +1,3 @@
-// AppRoutes.tsx
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Layout from './layouts/Layout';
 import HomePage from './Pages/HomePage';
@@ -12,12 +11,11 @@ import ProjectDetailPage from "./Pages/ProjectDetailPage";
 import EditarCasa from "./Pages/EditarCasa";
 import HouseDetail from "./Pages/HouseDetail";
 
-
 const AppRoutes = () => {
     return (
         <Routes>
             {/* Layout público */}
-            <Route element={<Layout showHero={true} />}>
+            <Route element={<Layout />}>
                 <Route path="/" element={<HomePage />} />
             </Route>
 
