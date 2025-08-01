@@ -80,11 +80,11 @@ export default function HomePage() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Imagen principal fullscreen justo debajo del header */}
-            <div className="relative w-full overflow-hidden">
+            <div className="relative overflow-hidden">
                 <img
                     src="/homepage.webp"
                     alt="Imagen principal"
-                    className="w-full h-auto object-contain"
+                    className="min-w-[100vw] w-[100vw] h-auto object-contain"
                 />
             </div>
 
