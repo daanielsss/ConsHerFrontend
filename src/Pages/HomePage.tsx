@@ -82,7 +82,7 @@ export default function HomePage() {
             {/* Imagen principal fullscreen */}
             <div className="relative w-full h-screen">
                 <img
-                    src="/casa.png"
+                    src="/homepage.webp"
                     alt="Hero principal"
                     className="w-full h-full object-cover"
                 />
@@ -101,7 +101,7 @@ export default function HomePage() {
             <section className="py-16 px-4 max-w-5xl mx-auto text-center">
                 <h2 className="text-4xl font-semibold mb-4">Bienvenido a ConsHer</h2>
                 <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Somos una empresa dedicada a la construcción de viviendas de calidad. Nuestro objetivo es
+                    Somos una empresa dedicada a la construcción y venta de viviendas de calidad. Nuestro objetivo es
                     brindar a las familias espacios funcionales, modernos y accesibles. Explora nuestro
                     catálogo de casas disponibles y encuentra tu próximo hogar.
                 </p>
