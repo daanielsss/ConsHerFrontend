@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import api from "@/lib/axios";
+import { Menu } from "lucide-react"; // Icono para el botón
 
 interface Casa {
     _id: string;
@@ -78,24 +79,19 @@ export default function HomePage() {
     );
 
     return (
-        <div className="min-h-screen flex flex-col justify-between">
-            {/* Imagen principal fullscreen */}
-            <div className="relative w-full h-screen">
-                <img
-                    src="/homepage.webp"
-                    alt="Hero principal"
-                    className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/50 flex flex-col justify-center items-center text-center px-4">
-                    <h1 className="text-white text-5xl font-extrabold tracking-wide">CONS-HER</h1>
-                    <p className="text-white text-lg mt-2 max-w-2xl">
-                        Desarrollo & Construcciones de calidad, confianza y estilo.
-                    </p>
-                </div>
-            </div>
+        <div className="min-h-screen flex flex-col justify-between relative">
 
-            {/* Espaciador para que no se encime el contenido */}
-            <div className="h-screen" />
+            {/* Botón flotante para sidebar */}
+            <button
+                className="fixed top-4 left-4 z-50 bg-white dark:bg-gray-800 p-2 rounded-full shadow-md border hover:scale-105 transition-all"
+                onClick={() => {
+                    const sidebarToggle = document.getElementById("sidebar-toggle");
+                    sidebarToggle?.click(); // simula clic si usas un contexto
+                }}
+                title="Menú"
+            >
+                <Menu className="w-5 h-5 text-black dark:text-white" />
+            </button>
 
             {/* Sección de bienvenida */}
             <section className="py-16 px-4 max-w-5xl mx-auto text-center">
@@ -107,8 +103,17 @@ export default function HomePage() {
                 </p>
             </section>
 
-            {/* Sección para insertar imágenes institucionales */}
-            <section className="px-4 max-w-6xl mx-auto mb-20">
+            {/* Imagen principal fullscreen debajo del header */}
+            <div className="relative w-full h-screen -mt-[4.5rem]">
+                <img
+                    src="/homepage.webp"
+                    alt="Hero principal"
+                    className="w-full h-full object-cover"
+                />
+            </div>
+
+            {/* Sección de imágenes institucionales */}
+            <section className="px-4 max-w-6xl mx-auto my-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-gray-100 aspect-[4/3] rounded-lg flex items-center justify-center text-muted-foreground">
                         Imagen institucional 1
@@ -163,3 +168,4 @@ export default function HomePage() {
         </div>
     );
 }
+
