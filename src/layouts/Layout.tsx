@@ -14,7 +14,7 @@ function Layout() {
       {user && <Sidebar />}
 
       <div
-        className={`flex-1 flex flex-col transition-all duration-300 ${user && location.pathname !== "/" ? (expanded ? "pl-56" : "pl-16") : ""
+        className={`flex-1 flex flex-col transition-all duration-300 ${user ? (expanded ? "pl-56" : "pl-16") : ""
           }`}
       >
         <Header />
