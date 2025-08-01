@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import api from "@/lib/axios";
-import { Menu } from "lucide-react"; // Icono para el botón
 
 interface Casa {
     _id: string;
@@ -79,19 +78,15 @@ export default function HomePage() {
     );
 
     return (
-        <div className="min-h-screen flex flex-col justify-between relative">
-
-            {/* Botón flotante para sidebar */}
-            <button
-                className="fixed top-4 left-4 z-50 bg-white dark:bg-gray-800 p-2 rounded-full shadow-md border hover:scale-105 transition-all"
-                onClick={() => {
-                    const sidebarToggle = document.getElementById("sidebar-toggle");
-                    sidebarToggle?.click(); // simula clic si usas un contexto
-                }}
-                title="Menú"
-            >
-                <Menu className="w-5 h-5 text-black dark:text-white" />
-            </button>
+        <div className="flex flex-col min-h-screen">
+            {/* Imagen principal fullscreen justo debajo del header */}
+            <div className="relative w-full" style={{ height: "calc(100vh - 4.5rem)" }}>
+                <img
+                    src="/homepage.webp"
+                    alt="Imagen principal"
+                    className="w-full h-full object-cover"
+                />
+            </div>
 
             {/* Sección de bienvenida */}
             <section className="py-16 px-4 max-w-5xl mx-auto text-center">
@@ -102,15 +97,6 @@ export default function HomePage() {
                     catálogo de casas disponibles y encuentra tu próximo hogar.
                 </p>
             </section>
-
-            {/* Imagen principal fullscreen debajo del header */}
-            <div className="relative w-full h-screen -mt-[4.5rem]">
-                <img
-                    src="/homepage.webp"
-                    alt="Hero principal"
-                    className="w-full h-full object-cover"
-                />
-            </div>
 
             {/* Sección de imágenes institucionales */}
             <section className="px-4 max-w-6xl mx-auto my-20">
