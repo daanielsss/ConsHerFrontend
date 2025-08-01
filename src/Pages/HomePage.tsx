@@ -80,11 +80,14 @@ export default function HomePage() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Imagen principal fullscreen justo debajo del header */}
-            <div className="relative w-full" style={{ height: "calc(100vh - 4.5rem)" }}>
+            <div
+                className="relative w-full bg-black flex justify-center items-center"
+                style={{ height: "calc(100vh - 4.5rem)" }}
+            >
                 <img
                     src="/homepage.webp"
                     alt="Imagen principal"
-                    className="w-full h-full object-cover"
+                    className="max-h-full max-w-full object-contain"
                 />
             </div>
 
