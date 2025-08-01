@@ -80,11 +80,14 @@ export default function HomePage() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Imagen principal fullscreen justo debajo del header */}
-            <div className="relative overflow-hidden">
+            <div
+                className="w-screen min-h-screen flex items-center justify-center bg-black"
+                style={{ paddingTop: "4.5rem" }} // espacio para el header si es fijo
+            >
                 <img
                     src="/homepage.webp"
                     alt="Imagen principal"
-                    className="min-w-[100vw] w-[100vw] h-auto object-contain"
+                    className="max-w-full h-auto object-contain"
                 />
             </div>
 
