@@ -82,7 +82,7 @@ export default function HomePage() {
             {/* Imagen principal fullscreen justo debajo del header */}
             <div className="overflow-hidden">
                 <img
-                    src="/homepage.webp"
+                    src="/home.webp"
                     alt="Imagen principal"
                     className="w-full h-auto object-contain"
                 />
