@@ -98,7 +98,7 @@ export default function HomePage() {
 
             {/* Sección de bienvenida */}
             <section className="py-16 px-4 max-w-5xl mx-auto text-center">
-                <h2 className="text-4xl font-semibold mb-4">Bienvenido a ConsHer</h2>
+                <h2 className="text-4xl font-semibold mb-4">Bienvenido a CONSHER</h2>
                 <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
                     Somos una empresa dedicada a la construcción y venta de viviendas de calidad. Nuestro objetivo es
                     brindar a las familias espacios funcionales, modernos y accesibles. Explora nuestro
@@ -118,7 +118,7 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Secciones de casas */}
+            {/* Secciones de casas con carrusel */}
             <main className="px-4 max-w-7xl mx-auto">
                 {isLoading ? (
                     <p className="text-muted-foreground text-center">Cargando catálogo...</p>
@@ -159,8 +159,6 @@ export default function HomePage() {
                     </div>
                 </div>
             </footer>
-
-
         </div>
     );
 }

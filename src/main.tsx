@@ -7,6 +7,9 @@ import { Toaster } from './components/ui/sonner'
 import { BrowserRouter } from 'react-router-dom'
 import { SidebarProvider } from './context/SidebarContext'
 import 'leaflet/dist/leaflet.css';
+import 'swiper/css';
+import 'swiper/css/autoplay';
+
 
 
 const queryClient = new QueryClient({
