@@ -1,12 +1,13 @@
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import { useSidebar } from "@/context/SidebarContext";
 import { getUserFromToken } from "@/lib/auth";
+import Sidebar from "@/components/Sidebar";
+import Header from "@/components/Header";
 
 function Layout() {
   const { expanded } = useSidebar();
-  const user = getUserFromToken(); // ← validamos si hay sesión activa
+  const user = getUserFromToken();
+  const location = useLocation(); // ← Detectamos ruta actual
 
   return (
     <div className="flex min-h-screen">
@@ -20,9 +21,14 @@ function Layout() {
         <Header />
 
         <main className="flex-1">
-          <div className="max-w-7xl mx-auto px-4 pt-max pb-10">
+          {/* HomePage sin márgenes */}
+          {location.pathname === "/" ? (
             <Outlet />
-          </div>
+          ) : (
+            <div className="max-w-7xl mx-auto px-4 pt-6 pb-10">
+              <Outlet />
+            </div>
+          )}
         </main>
       </div>
     </div>

@@ -80,13 +80,20 @@ export default function HomePage() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Imagen fullscreen justo debajo del Header */}
-            <div className="relative w-screen h-screen overflow-hidden">
-                <img
-                    src="/home.webp"
-                    alt="Imagen principal"
-                    className="absolute inset-x-0 top-0 w-full h-full object-cover object-top"
-                />
+            <div className="relative w-full h-screen overflow-hidden">
+                <picture>
+                    {/* Mobile: 3:4 */}
+                    <source media="(max-width: 768px)" srcSet="/homec.webp" />
+
+                    {/* Default (desktop normal): home.webp */}
+                    <img
+                        src="/home.webp"
+                        alt="Imagen principal"
+                        className="absolute inset-0 w-full h-full object-cover object-center"
+                    />
+                </picture>
             </div>
+
 
 
             {/* Sección de bienvenida */}
@@ -152,7 +159,8 @@ export default function HomePage() {
                     </div>
                 </div>
             </footer>
+
+
         </div>
     );
 }
-
