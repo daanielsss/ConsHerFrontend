@@ -84,7 +84,7 @@ export default function HomePage() {
                 <img
                     src="/home.webp"
                     alt="Imagen principal"
-                    className="w-full h-full object-contain object-center"
+                    className="w-full h-full object-cover object-top"
                 />
             </div>
 
