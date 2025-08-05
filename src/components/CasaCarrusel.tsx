@@ -53,10 +53,10 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                             <img
                                 src={img}
                                 alt={`Imagen ${idx + 1}`}
-                                className={`transition-all duration-300 rounded-xl mx-auto object-cover shadow-lg
-                  ${idx === activeIndex
-                                        ? 'w-[70%] h-[22rem] scale-100 opacity-100 z-10'   // Imagen principal más grande
-                                        : 'w-[20%] h-[10rem] scale-90 opacity-40'          // Imágenes laterales más pequeñas y opacas
+                                className={`transition-all duration-400 rounded-xl mx-auto object-cover shadow-lg
+                                    ${idx === activeIndex
+                                        ? 'w-[80%] h-[26rem] scale-110 opacity-100 z-10' // MÁS grande y enfocada
+                                        : 'w-[16%] h-[9rem] scale-75 opacity-40 z-0'      // MÁS pequeña y desvanecida
                                     }`}
                             />
                         </SwiperSlide>
