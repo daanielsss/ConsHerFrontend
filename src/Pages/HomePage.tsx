@@ -62,7 +62,7 @@ export default function HomePage() {
                             <div className="p-4">
                                 <h3 className="text-xl font-bold text-foreground">{house.title}</h3>
                                 <p className="text-sm text-muted-foreground">{house.address}</p>
-                                <p className="text-base font-medium text-primary">
+                                <p className="text-base font-medium ">
                                     ${Number(house.price).toLocaleString("en-US")}
                                 </p>
                             </div>
