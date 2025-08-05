@@ -1,4 +1,3 @@
-// src/components/CasaCarrusel.tsx
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';

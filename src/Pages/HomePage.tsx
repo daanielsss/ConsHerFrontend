@@ -1,9 +1,9 @@
+// src/pages/HomePage.tsx
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { useNavigate } from "react-router-dom";
 import api from "@/lib/axios";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
+import CasaCarrusel from "@/components/CasaCarrusel";
 
 interface Casa {
     _id: string;
@@ -38,7 +38,8 @@ export default function HomePage() {
         };
     }, []);
 
-    const Section = ({
+    // Reutilizamos esta sección para cada tipo de casa
+    const CasaSection = ({
         title,
         casas,
         emptyText,
@@ -47,60 +48,36 @@ export default function HomePage() {
         casas: Casa[];
         emptyText: string;
     }) => (
-        <section className="mb-16">
+        <section className="mb-20">
             <h2 className="text-3xl font-semibold mb-6 text-foreground border-b pb-2">{title}</h2>
+
             {casas.length === 0 ? (
                 <p className="text-muted-foreground">{emptyText}</p>
             ) : (
-                <div className="grid grid-cols-1 gap-10">
+                <div className="flex flex-col gap-14">
                     {casas.map((house) => (
-                        <div
+                        <CasaCarrusel
                             key={house._id}
-                            className="cursor-pointer rounded-xl bg-card shadow hover:shadow-xl transition overflow-hidden"
-                            onClick={() => navigate(`/casa/${house._id}`)}
-                        >
-                            <div className="p-4">
-                                <h3 className="text-xl font-bold text-foreground">{house.title}</h3>
-                                <p className="text-sm text-muted-foreground">{house.address}</p>
-                                <p className="text-base font-medium ">
-                                    ${Number(house.price).toLocaleString("en-US")}
-                                </p>
-                            </div>
-
-                            {house.images && house.images.length > 0 && (
-                                <Swiper
-                                    slidesPerView={1}
-                                    loop
-                                    autoplay={{ delay: 2500, disableOnInteraction: false }}
-                                    modules={[Autoplay]}
-                                    className="w-full h-64 rounded-b-xl"
-                                >
-                                    {house.images.slice(0, 3).map((img, idx) => (
-                                        <SwiperSlide key={idx}>
-                                            <img
-                                                src={img}
-                                                alt={`Imagen ${idx + 1}`}
-                                                className="w-full h-64 object-cover"
-                                            />
-                                        </SwiperSlide>
-                                    ))}
-                                </Swiper>
-                            )}
-                        </div>
+                            casa={{
+                                _id: house._id,
+                                nombre: house.title,
+                                ubicacion: house.address,
+                                precio: house.price,
+                                imagenes: house.images || [],
+                            }}
+                        />
                     ))}
                 </div>
             )}
         </section>
     );
+
     return (
         <div className="flex flex-col min-h-screen">
-            {/* Imagen fullscreen justo debajo del Header */}
+            {/* Hero principal */}
             <div className="relative w-full h-screen overflow-hidden">
                 <picture>
-                    {/* Mobile: 3:4 */}
                     <source media="(max-width: 768px)" srcSet="/homec.webp" />
-
-                    {/* Default (desktop normal): home.webp */}
                     <img
                         src="/home.webp"
                         alt="Imagen principal"
@@ -109,19 +86,17 @@ export default function HomePage() {
                 </picture>
             </div>
 
-
-
-            {/* Sección de bienvenida */}
+            {/* Sección bienvenida */}
             <section className="py-16 px-4 max-w-5xl mx-auto text-center">
                 <h2 className="text-4xl font-semibold mb-4">Bienvenido a CONSHER</h2>
                 <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Somos una empresa dedicada a la construcción y venta de viviendas de calidad. Nuestro objetivo es
-                    brindar a las familias espacios funcionales, modernos y accesibles. Explora nuestro
-                    catálogo de casas disponibles y encuentra tu próximo hogar.
+                    Somos una empresa dedicada a la construcción y venta de viviendas de calidad.
+                    Nuestro objetivo es brindar a las familias espacios funcionales, modernos y accesibles.
+                    Explora nuestro catálogo de casas disponibles y encuentra tu próximo hogar.
                 </p>
             </section>
 
-            {/* Sección de imágenes institucionales */}
+            {/* Sección imágenes institucionales */}
             <section className="px-4 max-w-6xl mx-auto my-20">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="bg-gray-100 aspect-[4/3] rounded-lg flex items-center justify-center text-muted-foreground">
@@ -133,7 +108,7 @@ export default function HomePage() {
                 </div>
             </section>
 
-            {/* Secciones de casas con carrusel */}
+            {/* Secciones con Carrusel */}
             <main className="px-4 max-w-7xl mx-auto">
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-10 gap-4">
@@ -142,17 +117,17 @@ export default function HomePage() {
                     </div>
                 ) : (
                     <>
-                        <Section
+                        <CasaSection
                             title="🏗️ Casas en Preventa"
                             casas={preventa}
                             emptyText="No hay casas en preventa actualmente."
                         />
-                        <Section
+                        <CasaSection
                             title="🏡 Casas Disponibles"
                             casas={disponibles}
                             emptyText="No hay casas disponibles actualmente."
                         />
-                        <Section
+                        <CasaSection
                             title="✅ Casas Vendidas"
                             casas={vendidas}
                             emptyText="Aún no se han vendido casas."
