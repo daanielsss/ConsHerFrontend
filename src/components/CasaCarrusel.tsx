@@ -49,19 +49,24 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                     className="rounded-xl"
                 >
                     {casa.imagenes.map((img, idx) => (
-                        <SwiperSlide key={idx}>
+                        <SwiperSlide
+                            key={idx}
+                            className={`transition-all duration-300 flex justify-center items-center
+        ${idx === activeIndex ? 'w-[60%]' : 'w-[20%]'}`}
+                        >
                             <img
                                 src={img}
                                 alt={`Imagen ${idx + 1}`}
-                                className={`transition-all duration-400 rounded-xl mx-auto object-cover shadow-lg
-                                    ${idx === activeIndex
-                                        ? 'w-[100rem] h-[26rem] opacity-100 z-10 ' // MÁS grande y enfocada
-                                        : 'w-[16%] h-[9rem] scale-75 opacity-40 z-0'      // MÁS pequeña y desvanecida
+                                className={`rounded-xl object-cover shadow-xl transition-all duration-500
+          ${idx === activeIndex
+                                        ? 'w-full h-[24rem] scale-100 opacity-100 z-10'
+                                        : 'w-full h-[10rem] scale-90 opacity-40 z-0'
                                     }`}
                             />
                         </SwiperSlide>
                     ))}
                 </Swiper>
+
             </div>
         </div>
     );
