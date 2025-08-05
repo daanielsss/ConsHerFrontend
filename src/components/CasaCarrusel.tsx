@@ -15,28 +15,25 @@ type Casa = {
 export default function CasaCarrusel({ casa }: { casa: Casa }) {
     const navigate = useNavigate();
     const [activeIndex, setActiveIndex] = useState(0);
-
     const currentImage = casa.imagenes[activeIndex % casa.imagenes.length];
 
     return (
         <div
             onClick={() => navigate(`/casa/${casa._id}`)}
-            className="relative cursor-pointer p-4 max-w-5xl mx-auto mb-16 rounded-xl overflow-hidden group"
+            className="relative cursor-pointer p-4 max-w-6xl mx-auto mb-16 rounded-2xl overflow-hidden group"
         >
-            {/* Fondo desenfocado con efecto cristal */}
+            {/* Fondo desenfocado tipo espejo */}
             <div
-                className="absolute inset-0 z-0 bg-cover bg-center blur-sm scale-110 brightness-75"
+                className="absolute inset-0 z-0 bg-cover bg-center blur-md scale-110 brightness-75"
                 style={{ backgroundImage: `url(${currentImage})` }}
-            >
-                <div className="absolute inset-0 bg-white/30 dark:bg-black/30 backdrop-blur-md" />
-            </div>
+            />
 
-            {/* Contenido principal */}
-            <div className="relative z-10 bg-white/60 dark:bg-black/60 backdrop-blur-md rounded-lg shadow-xl p-6">
-                <div className="mb-3">
-                    <h3 className="text-xl font-semibold">{casa.nombre}</h3>
-                    <p className="text-gray-600 dark:text-gray-300">{casa.ubicacion}</p>
-                    <p className="text-lg font-bold text-green-700">${casa.precio.toLocaleString()}</p>
+            {/* Contenido flotante */}
+            <div className="relative z-10 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border border-white/10">
+                <div className="mb-6">
+                    <h3 className="text-xl font-semibold text-foreground">{casa.nombre}</h3>
+                    <p className="text-muted-foreground">{casa.ubicacion}</p>
+                    <p className="text-lg font-bold text-green-600">${casa.precio.toLocaleString()}</p>
                 </div>
 
                 <Swiper
@@ -56,10 +53,11 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                             <img
                                 src={img}
                                 alt={`Imagen ${idx + 1}`}
-                                className={`transition-all duration-300 rounded-lg mx-auto ${idx === activeIndex
-                                    ? 'w-[90%] h-64 scale-100 opacity-100 z-10'
-                                    : 'w-[70%] h-56 scale-90 opacity-50'
-                                    } object-cover shadow-md`}
+                                className={`transition-all duration-300 rounded-xl mx-auto object-cover shadow-lg
+                  ${idx === activeIndex
+                                        ? 'w-[70%] h-[22rem] scale-100 opacity-100 z-10'   // Imagen principal más grande
+                                        : 'w-[20%] h-[10rem] scale-90 opacity-40'          // Imágenes laterales más pequeñas y opacas
+                                    }`}
                             />
                         </SwiperSlide>
                     ))}
