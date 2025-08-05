@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import api from "@/lib/axios";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
 
 interface Casa {
     _id: string;
@@ -15,6 +17,7 @@ interface Casa {
 export default function HomePage() {
     const footerRef = useRef<HTMLDivElement | null>(null);
     const [visible, setVisible] = useState(false);
+    const navigate = useNavigate();
 
     const { data: houses, isLoading } = useQuery<Casa[]>("catalogo-casas", async () => {
         const res = await api.get("/houses");
@@ -49,34 +52,46 @@ export default function HomePage() {
             {casas.length === 0 ? (
                 <p className="text-muted-foreground">{emptyText}</p>
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 gap-10">
                     {casas.map((house) => (
-                        <Link
-                            to={`/casa/${house._id}`}
+                        <div
                             key={house._id}
-                            className="rounded-xl border bg-card shadow hover:shadow-xl transition overflow-hidden"
+                            className="cursor-pointer rounded-xl bg-card shadow hover:shadow-xl transition overflow-hidden"
+                            onClick={() => navigate(`/casa/${house._id}`)}
                         >
-                            {house.images?.[0] && (
-                                <img
-                                    src={house.images[0]}
-                                    alt={house.title}
-                                    className="w-full h-48 object-cover"
-                                />
-                            )}
-                            <div className="p-4 space-y-1">
+                            <div className="p-4">
                                 <h3 className="text-xl font-bold text-foreground">{house.title}</h3>
                                 <p className="text-sm text-muted-foreground">{house.address}</p>
                                 <p className="text-base font-medium text-primary">
                                     ${Number(house.price).toLocaleString("en-US")}
                                 </p>
                             </div>
-                        </Link>
+
+                            {house.images && house.images.length > 0 && (
+                                <Swiper
+                                    slidesPerView={1}
+                                    loop
+                                    autoplay={{ delay: 2500, disableOnInteraction: false }}
+                                    modules={[Autoplay]}
+                                    className="w-full h-64 rounded-b-xl"
+                                >
+                                    {house.images.slice(0, 3).map((img, idx) => (
+                                        <SwiperSlide key={idx}>
+                                            <img
+                                                src={img}
+                                                alt={`Imagen ${idx + 1}`}
+                                                className="w-full h-64 object-cover"
+                                            />
+                                        </SwiperSlide>
+                                    ))}
+                                </Swiper>
+                            )}
+                        </div>
                     ))}
                 </div>
             )}
         </section>
     );
-
     return (
         <div className="flex flex-col min-h-screen">
             {/* Imagen fullscreen justo debajo del Header */}
@@ -121,7 +136,10 @@ export default function HomePage() {
             {/* Secciones de casas con carrusel */}
             <main className="px-4 max-w-7xl mx-auto">
                 {isLoading ? (
-                    <p className="text-muted-foreground text-center">Cargando catálogo...</p>
+                    <div className="flex flex-col items-center justify-center py-10 gap-4">
+                        <span className="loading loading-infinity loading-xl text-primary"></span>
+                        <p className="text-muted-foreground text-lg font-medium">Cargando catálogo...</p>
+                    </div>
                 ) : (
                     <>
                         <Section
