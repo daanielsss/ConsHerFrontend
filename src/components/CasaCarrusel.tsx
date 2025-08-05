@@ -55,7 +55,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                                 alt={`Imagen ${idx + 1}`}
                                 className={`transition-all duration-400 rounded-xl mx-auto object-cover shadow-lg
                                     ${idx === activeIndex
-                                        ? 'w-[80%] h-[26rem] scale-110 opacity-100 z-10' // MÁS grande y enfocada
+                                        ? 'w-[80%] h-[76rem] scale-110 opacity-100 z-10' // MÁS grande y enfocada
                                         : 'w-[16%] h-[9rem] scale-75 opacity-40 z-0'      // MÁS pequeña y desvanecida
                                     }`}
                             />
