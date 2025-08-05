@@ -52,7 +52,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                         <SwiperSlide
                             key={idx}
                             className={`transition-all duration-300 flex justify-center items-center
-        ${idx === activeIndex ? 'w-[60%]' : 'w-[20%]'}`}
+        ${idx === activeIndex ? 'w-[80%]' : 'w-[20%]'}`}
                         >
                             <img
                                 src={img}
