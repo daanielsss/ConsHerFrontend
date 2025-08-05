@@ -1,7 +1,6 @@
 // src/pages/HomePage.tsx
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
-import { useNavigate } from "react-router-dom";
 import api from "@/lib/axios";
 import CasaCarrusel from "@/components/CasaCarrusel";
 
@@ -17,7 +16,6 @@ interface Casa {
 export default function HomePage() {
     const footerRef = useRef<HTMLDivElement | null>(null);
     const [visible, setVisible] = useState(false);
-    const navigate = useNavigate();
 
     const { data: houses, isLoading } = useQuery<Casa[]>("catalogo-casas", async () => {
         const res = await api.get("/houses");
