@@ -39,6 +39,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                 <Swiper
                     slidesPerView="auto"
                     centeredSlides={true}
+                    spaceBetween={16}
                     loop={true}
                     onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
                     autoplay={{
@@ -52,7 +53,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                         <SwiperSlide
                             key={idx}
                             className={`transition-all duration-300 flex justify-center items-center
-        ${idx === activeIndex ? 'w-[60%]' : 'w-[20%]'}`}
+        ${idx === activeIndex ? 'w-[55%]' : 'w-[18%]'}`}
                         >
                             <img
                                 src={img}
