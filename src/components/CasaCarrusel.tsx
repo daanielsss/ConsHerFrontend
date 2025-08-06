@@ -30,7 +30,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                 {casa.ubicacion}
             </p>
 
-            <p className="relative z-10 text-lg font-bold text-green-400 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit">
+            <p className="relative z-10 text-lg font-bold text-green-400 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit mb-4">
                 ${casa.precio.toLocaleString()}
             </p>
             {/* Fondo desenfocado tipo espejo */}
