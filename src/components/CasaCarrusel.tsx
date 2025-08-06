@@ -37,7 +37,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                 </div>
 
                 <Swiper
-                    slidesPerView="auto"
+                    slidesPerView={3}
                     centeredSlides={true}
                     loop={true}
                     onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
