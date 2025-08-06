@@ -24,12 +24,12 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
         >
             {/* Fondo desenfocado tipo espejo */}
             <div
-                className="absolute inset-0 z-0 bg-cover bg-center blur-0 scale-110 brightness-75"
+                className="absolute inset-0 z-0 bg-cover bg-center blur-md scale-100 brightness-75"
                 style={{ backgroundImage: `url(${currentImage})` }}
             />
 
             {/* Contenido flotante */}
-            <div className="relative z-10 backdrop-blur-lg w-full rounded-2xl shadow-2xl p-6 border border-white/10">
+            <div className="relative z-10 backdrop-blur-md w-full rounded-2xl shadow-2xl p-6 border border-white/10">
                 <div className="mb-6">
                     <h3 className="text-xl font-semibold text-foreground">{casa.nombre}</h3>
                     <p className="text-muted-foreground">{casa.ubicacion}</p>
