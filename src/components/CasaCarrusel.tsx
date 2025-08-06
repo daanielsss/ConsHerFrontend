@@ -28,14 +28,16 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                 style={{ backgroundImage: `url(${currentImage})` }}
             />
 
+
+            <div className="mb-6">
+                <h3 className="text-xl font-semibold text-foreground">{casa.nombre}</h3>
+                <p className="text-muted-foreground">{casa.ubicacion}</p>
+                <p className="text-lg font-bold text-green-600">${casa.precio.toLocaleString()}</p>
+            </div>
+
+
             {/* Contenido flotante */}
             <div className="relative z-10 h-[32rem] w-full rounded-2xl shadow-2xl p-6 border border-white/10 overflow-hidden">
-                <div className="mb-6">
-                    <h3 className="text-xl font-semibold text-foreground">{casa.nombre}</h3>
-                    <p className="text-muted-foreground">{casa.ubicacion}</p>
-                    <p className="text-lg font-bold text-green-600">${casa.precio.toLocaleString()}</p>
-                </div>
-
                 <Swiper
                     slidesPerView={3}
                     centeredSlides={true}
