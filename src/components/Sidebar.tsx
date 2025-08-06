@@ -69,7 +69,6 @@ export default function Sidebar() {
                     onClick={() => setExpanded(false)}
                 />
             )}
-
             {/* Sidebar con slide universal */}
             <aside
                 className={`fixed top-0 left-0 h-screen w-56 z-40 bg-primary text-primary-foreground flex flex-col
