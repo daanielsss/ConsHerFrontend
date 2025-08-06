@@ -18,29 +18,28 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
     const currentImage = casa.imagenes[activeIndex % casa.imagenes.length];
 
     return (
-        // Quitamos overflow-hidden aquí también
         <div
             onClick={() => navigate(`/casa/${casa._id}`)}
-            className="relative cursor-pointer overflow-hiddenp-4 w-full max-w-6xl mx-auto mb-16 rounded-2xl group"
+            className="relative cursor-pointer p-4 max-w-6xl w-full mx-auto mb-16 rounded-2xl overflow-hidden group"
         >
-            {/* Fondo desenfocado (sin cambios) */}
+            {/* Fondo desenfocado tipo espejo */}
             <div
                 className="absolute inset-0 z-0 bg-cover bg-center blur-md scale-110 brightness-75"
                 style={{ backgroundImage: `url(${currentImage})` }}
             />
 
-            {/* Contenido flotante (sin cambios) */}
+            {/* Contenido flotante */}
             <div className="relative z-10 backdrop-blur-lg w-full rounded-2xl shadow-2xl p-6 border border-white/10">
-                {/* ... (título, ubicación, etc. sin cambios) */}
+                <div className="mb-6">
+                    <h3 className="text-xl font-semibold text-foreground">{casa.nombre}</h3>
+                    <p className="text-muted-foreground">{casa.ubicacion}</p>
+                    <p className="text-lg font-bold text-green-600">${casa.precio.toLocaleString()}</p>
+                </div>
 
-                {/* 👇 CAMBIOS AQUÍ 👇 */}
                 <Swiper
-                    // 1. Define un número fijo de slides visibles
-                    slidesPerView={3}
+                    slidesPerView="auto"
                     centeredSlides={true}
                     loop={true}
-                    // 2. (Opcional) Añade espacio entre slides
-                    spaceBetween={30}
                     onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
                     autoplay={{
                         delay: 3000,
@@ -52,23 +51,22 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                     {casa.imagenes.map((img, idx) => (
                         <SwiperSlide
                             key={idx}
-                            // 3. Ya no necesitamos anchos dinámicos aquí
-                            className="transition-all duration-300 flex justify-center items-center"
+                            className={`transition-all duration-300 flex justify-center items-center
+                ${idx === activeIndex ? 'w-[60%]' : 'w-[20%]'}`}
                         >
-                            {/* Los estilos de la imagen se encargan de todo el efecto visual */}
                             <img
                                 src={img}
                                 alt={`Imagen ${idx + 1}`}
                                 className={`rounded-xl object-cover shadow-xl transition-all duration-500
-                                ${idx === activeIndex
+                ${idx === activeIndex
                                         ? 'w-full h-[24rem] scale-100 opacity-100 z-10'
-                                        // La imagen inactiva se hace más pequeña con `scale`
-                                        : 'w-full h-[20rem] scale-80 opacity-50 z-0'
+                                        : 'w-full h-[10rem] scale-90 opacity-40 z-0'
                                     }`}
                             />
                         </SwiperSlide>
                     ))}
                 </Swiper>
+
             </div>
         </div>
     );
