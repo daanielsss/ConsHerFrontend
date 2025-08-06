@@ -83,74 +83,76 @@ export default function HomePage() {
                     />
                 </picture>
             </div>
+            {/* Aquí empieza el contenido estructurado */}
+            <div className="max-w-7xl mx-auto px-4 pt-10 pb-16">
 
+                {/* Sección bienvenida */}
+                <section className="py-16 px-4 max-w-5xl mx-auto text-center">
+                    <h2 className="text-4xl font-semibold mb-4">Bienvenido a CONSHER</h2>
+                    <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                        Somos una empresa dedicada a la construcción y venta de viviendas de calidad.
+                        Nuestro objetivo es brindar a las familias espacios funcionales, modernos y accesibles.
+                        Explora nuestro catálogo de casas disponibles y encuentra tu próximo hogar.
+                    </p>
+                </section>
 
-            {/* Sección bienvenida */}
-            <section className="py-16 px-4 max-w-5xl mx-auto text-center">
-                <h2 className="text-4xl font-semibold mb-4">Bienvenido a CONSHER</h2>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
-                    Somos una empresa dedicada a la construcción y venta de viviendas de calidad.
-                    Nuestro objetivo es brindar a las familias espacios funcionales, modernos y accesibles.
-                    Explora nuestro catálogo de casas disponibles y encuentra tu próximo hogar.
-                </p>
-            </section>
-
-            {/* Sección imágenes institucionales */}
-            <section className="px-4 max-w-6xl mx-auto my-20">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="bg-gray-100 aspect-[4/3] rounded-lg flex items-center justify-center text-muted-foreground">
-                        Imagen institucional 1
+                {/* Sección imágenes institucionales */}
+                <section className="px-4 max-w-6xl mx-auto my-20">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="bg-gray-100 aspect-[4/3] rounded-lg flex items-center justify-center text-muted-foreground">
+                            Imagen institucional 1
+                        </div>
+                        <div className="bg-gray-100 aspect-[4/3] rounded-lg flex items-center justify-center text-muted-foreground">
+                            Imagen institucional 2
+                        </div>
                     </div>
-                    <div className="bg-gray-100 aspect-[4/3] rounded-lg flex items-center justify-center text-muted-foreground">
-                        Imagen institucional 2
-                    </div>
-                </div>
-            </section>
+                </section>
 
-            {/* Secciones con Carrusel */}
-            <main className="px-4 max-w-7xl mx-auto">
-                {isLoading ? (
-                    <div className="flex flex-col items-center justify-center py-10 gap-4">
-                        <span className="loading loading-infinity loading-xl text-primary"></span>
-                        <p className="text-muted-foreground text-lg font-medium">Cargando catálogo...</p>
-                    </div>
-                ) : (
-                    <>
-                        <CasaSection
-                            title="🏗️ Casas en Preventa"
-                            casas={preventa}
-                            emptyText="No hay casas en preventa actualmente."
-                        />
-                        <CasaSection
-                            title="🏡 Casas Disponibles"
-                            casas={disponibles}
-                            emptyText="No hay casas disponibles actualmente."
-                        />
-                        <CasaSection
-                            title="✅ Casas Vendidas"
-                            casas={vendidas}
-                            emptyText="Aún no se han vendido casas."
-                        />
-                    </>
-                )}
-            </main>
+                {/* Secciones con Carrusel */}
+                <main className="px-4 max-w-7xl mx-auto">
+                    {isLoading ? (
+                        <div className="flex flex-col items-center justify-center py-10 gap-4">
+                            <span className="loading loading-infinity loading-xl text-primary"></span>
+                            <p className="text-muted-foreground text-lg font-medium">Cargando catálogo...</p>
+                        </div>
+                    ) : (
+                        <>
+                            <CasaSection
+                                title="🏗️ Casas en Preventa"
+                                casas={preventa}
+                                emptyText="No hay casas en preventa actualmente."
+                            />
+                            <CasaSection
+                                title="🏡 Casas Disponibles"
+                                casas={disponibles}
+                                emptyText="No hay casas disponibles actualmente."
+                            />
+                            <CasaSection
+                                title="✅ Casas Vendidas"
+                                casas={vendidas}
+                                emptyText="Aún no se han vendido casas."
+                            />
+                        </>
+                    )}
+                </main>
 
-            {/* Footer */}
-            <footer
-                ref={footerRef}
-                className={`bg-[#005187] py-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                    }`}
-            >
-                <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 text-white">
-                    <span className="text-2xl font-bold tracking-tight">ConsHer</span>
-                    <div className="mt-4 md:mt-0 flex flex-col md:flex-row gap-4 text-sm text-white">
-                        <span>📧 contacto@consher.mx</span>
-                        <span>📞 (55) 1234 5678</span>
-                        <span className="hover:underline cursor-pointer">Política de privacidad</span>
-                        <span className="hover:underline cursor-pointer">Términos del servicio</span>
+                {/* Footer */}
+                <footer
+                    ref={footerRef}
+                    className={`bg-[#005187] py-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                        }`}
+                >
+                    <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 text-white">
+                        <span className="text-2xl font-bold tracking-tight">ConsHer</span>
+                        <div className="mt-4 md:mt-0 flex flex-col md:flex-row gap-4 text-sm text-white">
+                            <span>📧 contacto@consher.mx</span>
+                            <span>📞 (55) 1234 5678</span>
+                            <span className="hover:underline cursor-pointer">Política de privacidad</span>
+                            <span className="hover:underline cursor-pointer">Términos del servicio</span>
+                        </div>
                     </div>
-                </div>
-            </footer>
+                </footer>
+            </div>
         </div>
     );
 }
