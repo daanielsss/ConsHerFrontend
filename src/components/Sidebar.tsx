@@ -72,7 +72,7 @@ export default function Sidebar() {
 
             {/* Sidebar con slide universal */}
             <aside
-                className={`fixed top-0 left-0 h-screen w-56 z-40 bg-primary blur-md text-primary-foreground flex flex-col
+                className={`fixed top-0 left-0 h-screen w-56 z-40 bg-primary text-primary-foreground flex flex-col
                     transform transition-transform duration-300
                     ${expanded ? "translate-x-0" : "-translate-x-full"}
                 `}
