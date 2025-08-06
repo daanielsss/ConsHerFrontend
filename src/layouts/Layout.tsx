@@ -3,14 +3,25 @@ import { useSidebar } from "@/context/SidebarContext";
 import { getUserFromToken } from "@/lib/auth";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
+import { useEffect, useState } from "react";
 
 function Layout() {
   const { expanded } = useSidebar();
-  const user = getUserFromToken();
-  const location = useLocation(); // ← Detectamos ruta actual
+  const location = useLocation();
+
+  // Nuevo: estado controlado del usuario para evitar parpadeos
+  const [user, setUser] = useState<null | { name?: string; email: string }>(null);
+
+  useEffect(() => {
+    const currentUser = getUserFromToken();
+    setUser(currentUser);
+  }, []);
+
+  // Mientras se determina el usuario, no renderizamos nada
+  if (user === null) return null;
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen overflow-x-hidden">
       {/* Sidebar solo si hay sesión iniciada */}
       {user && <Sidebar />}
 
