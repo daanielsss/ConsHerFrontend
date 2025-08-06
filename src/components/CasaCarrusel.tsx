@@ -24,7 +24,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
         >
             {/* Fondo desenfocado tipo espejo */}
             <div
-                className="absolute inset-0 z-0 bg-cover bg-center blur-md scale-110 brightness-75"
+                className="absolute inset-0 z-0 bg-cover bg-center blur-0 scale-110 brightness-75"
                 style={{ backgroundImage: `url(${currentImage})` }}
             />
 
