@@ -22,9 +22,9 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
             onClick={() => navigate(`/casa/${casa._id}`)}
             className="relative cursor-pointer p-4 max-w-6xl w-full mx-auto mb-16 rounded-2xl overflow-hidden group"
         >
-            <h3 className="text-xl font-semibold text-foreground">{casa.nombre}</h3>
-            <p className="text-muted-foreground">{casa.ubicacion}</p>
-            <p className="text-lg font-bold text-green-600">${casa.precio.toLocaleString()}</p>
+            <h3 className="relative z-10 text-xl font-semibold text-foreground">{casa.nombre}</h3>
+            <p className="relative z-10 text-muted-foreground">{casa.ubicacion}</p>
+            <p className="relative z-10 text-lg font-bold text-green-600">${casa.precio.toLocaleString()}</p>
             {/* Fondo desenfocado tipo espejo */}
             <div
                 className="absolute inset-0 z-0 bg-cover bg-center blur-md scale-110 brightness-75"
