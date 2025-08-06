@@ -29,7 +29,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
             />
 
             {/* Contenido flotante */}
-            <div className="relative z-10 backdrop-blur-lg rounded-2xl shadow-2xl overflow-visible p-6 border border-white/10">
+            <div className="relative z-10 backdrop-blur-lg w-full rounded-2xl shadow-2xl p-6 border border-white/10">
                 <div className="mb-6">
                     <h3 className="text-xl font-semibold text-foreground">{casa.nombre}</h3>
                     <p className="text-muted-foreground">{casa.ubicacion}</p>
@@ -39,7 +39,6 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                 <Swiper
                     slidesPerView="auto"
                     centeredSlides={true}
-                    spaceBetween={16}
                     loop={true}
                     onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
                     autoplay={{
@@ -53,13 +52,13 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                         <SwiperSlide
                             key={idx}
                             className={`transition-all duration-300 flex justify-center items-center
-        ${idx === activeIndex ? 'w-[55%] lg:w-[50%]' : 'w-[18%] lg:w-[15%]'}`}
+                ${idx === activeIndex ? 'w-[60%]' : 'w-[20%]'}`}
                         >
                             <img
                                 src={img}
                                 alt={`Imagen ${idx + 1}`}
                                 className={`rounded-xl object-cover shadow-xl transition-all duration-500
-          ${idx === activeIndex
+                ${idx === activeIndex
                                         ? 'w-full h-[24rem] scale-100 opacity-100 z-10'
                                         : 'w-full h-[10rem] scale-90 opacity-40 z-0'
                                     }`}
