@@ -55,7 +55,8 @@ export default function Sidebar() {
             {/* Botón flotante para abrir sidebar */}
             {!expanded && (
                 <button
-                    className="fixed top-4 left-4 z-50 bg-primary text-white rounded-full p-2 shadow-lg"
+                    className="fixed top-4 left-4 z-50 bg-primary/30 backdrop-blur-md border border-white/10 text-white rounded-full p-2 shadow-md"
+
                     onClick={toggleSidebar}
                 >
                     <PanelLeftOpen />
@@ -72,11 +73,12 @@ export default function Sidebar() {
 
             {/* Sidebar con slide universal */}
             <aside
-                className={`fixed top-0 left-0 h-screen w-56 z-40 bg-primary text-primary-foreground flex flex-col
-                    transform transition-transform duration-300
-                    ${expanded ? "translate-x-0" : "-translate-x-full"}
-                `}
+                className={`fixed top-0 left-0 h-screen w-56 z-40 bg-primary/30 backdrop-blur-md border-r border-white/10 shadow-xl text-primary-foreground flex flex-col
+      transform transition-transform duration-300
+      ${expanded ? "translate-x-0" : "-translate-x-full"}
+  `}
             >
+
                 <div className="flex flex-col h-full justify-between">
                     {/* Header */}
                     <div>
