@@ -21,7 +21,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
         // Quitamos overflow-hidden aquí también
         <div
             onClick={() => navigate(`/casa/${casa._id}`)}
-            className="relative cursor-pointer p-4 w-full max-w-6xl mx-auto mb-16 rounded-2xl group"
+            className="relative cursor-pointer overflow-hiddenp-4 w-full max-w-6xl mx-auto mb-16 rounded-2xl group"
         >
             {/* Fondo desenfocado (sin cambios) */}
             <div
