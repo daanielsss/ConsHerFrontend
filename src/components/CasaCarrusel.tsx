@@ -20,7 +20,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
     return (
         <div
             onClick={() => navigate(`/casa/${casa._id}`)}
-            className="relative cursor-pointer p-4 max-w-6xl mx-auto mb-16 rounded-2xl overflow-hidden group"
+            className="relative cursor-pointer p-4 w-full max-w-6xl mx-auto mb-16 rounded-2xl overflow-hidden group"
         >
             {/* Fondo desenfocado tipo espejo */}
             <div
