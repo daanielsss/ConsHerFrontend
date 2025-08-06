@@ -23,7 +23,7 @@ function Layout() {
   return (
     <div className="flex min-h-screen overflow-x-hidden">
       {/* Sidebar solo si hay sesión iniciada */}
-      {user && <Sidebar />}
+      {user && expanded && <Sidebar />}
 
       <div
         className={`flex-1 flex flex-col transition-all duration-300 ${user ? (expanded ? "pl-56" : "pl-0") : ""
