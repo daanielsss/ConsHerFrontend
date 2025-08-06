@@ -29,7 +29,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
             />
 
             {/* Contenido flotante */}
-            <div className="relative z-10 backdrop-blur-lg rounded-2xl shadow-2xl p-6 border border-white/10">
+            <div className="relative z-10 backdrop-blur-lg rounded-2xl shadow-2xl overflow-visible p-6 border border-white/10">
                 <div className="mb-6">
                     <h3 className="text-xl font-semibold text-foreground">{casa.nombre}</h3>
                     <p className="text-muted-foreground">{casa.ubicacion}</p>
@@ -53,7 +53,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                         <SwiperSlide
                             key={idx}
                             className={`transition-all duration-300 flex justify-center items-center
-        ${idx === activeIndex ? 'w-[55%]' : 'w-[18%]'}`}
+        ${idx === activeIndex ? 'w-[55%] lg:w-[50%]' : 'w-[18%] lg:w-[15%]'}`}
                         >
                             <img
                                 src={img}
