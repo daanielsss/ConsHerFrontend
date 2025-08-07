@@ -87,19 +87,19 @@ export default function HomePage() {
             <div className="flex w-full text-center border-b">
                 <button
                     onClick={() => setSelectedTab("preventa")}
-                    className={`flex-1 py-3 font-medium ${selectedTab === "preventa" ? "bg-primary text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                    className={`flex-1 py-3 font-medium ${selectedTab === "preventa" ? "bg-primary rounded-md text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
                 >
                     🏗️ Preventa
                 </button>
                 <button
                     onClick={() => setSelectedTab("disponible")}
-                    className={`flex-1 py-3 font-medium ${selectedTab === "disponible" ? "bg-primary text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                    className={`flex-1 py-3 font-medium ${selectedTab === "disponible" ? "bg-primary rounded-md text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
                 >
                     🏡 Disponibles
                 </button>
                 <button
                     onClick={() => setSelectedTab("vendida")}
-                    className={`flex-1 py-3 font-medium ${selectedTab === "vendida" ? "bg-primary text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                    className={`flex-1 py-3 font-medium ${selectedTab === "vendida" ? "bg-primary rounded-md text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
                 >
                     ✅ Vendidas
                 </button>
