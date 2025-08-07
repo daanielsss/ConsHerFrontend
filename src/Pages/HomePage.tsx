@@ -36,46 +36,62 @@ export default function HomePage() {
         };
     }, []);
 
-    const CasaSection = ({
-        casas,
-        emptyText,
-        description,
-    }: {
-        casas: Casa[];
-        emptyText: string;
-        description: string;
-    }) => (
+    // Componente: intro con fade-in suave cuando cambia la pestaña
+    const SectionIntro = ({ text }: { text: string }) => {
+        const [show, setShow] = useState(false);
+        useEffect(() => {
+            // re-inicia la animación cuando cambia el texto (pestaña)
+            setShow(false);
+            const t = setTimeout(() => setShow(true), 10);
+            return () => clearTimeout(t);
+        }, [text]);
+
+        return (
+            <p
+                className={`mt-6 mb-6 text-muted-foreground text-sm leading-relaxed text-center transition-all duration-300 ease-out ${show ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"
+                    }`}
+            >
+                {text}{" "}
+                <span className="italic text-primary">
+                    Selecciona cada tarjeta para ver más fotos o información del hogar.
+                </span>
+            </p>
+        );
+    };
+
+    // Solo renderiza el carrusel de casas
+    const CasaSection = ({ casas, emptyText }: { casas: Casa[]; emptyText: string }) => (
         <section className="mb-20">
             {casas.length === 0 ? (
-                <p className="text-muted-foreground">{emptyText}</p>
+                <p className="text-muted-foreground text-center">{emptyText}</p>
             ) : (
-                <>
-                    <div className="flex flex-col gap-14 w-full">
-                        {casas.map((house) => (
-                            <CasaCarrusel
-                                key={house._id}
-                                casa={{
-                                    _id: house._id,
-                                    nombre: house.title,
-                                    ubicacion: house.address,
-                                    precio: house.price,
-                                    imagenes: house.images || [],
-                                }}
-                            />
-                        ))}
-                    </div>
-
-                    {/* Descripción debajo de la sección */}
-                    <p className="mt-6 text-muted-foreground text-sm leading-relaxed">
-                        {description}{" "}
-                        <span className="italic text-primary">
-                            Selecciona cada tarjeta para ver más fotos o información del hogar.
-                        </span>
-                    </p>
-                </>
+                <div className="flex flex-col gap-14 w-full">
+                    {casas.map((house) => (
+                        <CasaCarrusel
+                            key={house._id}
+                            casa={{
+                                _id: house._id,
+                                nombre: house.title,
+                                ubicacion: house.address,
+                                precio: house.price,
+                                imagenes: house.images || [],
+                            }}
+                        />
+                    ))}
+                </div>
             )}
         </section>
     );
+
+    // Texto de intro por pestaña
+    const introByTab: Record<typeof selectedTab, string> = {
+        preventa:
+            "Hogares en proceso de construcción o en las últimas fases de acabado. Una oportunidad para adquirir tu nuevo hogar a un precio preferencial por ser preventa.",
+        disponible:
+            "Hogares 100% terminados y listos para entrega inmediata. Espacios modernos y funcionales para disfrutar desde el primer día.",
+        vendida:
+            "Hogares terminados y entregados a familias satisfechas. Un reflejo de nuestro compromiso con la calidad y la confianza.",
+    };
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -102,28 +118,37 @@ export default function HomePage() {
             </section>
 
             {/* Botones de navegación */}
-            <div className="flex w-full text-center border-b">
+            <div className="flex w-full text-center border-b rounded-md overflow-hidden">
                 <button
                     onClick={() => setSelectedTab("preventa")}
-                    className={`flex-1 py-3 font-medium ${selectedTab === "preventa" ? "bg-primary rounded-md text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                    className={`flex-1 py-3 font-medium ${selectedTab === "preventa"
+                        ? "bg-primary text-white"
+                        : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                        }`}
                 >
                     🏗️ Preventa
                 </button>
                 <button
                     onClick={() => setSelectedTab("disponible")}
-                    className={`flex-1 py-3 font-medium ${selectedTab === "disponible" ? "bg-primary rounded-md text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                    className={`flex-1 py-3 font-medium ${selectedTab === "disponible"
+                        ? "bg-primary text-white"
+                        : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                        }`}
                 >
                     🏡 Disponibles
                 </button>
                 <button
                     onClick={() => setSelectedTab("vendida")}
-                    className={`flex-1 py-3 font-medium ${selectedTab === "vendida" ? "bg-primary rounded-md text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                    className={`flex-1 py-3 font-medium ${selectedTab === "vendida"
+                        ? "bg-primary text-white"
+                        : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                        }`}
                 >
                     ✅ Vendidas
                 </button>
             </div>
 
-            {/* Secciones con Carrusel */}
+            {/* Intro con fade-in + Carrusel por sección */}
             <main className="px-4 max-w-7xl mx-auto py-10">
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-10 gap-4">
@@ -132,25 +157,26 @@ export default function HomePage() {
                     </div>
                 ) : (
                     <>
+                        {/* Descripción arriba del carrusel (con fade-in) */}
+                        <SectionIntro text={introByTab[selectedTab]} />
+
+                        {/* Carrusel según pestaña */}
                         {selectedTab === "preventa" && (
                             <CasaSection
                                 casas={preventa}
                                 emptyText="No hay casas en preventa actualmente."
-                                description="Hogares en proceso de construcción o en las últimas fases de acabado. Una oportunidad para adquirir tu nuevo hogar a un precio preferencial por ser preventa."
                             />
                         )}
                         {selectedTab === "disponible" && (
                             <CasaSection
                                 casas={disponibles}
                                 emptyText="No hay casas disponibles actualmente."
-                                description="Hogares 100% terminados y listos para entrega inmediata. Espacios modernos y funcionales para disfrutar desde el primer día."
                             />
                         )}
                         {selectedTab === "vendida" && (
                             <CasaSection
                                 casas={vendidas}
                                 emptyText="Aún no se han vendido casas."
-                                description="Hogares terminados y entregados a familias satisfechas. Un reflejo de nuestro compromiso con la calidad y la confianza."
                             />
                         )}
                     </>
@@ -160,7 +186,8 @@ export default function HomePage() {
             {/* Footer */}
             <footer
                 ref={footerRef}
-                className={`bg-[#005187] py-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+                className={`bg-[#005187] py-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                    }`}
             >
                 <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 text-white">
                     <span className="text-2xl font-bold tracking-tight">ConsHer</span>
