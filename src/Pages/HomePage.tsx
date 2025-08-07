@@ -36,25 +36,43 @@ export default function HomePage() {
         };
     }, []);
 
-    const CasaSection = ({ casas, emptyText }: { casas: Casa[]; emptyText: string }) => (
+    const CasaSection = ({
+        casas,
+        emptyText,
+        description,
+    }: {
+        casas: Casa[];
+        emptyText: string;
+        description: string;
+    }) => (
         <section className="mb-20">
             {casas.length === 0 ? (
                 <p className="text-muted-foreground">{emptyText}</p>
             ) : (
-                <div className="flex flex-col gap-14 w-full">
-                    {casas.map((house) => (
-                        <CasaCarrusel
-                            key={house._id}
-                            casa={{
-                                _id: house._id,
-                                nombre: house.title,
-                                ubicacion: house.address,
-                                precio: house.price,
-                                imagenes: house.images || [],
-                            }}
-                        />
-                    ))}
-                </div>
+                <>
+                    <div className="flex flex-col gap-14 w-full">
+                        {casas.map((house) => (
+                            <CasaCarrusel
+                                key={house._id}
+                                casa={{
+                                    _id: house._id,
+                                    nombre: house.title,
+                                    ubicacion: house.address,
+                                    precio: house.price,
+                                    imagenes: house.images || [],
+                                }}
+                            />
+                        ))}
+                    </div>
+
+                    {/* Descripción debajo de la sección */}
+                    <p className="mt-6 text-muted-foreground text-sm leading-relaxed">
+                        {description}{" "}
+                        <span className="italic text-primary">
+                            Selecciona cada tarjeta para ver más fotos o información del hogar.
+                        </span>
+                    </p>
+                </>
             )}
         </section>
     );
@@ -115,13 +133,25 @@ export default function HomePage() {
                 ) : (
                     <>
                         {selectedTab === "preventa" && (
-                            <CasaSection casas={preventa} emptyText="No hay casas en preventa actualmente." />
+                            <CasaSection
+                                casas={preventa}
+                                emptyText="No hay casas en preventa actualmente."
+                                description="Hogares en proceso de construcción o en las últimas fases de acabado. Una oportunidad para adquirir tu nuevo hogar a un precio preferencial por ser preventa."
+                            />
                         )}
                         {selectedTab === "disponible" && (
-                            <CasaSection casas={disponibles} emptyText="No hay casas disponibles actualmente." />
+                            <CasaSection
+                                casas={disponibles}
+                                emptyText="No hay casas disponibles actualmente."
+                                description="Hogares 100% terminados y listos para entrega inmediata. Espacios modernos y funcionales para disfrutar desde el primer día."
+                            />
                         )}
                         {selectedTab === "vendida" && (
-                            <CasaSection casas={vendidas} emptyText="Aún no se han vendido casas." />
+                            <CasaSection
+                                casas={vendidas}
+                                emptyText="Aún no se han vendido casas."
+                                description="Hogares terminados y entregados a familias satisfechas. Un reflejo de nuestro compromiso con la calidad y la confianza."
+                            />
                         )}
                     </>
                 )}
