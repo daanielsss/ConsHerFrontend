@@ -94,20 +94,7 @@ export default function HomePage() {
                 </p>
             </section>
 
-            {/* Sección imágenes institucionales *
-                <section className="px-4 max-w-6xl mx-auto my-20">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="bg-gray-100 aspect-[4/3] rounded-lg flex items-center justify-center text-muted-foreground">
-                            Imagen institucional 1
-                        </div>
-                        <div className="bg-gray-100 aspect-[4/3] rounded-lg flex items-center justify-center text-muted-foreground">
-                            Imagen institucional 2
-                        </div>
-                    </div>
-                </section>
-                /}
-
-                {/* Secciones con Carrusel */}
+            {/* Secciones con Carrusel */}
             <main className="px-4 max-w-7xl mx-auto">
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-10 gap-4">
