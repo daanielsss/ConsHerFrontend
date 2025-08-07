@@ -1,73 +1,78 @@
-// src/components/CasaCarrusel.tsx
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import 'swiper/css';
 
-interface Props {
-    casa: {
-        _id: string;
-        nombre: string;
-        ubicacion: string;
-        precio: number;
-        imagenes: string[];
-    };
-}
+type Casa = {
+    _id: string;
+    nombre: string;
+    ubicacion: string;
+    precio: number;
+    imagenes: string[];
+};
 
-export default function CasaCarrusel({ casa }: Props) {
-    const [index, setIndex] = useState(0);
+export default function CasaCarrusel({ casa }: { casa: Casa }) {
     const navigate = useNavigate();
-
-    const siguiente = () => setIndex((prev) => (prev + 1) % casa.imagenes.length);
-    const anterior = () =>
-        setIndex((prev) => (prev - 1 + casa.imagenes.length) % casa.imagenes.length);
+    const [activeIndex, setActiveIndex] = useState(0);
+    const currentImage = casa.imagenes[activeIndex % casa.imagenes.length];
 
     return (
-        <div className="w-full max-w-[100%] sm:max-w-[90%] md:max-w-[80%] lg:max-w-[70%] mx-auto transition-all duration-300">
-            <div className="relative aspect-[4/3] rounded-xl overflow-hidden group shadow-md">
+        <div
+            onClick={() => navigate(`/casa/${casa._id}`)}
+            className="relative cursor-pointer p-4 w-full max-w-6xl mx-auto mb-16 rounded-2xl overflow-hidden group"
+        >
+            <h3 className="relative z-10 text-xl font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit">
+                {casa.nombre}
+            </h3>
 
-                {/* Imagen actual */}
-                <img
-                    src={casa.imagenes[index]}
-                    alt={`Casa ${index + 1}`}
-                    className="w-full h-full object-cover object-center transition-all duration-500 cursor-pointer"
-                    onClick={() => navigate(`/house/${casa._id}`)}
-                />
+            <p className="relative z-10 text-white/90 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit">
+                {casa.ubicacion}
+            </p>
 
-                {/* Flechas */}
-                <button
-                    onClick={anterior}
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow group-hover:opacity-100 opacity-0 transition-all duration-300"
+            <p className="relative z-10 text-lg font-bold text-green-400 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit ">
+                ${casa.precio.toLocaleString()}
+            </p>
+
+            {/* Fondo desenfocado tipo espejo */}
+            <div
+                className="absolute inset-0 z-0 bg-cover bg-center blur-md scale-110 brightness-75"
+                style={{ backgroundImage: `url(${currentImage})` }}
+            />
+
+            {/* Contenido flotante responsivo */}
+            <div className="relative z-10 w-full p-4 sm:p-6 border border-white/10 rounded-2xl shadow-2xl overflow-hidden
+                            h-[22rem] sm:h-[26rem] md:h-[28rem] lg:h-[30rem]">
+                <Swiper
+                    slidesPerView={3}
+                    centeredSlides={true}
+                    loop={true}
+                    onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+                    autoplay={{
+                        delay: 3000,
+                        disableOnInteraction: false,
+                    }}
+                    modules={[Autoplay]}
+                    className="rounded-xl"
                 >
-                    <ChevronLeft className="w-5 h-5 text-black" />
-                </button>
-                <button
-                    onClick={siguiente}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 bg-white/70 hover:bg-white p-2 rounded-full shadow group-hover:opacity-100 opacity-0 transition-all duration-300"
-                >
-                    <ChevronRight className="w-5 h-5 text-black" />
-                </button>
-
-                {/* Indicadores */}
-                <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-                    {casa.imagenes.map((_, i) => (
-                        <div
-                            key={i}
-                            className={`w-2 h-2 rounded-full transition-all duration-300 ${i === index ? "bg-white" : "bg-white/50"
-                                }`}
-                        />
+                    {casa.imagenes.map((img, idx) => (
+                        <SwiperSlide
+                            key={idx}
+                            className={`transition-all duration-300 flex justify-center items-center
+                                ${idx === activeIndex ? 'w-[60%]' : 'w-[20%]'}`}
+                        >
+                            <img
+                                src={img}
+                                alt={`Imagen ${idx + 1}`}
+                                className={`rounded-xl object-cover shadow-xl transition-all duration-500
+                                    ${idx === activeIndex
+                                        ? 'w-full h-[16rem] sm:h-[20rem] md:h-[24rem] lg:h-[26rem] scale-100 opacity-100 z-10'
+                                        : 'w-full h-[6rem] sm:h-[8rem] md:h-[10rem] scale-90 opacity-40 z-0'
+                                    }`}
+                            />
+                        </SwiperSlide>
                     ))}
-                </div>
-            </div>
-
-            {/* Info de la casa */}
-            <div className="mt-4 text-center px-4">
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-primary">{casa.nombre}</h3>
-                <p className="text-muted-foreground text-sm sm:text-base md:text-lg">
-                    {casa.ubicacion}
-                </p>
-                <p className="text-foreground text-base sm:text-lg md:text-xl font-bold mt-1">
-                    ${casa.precio.toLocaleString()}
-                </p>
+                </Swiper>
             </div>
         </div>
     );
