@@ -20,7 +20,8 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
     return (
         <div
             onClick={() => navigate(`/casa/${casa._id}`)}
-            className="relative cursor-pointer p-4 w-full max-w-6xl mx-auto mb-16 rounded-2xl overflow-hidden group"
+            className="relative cursor-pointer p-4 w-full mx-auto mb-16 rounded-2xl overflow-hidden group
+                max-w-[95%] sm:max-w-[90%] md:max-w-[80%] lg:max-w-[70%] xl:max-w-[60%]"
         >
             <h3 className="relative z-10 text-xl font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit">
                 {casa.nombre}
@@ -34,15 +35,15 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                 ${casa.precio.toLocaleString()}
             </p>
 
-            {/* Fondo desenfocado tipo espejo */}
+            {/* Fondo espejo */}
             <div
                 className="absolute inset-0 z-0 bg-cover bg-center blur-md scale-110 brightness-75"
                 style={{ backgroundImage: `url(${currentImage})` }}
             />
 
-            {/* Contenido flotante responsivo */}
+            {/* Contenido flotante */}
             <div className="relative z-10 w-full p-4 sm:p-6 border border-white/10 rounded-2xl shadow-2xl overflow-hidden
-                            h-[22rem] sm:h-[26rem] md:h-[28rem] lg:h-[30rem]">
+                h-[22rem] sm:h-[26rem] md:h-[28rem] lg:h-[30rem]">
                 <Swiper
                     slidesPerView={3}
                     centeredSlides={true}
@@ -58,17 +59,16 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                     {casa.imagenes.map((img, idx) => (
                         <SwiperSlide
                             key={idx}
-                            className={`transition-all duration-300 flex justify-center items-center
-                                ${idx === activeIndex ? 'w-[60%]' : 'w-[20%]'}`}
+                            className="flex justify-center items-center transition-all duration-300"
                         >
                             <img
                                 src={img}
                                 alt={`Imagen ${idx + 1}`}
                                 className={`rounded-xl object-cover shadow-xl transition-all duration-500
                                     ${idx === activeIndex
-                                        ? 'w-full h-[16rem] sm:h-[20rem] md:h-[24rem] lg:h-[26rem] scale-100 opacity-100 z-10'
-                                        : 'w-full h-[6rem] sm:h-[8rem] md:h-[10rem] scale-90 opacity-40 z-0'
-                                    }`}
+                                        ? 'h-[14rem] sm:h-[18rem] md:h-[22rem] lg:h-[24rem] scale-100 opacity-100 z-10'
+                                        : 'h-[6rem] sm:h-[8rem] md:h-[10rem] scale-90 opacity-40 z-0'
+                                    } w-full`}
                             />
                         </SwiperSlide>
                     ))}
