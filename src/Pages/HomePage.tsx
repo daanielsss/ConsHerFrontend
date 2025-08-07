@@ -1,4 +1,3 @@
-// src/pages/HomePage.tsx
 import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import api from "@/lib/axios";
@@ -16,6 +15,7 @@ interface Casa {
 export default function HomePage() {
     const footerRef = useRef<HTMLDivElement | null>(null);
     const [visible, setVisible] = useState(false);
+    const [selectedTab, setSelectedTab] = useState<"preventa" | "disponible" | "vendida">("preventa");
 
     const { data: houses, isLoading } = useQuery<Casa[]>("catalogo-casas", async () => {
         const res = await api.get("/houses");
@@ -36,25 +36,11 @@ export default function HomePage() {
         };
     }, []);
 
-    // Reutilizamos esta sección para cada tipo de casa
-    // Tu componente CasaSection con la única línea modificada
-
-    const CasaSection = ({
-        title,
-        casas,
-        emptyText,
-    }: {
-        title: string;
-        casas: Casa[];
-        emptyText: string;
-    }) => (
+    const CasaSection = ({ casas, emptyText }: { casas: Casa[]; emptyText: string }) => (
         <section className="mb-20">
-            <h2 className="text-3xl font-semibold mb-6 text-foreground border-b pb-2">{title}</h2>
-
             {casas.length === 0 ? (
                 <p className="text-muted-foreground">{emptyText}</p>
             ) : (
-                // ¡AQUÍ ESTÁ LA SOLUCIÓN! Añade w-full
                 <div className="flex flex-col gap-14 w-full">
                     {casas.map((house) => (
                         <CasaCarrusel
@@ -97,8 +83,30 @@ export default function HomePage() {
                 </p>
             </section>
 
+            {/* Botones de navegación */}
+            <div className="flex w-full text-center border-b">
+                <button
+                    onClick={() => setSelectedTab("preventa")}
+                    className={`flex-1 py-3 font-medium ${selectedTab === "preventa" ? "bg-primary text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                >
+                    🏗️ Preventa
+                </button>
+                <button
+                    onClick={() => setSelectedTab("disponible")}
+                    className={`flex-1 py-3 font-medium ${selectedTab === "disponible" ? "bg-primary text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                >
+                    🏡 Disponibles
+                </button>
+                <button
+                    onClick={() => setSelectedTab("vendida")}
+                    className={`flex-1 py-3 font-medium ${selectedTab === "vendida" ? "bg-primary text-white" : "hover:bg-gray-100 dark:hover:bg-gray-800"}`}
+                >
+                    ✅ Vendidas
+                </button>
+            </div>
+
             {/* Secciones con Carrusel */}
-            <main className="px-4 max-w-7xl mx-auto">
+            <main className="px-4 max-w-7xl mx-auto py-10">
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-10 gap-4">
                         <span className="loading loading-infinity loading-xl text-primary"></span>
@@ -106,21 +114,15 @@ export default function HomePage() {
                     </div>
                 ) : (
                     <>
-                        <CasaSection
-                            title="🏗️ Casas en Preventa"
-                            casas={preventa}
-                            emptyText="No hay casas en preventa actualmente."
-                        />
-                        <CasaSection
-                            title="🏡 Casas Disponibles"
-                            casas={disponibles}
-                            emptyText="No hay casas disponibles actualmente."
-                        />
-                        <CasaSection
-                            title="✅ Casas Vendidas"
-                            casas={vendidas}
-                            emptyText="Aún no se han vendido casas."
-                        />
+                        {selectedTab === "preventa" && (
+                            <CasaSection casas={preventa} emptyText="No hay casas en preventa actualmente." />
+                        )}
+                        {selectedTab === "disponible" && (
+                            <CasaSection casas={disponibles} emptyText="No hay casas disponibles actualmente." />
+                        )}
+                        {selectedTab === "vendida" && (
+                            <CasaSection casas={vendidas} emptyText="Aún no se han vendido casas." />
+                        )}
                     </>
                 )}
             </main>
@@ -128,8 +130,7 @@ export default function HomePage() {
             {/* Footer */}
             <footer
                 ref={footerRef}
-                className={`bg-[#005187] py-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
-                    }`}
+                className={`bg-[#005187] py-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
             >
                 <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 text-white">
                     <span className="text-2xl font-bold tracking-tight">ConsHer</span>
@@ -142,6 +143,5 @@ export default function HomePage() {
                 </div>
             </footer>
         </div>
-
     );
 }
