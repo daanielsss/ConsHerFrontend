@@ -14,7 +14,7 @@ type Casa = {
 
 export default function CasaCarrusel({ casa }: { casa: Casa }) {
     const navigate = useNavigate();
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex] = useState(0);
     const currentImage = casa.imagenes[activeIndex % casa.imagenes.length];
 
     return (
