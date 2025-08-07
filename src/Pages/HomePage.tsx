@@ -121,7 +121,7 @@ export default function HomePage() {
                         key={tab}
                         onClick={() => setSelectedTab(tab as typeof selectedTab)}
                         className={`flex-1 py-2 font-medium relative ${selectedTab === tab
-                            ? "text-primary"
+                            ? ""
                             : "hover:bg-gray-100 dark:hover:bg-gray-800"
                             }`}
                     >
