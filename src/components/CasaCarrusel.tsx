@@ -1,8 +1,14 @@
+// src/components/CasaCarrusel.tsx
+
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
+// 👇 1. Módulos de Swiper actualizados
+import { Autoplay, EffectCoverflow } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+
+// 👇 2. Estilos base y del efecto importados
 import 'swiper/css';
+import 'swiper/css/effect-coverflow';
 
 type Casa = {
     _id: string;
@@ -22,24 +28,24 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
             onClick={() => navigate(`/casa/${casa._id}`)}
             className="relative cursor-pointer p-4 w-full max-w-6xl mx-auto mb-16 rounded-2xl overflow-hidden group"
         >
-            {/* --- INICIO DE TEXTO FLUIDO --- */}
+            {/* --- INICIO DE TEXTO FLUIDO CORREGIDO --- */}
             <h3
                 className="relative z-10 font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit
-                           text-[clamp(1rem,2.5vw,1.25rem)]" // Reemplaza text-xl
+                           text-[clamp(1.125rem,4vw,1.75rem)]" // Rango de texto más amplio
             >
                 {casa.nombre}
             </h3>
 
             <p
                 className="relative z-10 text-white/90 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit
-                           text-[clamp(0.875rem,2vw,1rem)]" // Para textos secundarios
+                           text-[clamp(0.875rem,3vw,1.125rem)]" // Rango de texto más amplio
             >
                 {casa.ubicacion}
             </p>
 
             <p
                 className="relative z-10 font-bold text-green-400 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit 
-                           text-[clamp(1rem,2.2vw,1.125rem)]" // Reemplaza text-lg
+                           text-[clamp(1rem,3.5vw,1.5rem)]" // Rango de texto más amplio
             >
                 ${casa.precio.toLocaleString()}
             </p>
@@ -51,36 +57,40 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
             />
 
             <div className="relative z-10 w-full p-4 sm:p-6 border border-white/10 rounded-2xl shadow-2xl overflow-hidden aspect-[10/4] md:aspect-[10/3.5]">
+                {/* --- INICIO DE SWIPER ACTUALIZADO CON COVERFLOW --- */}
                 <Swiper
-                    slidesPerView={'auto'}
+                    effect={'coverflow'}
+                    grabCursor={true}
                     centeredSlides={true}
+                    slidesPerView={3} // Muestra 3 slides
                     loop={true}
+                    coverflowEffect={{
+                        rotate: 30,
+                        stretch: 0,
+                        depth: 100,
+                        modifier: 1,
+                        slideShadows: false,
+                    }}
                     onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
                     autoplay={{
                         delay: 3000,
                         disableOnInteraction: false,
                     }}
-                    modules={[Autoplay]}
+                    modules={[Autoplay, EffectCoverflow]} // Módulos actualizados
                     className="rounded-xl h-full"
                 >
                     {casa.imagenes.map((img, idx) => (
-                        <SwiperSlide
-                            key={idx}
-                            // ¡AQUÍ LA SOLUCIÓN 1!
-                            className={`transition-all duration-300 flex justify-center items-center flex-shrink-0 ${idx === activeIndex ? 'w-[60%]' : 'w-[20%]'
-                                }`}
-                        >
+                        <SwiperSlide key={idx}>
                             <img
                                 src={img}
                                 alt={`Imagen ${idx + 1}`}
-                                className={`rounded-xl object-cover shadow-xl transition-all duration-500 w-full ${idx === activeIndex
-                                    ? 'h-[90%] scale-100 opacity-100 z-10'
-                                    : 'h-[40%] scale-90 opacity-40 z-0'
-                                    }`}
+                                // Clases simplificadas, el efecto se encarga del resto
+                                className="rounded-xl object-cover shadow-xl w-full h-full"
                             />
                         </SwiperSlide>
                     ))}
                 </Swiper>
+                {/* --- FIN DE SWIPER ACTUALIZADO --- */}
             </div>
         </div>
     );
