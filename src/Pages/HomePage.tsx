@@ -37,6 +37,8 @@ export default function HomePage() {
     }, []);
 
     // Reutilizamos esta sección para cada tipo de casa
+    // Tu componente CasaSection con la única línea modificada
+
     const CasaSection = ({
         title,
         casas,
@@ -52,7 +54,8 @@ export default function HomePage() {
             {casas.length === 0 ? (
                 <p className="text-muted-foreground">{emptyText}</p>
             ) : (
-                <div className="flex flex-col gap-14">
+                // ¡AQUÍ ESTÁ LA SOLUCIÓN! Añade w-full
+                <div className="flex flex-col gap-14 w-full">
                     {casas.map((house) => (
                         <CasaCarrusel
                             key={house._id}
