@@ -43,10 +43,10 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
             {/* Contenido flotante */}
             <div className="relative z-10 h-[28rem] w-full rounded-2xl shadow-2xl p-6 border border-white/10 overflow-hidden">
                 <Swiper
-                    slidesPerView={3}
+                    slidesPerView="auto"
                     centeredSlides={true}
                     loop={true}
-                    onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+                    spaceBetween={12}
                     autoplay={{
                         delay: 3000,
                         disableOnInteraction: false,
@@ -54,22 +54,27 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                     modules={[Autoplay]}
                     className="rounded-xl"
                 >
+
                     {casa.imagenes.map((img, idx) => (
                         <SwiperSlide
                             key={idx}
                             className={`transition-all duration-300 flex justify-center items-center
-                ${idx === activeIndex ? 'w-[60%]' : 'w-[20%]'}`}
+                          ${idx === activeIndex
+                                    ? 'w-[90%] sm:w-[60%]'
+                                    : 'w-[30%] sm:w-[20%]'}
+                        `}
                         >
                             <img
                                 src={img}
                                 alt={`Imagen ${idx + 1}`}
-                                className={`rounded-xl object-cover shadow-xl transition-all duration-500
-                ${idx === activeIndex
-                                        ? 'w-full h-[24rem] scale-100 opacity-100 z-10'
-                                        : 'w-full h-[10rem] scale-90 opacity-40 z-0'
+                                className={`rounded-xl object-cover shadow-xl transition-all duration-500 h-full
+                            ${idx === activeIndex
+                                        ? 'w-full scale-100 opacity-100 z-10'
+                                        : 'w-full scale-90 opacity-40 z-0'
                                     }`}
                             />
                         </SwiperSlide>
+
                     ))}
                 </Swiper>
 
