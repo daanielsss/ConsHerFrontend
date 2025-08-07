@@ -41,7 +41,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
 
 
             {/* Contenido flotante */}
-            <div className="relative z-10 h-[28rem] w-full rounded-2xl shadow-2xl p-6 border border-white/10 overflow-hidden">
+            <div className="relative z-10 h-[24rem] sm:h-[26rem] w-full rounded-2xl shadow-2xl p-6 border border-white/10 overflow-hidden">
                 <Swiper
                     slidesPerView="auto"
                     centeredSlides={true}
