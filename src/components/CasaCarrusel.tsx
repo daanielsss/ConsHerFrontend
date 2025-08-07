@@ -18,32 +18,41 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
     const currentImage = casa.imagenes[activeIndex % casa.imagenes.length];
 
     return (
-        // Todo esto se queda igual
         <div
             onClick={() => navigate(`/casa/${casa._id}`)}
             className="relative cursor-pointer p-4 w-full max-w-6xl mx-auto mb-16 rounded-2xl overflow-hidden group"
         >
-            <h3 className="relative z-10 text-xl font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit">
+            {/* --- INICIO DE TEXTO FLUIDO --- */}
+            <h3
+                className="relative z-10 font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit
+                           text-[clamp(1rem,2.5vw,1.25rem)]" // Reemplaza text-xl
+            >
                 {casa.nombre}
             </h3>
-            <p className="relative z-10 text-white/90 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit">
+
+            <p
+                className="relative z-10 text-white/90 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit
+                           text-[clamp(0.875rem,2vw,1rem)]" // Para textos secundarios
+            >
                 {casa.ubicacion}
             </p>
-            <p className="relative z-10 text-lg font-bold text-green-400 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit">
+
+            <p
+                className="relative z-10 font-bold text-green-400 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit 
+                           text-[clamp(1rem,2.2vw,1.125rem)]" // Reemplaza text-lg
+            >
                 ${casa.precio.toLocaleString()}
             </p>
+            {/* --- FIN DE TEXTO FLUIDO --- */}
+
             <div
                 className="absolute inset-0 z-0 bg-cover bg-center blur-md scale-110 brightness-75 transition-all duration-500"
                 style={{ backgroundImage: `url(${currentImage})` }}
             />
 
             <div className="relative z-10 w-full p-4 sm:p-6 border border-white/10 rounded-2xl shadow-2xl overflow-hidden aspect-[10/4] md:aspect-[10/3.5]">
-
                 <Swiper
-                    // === ¡ESTE ES EL ÚNICO CAMBIO NECESARIO! ===
-                    slidesPerView={'auto'} // <-- De 3 a 'auto'
-                    // ===========================================
-
+                    slidesPerView={'auto'}
                     centeredSlides={true}
                     loop={true}
                     onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
@@ -57,7 +66,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                     {casa.imagenes.map((img, idx) => (
                         <SwiperSlide
                             key={idx}
-                            // Tus clases de ancho en porcentaje ahora son la única fuente de verdad
+                            // ¡AQUÍ LA SOLUCIÓN 1!
                             className={`transition-all duration-300 flex justify-center items-center flex-shrink-0 ${idx === activeIndex ? 'w-[60%]' : 'w-[20%]'
                                 }`}
                         >
