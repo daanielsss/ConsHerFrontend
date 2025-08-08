@@ -135,7 +135,7 @@ export default function HomePage() {
                             <article className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-xl p-4 sm:p-5 md:p-6 shadow-lg overflow-hidden">
                                 {/* Imagen de fondo */}
                                 <img
-                                    src="/construc.webp"
+                                    src="/construct.webp"
                                     alt="Construcción"
                                     className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
                                 />
