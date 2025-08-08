@@ -98,7 +98,7 @@ export default function HomePage() {
     return (
         <div className="flex flex-col min-h-screen">
             {/* Hero principal */}
-            <div className="relative w-full min-h-[90vh] sm:min-h-[50vh] overflow-hidden">
+            <div className="relative w-full min-h-[50vh] sm:min-h-[90vh] overflow-hidden">
                 <picture>
                     <source media="(max-width: 768px)" srcSet="/homec.webp" />
                     <img
