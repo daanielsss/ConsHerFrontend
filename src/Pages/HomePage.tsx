@@ -131,20 +131,11 @@ export default function HomePage() {
                         {/* Contenido en 3 bloques con glassmorphism */}
                         <div className="absolute inset-0 p-4 sm:p-6 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 items-stretch">
                             {/* Lateral Izquierdo */}
-                            <article className="relative rounded-xl shadow-lg overflow-hidden bg-white/10 border border-white/20">
-                                {/* Fondo blur (solo detrás del texto) */}
+                            <article className="relative rounded-xl shadow-lg overflow-hidden bg-white/10 border border-white/20 flex flex-col">
+                                {/* Fondo blur solo para el texto */}
                                 <div className="absolute inset-0 backdrop-blur-xl bg-black/20 z-0" />
 
-                                {/* Imagen nítida (fuera del blur) */}
-                                <div className="relative z-0 flex justify-center">
-                                    <img
-                                        src="/construct.webp"
-                                        alt="Construcción"
-                                        className="w-full object-cover max-h-40 md:max-h-48"
-                                    />
-                                </div>
-
-                                {/* Contenido */}
+                                {/* Contenido (texto) */}
                                 <div className="relative z-10 p-4 sm:p-5 md:p-6">
                                     <h3 className="text-white text-xl md:text-2xl font-semibold flex items-center gap-2">
                                         <span>🏗️</span> Proceso Constructivo
@@ -154,6 +145,15 @@ export default function HomePage() {
                                         Aplicamos controles de calidad continuos y entregamos cada vivienda de forma presencial,
                                         asegurando que todo quede a tu entera satisfacción.
                                     </p>
+                                </div>
+
+                                {/* Imagen abajo del texto con dimensiones originales */}
+                                <div className="relative z-10 p-4">
+                                    <img
+                                        src="/construct.webp"
+                                        alt="Construcción"
+                                        className="w-full h-auto object-contain"
+                                    />
                                 </div>
                             </article>
 
@@ -184,20 +184,11 @@ export default function HomePage() {
                             </article>
 
                             {/* Lateral Derecho */}
-                            <article className="relative rounded-xl shadow-lg overflow-hidden bg-white/10 border border-white/20">
-                                {/* Fondo blur (solo detrás del texto) */}
+                            <article className="relative rounded-xl shadow-lg overflow-hidden bg-white/10 border border-white/20 flex flex-col">
+                                {/* Fondo blur solo para el texto */}
                                 <div className="absolute inset-0 backdrop-blur-xl bg-black/20 z-0" />
 
-                                {/* Imagen nítida (fuera del blur) */}
-                                <div className="relative z-0 flex justify-center">
-                                    <img
-                                        src="/construct.webp"
-                                        alt="Diseño"
-                                        className="w-full object-cover max-h-40 md:max-h-48"
-                                    />
-                                </div>
-
-                                {/* Contenido */}
+                                {/* Contenido (texto) */}
                                 <div className="relative z-10 p-4 sm:p-5 md:p-6">
                                     <h3 className="text-white text-xl md:text-2xl font-semibold flex items-center gap-2">
                                         <span>📐</span> Diseño & Detalle
@@ -207,6 +198,15 @@ export default function HomePage() {
                                         iluminación, ventilación y flujo cotidiano. Cuidamos los detalles para que recibas un
                                         espacio funcional, estético y listo para convertirse en tu hogar.
                                     </p>
+                                </div>
+
+                                {/* Imagen abajo del texto con dimensiones originales */}
+                                <div className="relative z-10 p-4">
+                                    <img
+                                        src="/construct.webp"
+                                        alt="Diseño"
+                                        className="w-full h-auto object-contain"
+                                    />
                                 </div>
                             </article>
                         </div>
