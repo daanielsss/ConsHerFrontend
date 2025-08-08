@@ -118,101 +118,81 @@ export default function HomePage() {
             {/* NUEVA sección sobre imagen con efecto glass/blur */}
             <section className="px-4">
                 <div className="relative max-w-7xl mx-auto rounded-2xl overflow-hidden shadow-xl">
-                    {/* Fondo 16:9 que se recorta lateralmente en móvil */}
-                    <div className="relative w-full aspect-[16/9]">
+                    {/* Contenedor: en móvil altura auto; en md+ forzamos 16:9 */}
+                    <div className="relative w-full md:aspect-[16/9]">
+                        {/* Fondo que puede recortarse sin problema */}
                         <img
                             src="/fontext.webp"
                             alt="Fondo ConsHer"
                             className="absolute inset-0 h-full w-full object-cover"
                             loading="lazy"
                         />
-                        {/* Capa oscura sutil para contraste */}
                         <div className="absolute inset-0 bg-black/40" />
-                        {/* Contenido en 3 bloques con glassmorphism */}
-                        <div className="absolute inset-0 p-4 sm:p-6 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 items-stretch">
+
+                        {/* Contenido: en móvil flujo normal (no absolute) y grid 1 col; en md+ superpuesto 3 cols */}
+                        <div className="p-3 sm:p-4 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 items-stretch md:absolute md:inset-0">
                             {/* Lateral Izquierdo */}
                             <article className="relative rounded-xl shadow-lg overflow-hidden bg-white/10 border border-white/20 flex flex-col">
-                                {/* Fondo blur solo para el texto */}
+                                {/* Blur solo para el texto */}
                                 <div className="absolute inset-0 backdrop-blur-xl bg-black/20 z-0" />
-
-                                {/* Contenido (texto) */}
-                                <div className="relative z-10 p-4 sm:p-5 md:p-6">
-                                    <h3 className="text-white text-xl md:text-2xl font-semibold flex items-center gap-2">
+                                {/* Texto */}
+                                <div className="relative z-10 p-3 sm:p-4 md:p-6">
+                                    <h3 className="text-white text-lg sm:text-xl md:text-2xl font-semibold flex items-center gap-2 leading-tight">
                                         <span>🏗️</span> Proceso Constructivo
                                     </h3>
-                                    <p className="mt-2 text-white/90 text-sm md:text-base leading-relaxed">
+                                    <p className="mt-2 text-white/90 text-[13px] sm:text-sm md:text-base leading-relaxed">
                                         Supervisamos personalmente cada etapa: desde la cimentación hasta los acabados finales.
                                         Aplicamos controles de calidad continuos y entregamos cada vivienda de forma presencial,
                                         asegurando que todo quede a tu entera satisfacción.
                                     </p>
                                 </div>
-
-                                {/* Imagen abajo del texto con dimensiones originales */}
-                                <div className="relative z-10 p-4">
-                                    <img
-                                        src="/construct.webp"
-                                        alt="Construcción"
-                                        className="w-full max-h-80 rounded-md object-cover"
-                                    />
+                                {/* Imagen: oculta en móvil, visible en md+; se muestra nítida y sin recorte forzado */}
+                                <div className="relative z-10 p-4 hidden md:block">
+                                    <img src="/construct.webp" alt="Construcción" className="w-full h-auto object-contain rounded-md" />
                                 </div>
                             </article>
 
                             {/* Bloque Central (principal) */}
-                            <article className="backdrop-blur-2xl bg-white/15 border border-white/25 rounded-xl p-5 sm:p-7 md:p-8 shadow-2xl md:order-none order-first">
-                                <h3 className="text-white text-2xl md:text-3xl font-bold leading-tight">
+                            <article className="backdrop-blur-2xl bg-white/15 border border-white/25 rounded-xl p-4 sm:p-6 md:p-8 shadow-2xl md:order-none order-first">
+                                <h3 className="text-white text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
                                     Construimos hogares, no solo casas.
                                 </h3>
-                                <p className="mt-3 text-white/95 text-base md:text-lg leading-relaxed">
-                                    Desarrollamos proyectos desde el origen: concepto, proyecto ejecutivo y
-                                    distribuciones. Contamos con personal especializado para cada fase de construcción y
-                                    venta. Nuestro compromiso es simple: calidad real y clientes más que satisfechos con su nuevo hogar.
+                                <p className="mt-2 sm:mt-3 text-white/95 text-[13.5px] sm:text-sm md:text-lg leading-relaxed">
+                                    Desarrollamos proyectos desde el origen: concepto, proyecto ejecutivo y distribuciones.
+                                    Contamos con personal especializado para cada fase de construcción y venta. Nuestro compromiso
+                                    es simple: calidad real y clientes más que satisfechos con su nuevo hogar.
                                 </p>
-                                <ul className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-white/90 text-sm">
-                                    <li className="flex items-start gap-2">
-                                        <span>✅</span> Gestión completa del proyecto de principio a fin.
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span>👷</span> Equipos profesionales y certificados por especialidad.
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span>🧪</span> Control de calidad documentado en cada hito.
-                                    </li>
-                                    <li className="flex items-start gap-2">
-                                        <span>🤝</span> Entrega personalizada y seguimiento postventa.
-                                    </li>
+                                <ul className="mt-3 sm:mt-4 grid grid-cols-1 sm:grid-cols-2 gap-2 text-white/90 text-[12px] sm:text-sm">
+                                    <li className="flex items-start gap-2"><span>✅</span> Gestión completa del proyecto de principio a fin.</li>
+                                    <li className="flex items-start gap-2"><span>👷</span> Equipos profesionales y certificados por especialidad.</li>
+                                    <li className="flex items-start gap-2"><span>🧪</span> Control de calidad documentado en cada hito.</li>
+                                    <li className="flex items-start gap-2"><span>🤝</span> Entrega personalizada y seguimiento postventa.</li>
                                 </ul>
                             </article>
 
                             {/* Lateral Derecho */}
                             <article className="relative rounded-xl shadow-lg overflow-hidden bg-white/10 border border-white/20 flex flex-col">
-                                {/* Fondo blur solo para el texto */}
                                 <div className="absolute inset-0 backdrop-blur-xl bg-black/20 z-0" />
-
-                                {/* Contenido (texto) */}
-                                <div className="relative z-10 p-4 sm:p-5 md:p-6">
-                                    <h3 className="text-white text-xl md:text-2xl font-semibold flex items-center gap-2">
+                                <div className="relative z-10 p-3 sm:p-4 md:p-6">
+                                    <h3 className="text-white text-lg sm:text-xl md:text-2xl font-semibold flex items-center gap-2 leading-tight">
                                         <span>📐</span> Diseño & Detalle
                                     </h3>
-                                    <p className="mt-2 text-white/90 text-sm md:text-base leading-relaxed">
+                                    <p className="mt-2 text-white/90 text-[13px] sm:text-sm md:text-base leading-relaxed">
                                         Las distribuciones se desarrollan con profesionales para aprovechar cada metro útil:
                                         iluminación, ventilación y flujo cotidiano. Cuidamos los detalles para que recibas un
                                         espacio funcional, estético y listo para convertirse en tu hogar.
                                     </p>
                                 </div>
-
-                                {/* Imagen abajo del texto con dimensiones originales */}
-                                <div className="relative z-10 p-4">
-                                    <img
-                                        src="/construct.webp"
-                                        alt="Diseño"
-                                        className="w-full max-h-80 rounded-md object-cover"
-                                    />
+                                {/* Imagen: solo en md+ */}
+                                <div className="relative z-10 p-4 hidden md:block">
+                                    <img src="/construct.webp" alt="Diseño" className="w-full h-auto object-contain rounded-md" />
                                 </div>
                             </article>
                         </div>
                     </div>
                 </div>
             </section>
+
 
             {/* Botones de navegación con línea animada */}
             <div className="flex w-full text-center border-b mt-10">
