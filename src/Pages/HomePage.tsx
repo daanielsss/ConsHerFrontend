@@ -63,11 +63,11 @@ export default function HomePage() {
 
 
     const CasaSection = ({ casas, emptyText }: { casas: Casa[]; emptyText: string }) => (
-        <section className="mb-12">
+        <section className="mb-8">
             {casas.length === 0 ? (
                 <p className="text-center text-gray-900 dark:text-white">{emptyText}</p>
             ) : (
-                <div className="flex flex-col gap-8 w-full">
+                <div className="flex flex-col gap-6 w-full">
                     {casas.map((house) => (
                         <CasaCarrusel
                             key={house._id}
@@ -112,7 +112,7 @@ export default function HomePage() {
             {/* Sección bienvenida (se mantiene) */}
             <section className="py-16 px-4 max-w-5xl mx-auto text-center">
                 <h2 className="text-4xl font-semibold mb-4">Bienvenido a CONSHER</h2>
-                <p className="text-muted-foreground text-lg max-w-3xl mx-auto">
+                <p className="text-muted-foreground text-lg max-w-3xl mx-auto text-justify ">
                     Somos una empresa dedicada a la construcción y venta de viviendas de calidad.
                     Nuestro objetivo es brindar a las familias espacios funcionales, modernos y accesibles.
                     Explora nuestro catálogo de casas disponibles y encuentra tu próximo hogar.
@@ -200,24 +200,25 @@ export default function HomePage() {
 
 
 
-            {/* Botones de navegación con línea animada */}
-            <div className="flex w-full text-center border-b mt-10">
+            {/* Botones de navegación con fondo al seleccionar */}
+            <div className="flex w-full text-center border-b mt-10 gap-1">
                 {(["preventa", "disponible", "vendida"] as TabKey[]).map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setSelectedTab(tab)}
-                        className={`flex-1 py-2 font-medium relative ${selectedTab === tab ? "" : "hover:bg-gray-100 dark:hover:bg-gray-800"
+                        className={`flex-1 py-2 font-medium rounded-md transition-colors duration-300
+        ${selectedTab === tab
+                                ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
+                                : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
                             }`}
                     >
                         {tab === "preventa" && "🏗️ Preventa"}
                         {tab === "disponible" && "🏡 Disponibles"}
                         {tab === "vendida" && "✅ Vendidas"}
-                        {selectedTab === tab && (
-                            <span className="absolute bottom-0 left-0 w-full h-[3px] bg-primary transition-all duration-300" />
-                        )}
                     </button>
                 ))}
             </div>
+
 
             {/* Descripción con fade-in (espacio mínimo) */}
             <SectionIntro text={introByTab[selectedTab]} />
