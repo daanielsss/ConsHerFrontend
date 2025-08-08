@@ -141,9 +141,9 @@ export default function HomePage() {
                                         <span>🏗️</span> Proceso Constructivo
                                     </h3>
                                     <p className="mt-2 text-white/90 text-[13px] sm:text-sm md:text-base leading-relaxed">
-                                        Supervisamos personalmente cada etapa: desde la cimentación hasta los acabados finales.
-                                        Aplicamos controles de calidad continuos y entregamos cada vivienda de forma presencial,
-                                        asegurando que todo quede a tu entera satisfacción.
+                                        Supervisamos cada etapa del proceso constructivo, desde la cimentación hasta los acabados finales.
+                                        Nuestros arquitectos e ingenieros, altamente capacitados, crean estructuras sólidas, resistentes y seguras,
+                                        aplicando estrictos controles de calidad para garantizar su durabilidad y estabilidad.
                                     </p>
                                 </div>
                                 {/* Imagen: oculta en móvil, visible en md+; se muestra nítida y sin recorte forzado */}
