@@ -200,16 +200,16 @@ export default function HomePage() {
 
 
 
-            {/* Botones de navegación con fondo al seleccionar */}
+            {/* Botones de navegación con efecto 3D al seleccionar */}
             <div className="flex w-full text-center border-b mt-10 gap-1">
                 {(["preventa", "disponible", "vendida"] as TabKey[]).map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setSelectedTab(tab)}
-                        className={`flex-1 py-2 font-medium rounded-md transition-colors duration-300
+                        className={`flex-1 py-2 font-medium rounded-md transition-all duration-300
         ${selectedTab === tab
-                                ? "bg-black/5 text-gray-900 dark:bg-white/10 dark:text-white"
-                                : "hover:bg-black/5 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300"
+                                ? "bg-gradient-to-b from-gray-100 to-gray-300 dark:from-gray-700 dark:to-gray-800 text-gray-900 dark:text-white shadow-[inset_0_1px_3px_rgba(255,255,255,0.6),_0_2px_4px_rgba(0,0,0,0.3)]"
+                                : "bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-none"
                             }`}
                     >
                         {tab === "preventa" && "🏗️ Preventa"}
@@ -218,6 +218,7 @@ export default function HomePage() {
                     </button>
                 ))}
             </div>
+
 
 
             {/* Descripción con fade-in (espacio mínimo) */}
