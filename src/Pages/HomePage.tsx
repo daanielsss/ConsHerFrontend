@@ -208,7 +208,7 @@ export default function HomePage() {
                         onClick={() => setSelectedTab(tab)}
                         className={`flex-1 py-2 font-medium rounded-md transition-colors duration-300
         ${selectedTab === tab
-                                ? "bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-white"
+                                ? "bg-gray-600 text-gray-900 dark:bg-gray-700 dark:text-white"
                                 : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
                             }`}
                     >
