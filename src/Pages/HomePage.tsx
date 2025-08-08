@@ -148,7 +148,7 @@ export default function HomePage() {
                                 </div>
                                 {/* Imagen: oculta en móvil, visible en md+; se muestra nítida y sin recorte forzado */}
                                 <div className="relative z-10 p-4 hidden md:block">
-                                    <img src="/construct.webp" alt="Construcción" className="w-full h-auto object-contain rounded-md" />
+                                    <img src="/construct.webp" alt="Construcción" className="w-full h-80 object-contain rounded-md" />
                                 </div>
                             </article>
 
@@ -185,7 +185,7 @@ export default function HomePage() {
                                 </div>
                                 {/* Imagen: solo en md+ */}
                                 <div className="relative z-10 p-4 hidden md:block">
-                                    <img src="/construct.webp" alt="Diseño" className="w-full h-auto object-contain rounded-md" />
+                                    <img src="/construct.webp" alt="Diseño" className="w-full h-80 object-contain rounded-md" />
                                 </div>
                             </article>
                         </div>
