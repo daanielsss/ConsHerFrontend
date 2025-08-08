@@ -152,7 +152,7 @@ export default function HomePage() {
                                     <img
                                         src="/construct.webp"
                                         alt="Construcción"
-                                        className="w-full max-h-90 rounded-md object-cover"
+                                        className="w-full max-h-80 rounded-md object-cover"
                                     />
                                 </div>
                             </article>
@@ -205,7 +205,7 @@ export default function HomePage() {
                                     <img
                                         src="/construct.webp"
                                         alt="Diseño"
-                                        className="w-full max-h-90 rounded-md object-cover"
+                                        className="w-full max-h-80 rounded-md object-cover"
                                     />
                                 </div>
                             </article>
