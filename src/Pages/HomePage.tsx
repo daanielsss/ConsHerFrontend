@@ -131,15 +131,28 @@ export default function HomePage() {
                         {/* Contenido en 3 bloques con glassmorphism */}
                         <div className="absolute inset-0 p-4 sm:p-6 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 items-stretch">
                             {/* Lateral Izquierdo */}
-                            <article className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-xl p-4 sm:p-5 md:p-6 shadow-lg">
-                                <h3 className="text-white text-xl md:text-2xl font-semibold flex items-center gap-2">
-                                    <span>🏗️</span> Proceso Constructivo
-                                </h3>
-                                <p className="mt-2 text-white/90 text-sm md:text-base leading-relaxed">
-                                    Supervisamos personalmente cada etapa: desde la cimentación hasta los acabados finales.
-                                    Aplicamos controles de calidad continuos y entregamos cada vivienda de forma presencial,
-                                    asegurando que todo quede a tu entera satisfacción.
-                                </p>
+                            {/* Lateral Izquierdo */}
+                            <article className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-xl p-4 sm:p-5 md:p-6 shadow-lg overflow-hidden">
+                                {/* Imagen de fondo */}
+                                <img
+                                    src="/construc.webp"
+                                    alt="Construcción"
+                                    className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
+                                />
+                                {/* Capa de oscurecimiento suave para mejor contraste */}
+                                <div className="absolute inset-0 bg-black/20" />
+
+                                {/* Contenido */}
+                                <div className="relative z-10">
+                                    <h3 className="text-white text-xl md:text-2xl font-semibold flex items-center gap-2">
+                                        <span>🏗️</span> Proceso Constructivo
+                                    </h3>
+                                    <p className="mt-2 text-white/90 text-sm md:text-base leading-relaxed">
+                                        Supervisamos personalmente cada etapa: desde la cimentación hasta los acabados finales.
+                                        Aplicamos controles de calidad continuos y entregamos cada vivienda de forma presencial,
+                                        asegurando que todo quede a tu entera satisfacción.
+                                    </p>
+                                </div>
                             </article>
 
                             {/* Bloque Central (principal) */}
@@ -169,15 +182,27 @@ export default function HomePage() {
                             </article>
 
                             {/* Lateral Derecho */}
-                            <article className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-xl p-4 sm:p-5 md:p-6 shadow-lg">
-                                <h3 className="text-white text-xl md:text-2xl font-semibold flex items-center gap-2">
-                                    <span>📐</span> Diseño & Detalle
-                                </h3>
-                                <p className="mt-2 text-white/90 text-sm md:text-base leading-relaxed">
-                                    Las distribuciones se desarrollan con profesionales para aprovechar cada metro útil:
-                                    iluminación, ventilación y flujo cotidiano. Cuidamos los detalles para que recibas un
-                                    espacio funcional, estético y listo para convertirse en tu hogar.
-                                </p>
+                            <article className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-xl p-4 sm:p-5 md:p-6 shadow-lg overflow-hidden">
+                                {/* Imagen de fondo */}
+                                <img
+                                    src="/construc.webp"
+                                    alt="Diseño"
+                                    className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
+                                />
+                                {/* Capa de oscurecimiento suave */}
+                                <div className="absolute inset-0 bg-black/20" />
+
+                                {/* Contenido */}
+                                <div className="relative z-10">
+                                    <h3 className="text-white text-xl md:text-2xl font-semibold flex items-center gap-2">
+                                        <span>📐</span> Diseño & Detalle
+                                    </h3>
+                                    <p className="mt-2 text-white/90 text-sm md:text-base leading-relaxed">
+                                        Las distribuciones se desarrollan con profesionales para aprovechar cada metro útil:
+                                        iluminación, ventilación y flujo cotidiano. Cuidamos los detalles para que recibas un
+                                        espacio funcional, estético y listo para convertirse en tu hogar.
+                                    </p>
+                                </div>
                             </article>
                         </div>
                     </div>
