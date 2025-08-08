@@ -135,7 +135,7 @@ export default function HomePage() {
                                 {/* Fondo blur (solo detrás del texto) */}
                                 <div className="absolute inset-0 backdrop-blur-xl bg-black/20 z-0" />
 
-                                {/* Imagen (fuera del blur, nítida) */}
+                                {/* Imagen nítida (fuera del blur) */}
                                 <div className="relative z-0 flex justify-center">
                                     <img
                                         src="/construct.webp"
@@ -156,7 +156,6 @@ export default function HomePage() {
                                     </p>
                                 </div>
                             </article>
-
 
                             {/* Bloque Central (principal) */}
                             <article className="backdrop-blur-2xl bg-white/15 border border-white/25 rounded-xl p-5 sm:p-7 md:p-8 shadow-2xl md:order-none order-first">
@@ -185,18 +184,21 @@ export default function HomePage() {
                             </article>
 
                             {/* Lateral Derecho */}
-                            <article className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-xl p-4 sm:p-5 md:p-6 shadow-lg overflow-hidden">
-                                {/* Imagen de fondo */}
-                                <img
-                                    src="/construct.webp"
-                                    alt="Diseño"
-                                    className="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none"
-                                />
-                                {/* Capa de oscurecimiento suave */}
-                                <div className="absolute inset-0 bg-black/20" />
+                            <article className="relative rounded-xl shadow-lg overflow-hidden bg-white/10 border border-white/20">
+                                {/* Fondo blur (solo detrás del texto) */}
+                                <div className="absolute inset-0 backdrop-blur-xl bg-black/20 z-0" />
+
+                                {/* Imagen nítida (fuera del blur) */}
+                                <div className="relative z-0 flex justify-center">
+                                    <img
+                                        src="/construct.webp"
+                                        alt="Diseño"
+                                        className="w-full object-cover max-h-40 md:max-h-48"
+                                    />
+                                </div>
 
                                 {/* Contenido */}
-                                <div className="relative z-10">
+                                <div className="relative z-10 p-4 sm:p-5 md:p-6">
                                     <h3 className="text-white text-xl md:text-2xl font-semibold flex items-center gap-2">
                                         <span>📐</span> Diseño & Detalle
                                     </h3>
