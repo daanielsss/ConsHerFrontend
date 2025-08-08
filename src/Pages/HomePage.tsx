@@ -49,22 +49,25 @@ export default function HomePage() {
 
         return (
             <p
-                className={`mt-2 mb-4 text-muted-foreground text-sm leading-relaxed text-center transition-all duration-300 ease-out ${show ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"
-                    }`}
+                className={`mt-2 mb-3 text-sm leading-relaxed text-center transition-all duration-300 ease-out text-gray-900 dark:text-white
+                ${show ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"}`}
             >
                 {text}
                 <br />
-                <span className="italic text-primary">Selecciona cada tarjeta para ver más fotos o información del hogar.</span>
+                <span className="italic text-primary">
+                    Selecciona cada tarjeta para ver más fotos o información del hogar.
+                </span>
             </p>
         );
     };
 
+
     const CasaSection = ({ casas, emptyText }: { casas: Casa[]; emptyText: string }) => (
-        <section className="mb-20">
+        <section className="mb-12">
             {casas.length === 0 ? (
-                <p className="text-muted-foreground text-center">{emptyText}</p>
+                <p className="text-center text-gray-900 dark:text-white">{emptyText}</p>
             ) : (
-                <div className="flex flex-col gap-14 w-full">
+                <div className="flex flex-col gap-8 w-full">
                     {casas.map((house) => (
                         <CasaCarrusel
                             key={house._id}
@@ -81,6 +84,7 @@ export default function HomePage() {
             )}
         </section>
     );
+
 
     const introByTab: Record<TabKey, string> = {
         preventa:
@@ -140,11 +144,12 @@ export default function HomePage() {
                                     <h3 className="text-white text-lg sm:text-xl md:text-2xl font-semibold flex items-center gap-2 leading-tight">
                                         <span>🏗️</span> Proceso Constructivo
                                     </h3>
-                                    <p className="mt-2 text-white/90 text-[13px] sm:text-sm md:text-base leading-relaxed">
+                                    <p className="mt-2 text-white/90 text-[13px] sm:text-sm md:text-base leading-relaxed text-justify mx-auto max-w-3xl">
                                         Supervisamos cada etapa del proceso constructivo, desde la cimentación hasta los acabados finales.
                                         Nuestros arquitectos e ingenieros, altamente capacitados, crean estructuras sólidas, resistentes y seguras,
                                         aplicando estrictos controles de calidad para garantizar su durabilidad y estabilidad.
                                     </p>
+
                                 </div>
                                 {/* Imagen: oculta en móvil, visible en md+; se muestra nítida y sin recorte forzado */}
                                 <div className="relative z-10 p-4 hidden md:block">
@@ -157,7 +162,7 @@ export default function HomePage() {
                                 <h3 className="text-white text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
                                     Construimos hogares, no solo casas.
                                 </h3>
-                                <p className="mt-2 sm:mt-3 text-white/95 text-[13.5px] sm:text-sm md:text-lg leading-relaxed">
+                                <p className="mt-2 text-white/90 text-[13px] sm:text-sm md:text-base leading-relaxed text-justify mx-auto max-w-3xl">
                                     Desarrollamos proyectos desde el origen: concepto, proyecto ejecutivo y distribuciones.
                                     Contamos con personal especializado para cada fase de construcción y venta. Nuestro compromiso
                                     es simple: calidad real y clientes más que satisfechos con su nuevo hogar.
@@ -177,7 +182,7 @@ export default function HomePage() {
                                     <h3 className="text-white text-lg sm:text-xl md:text-2xl font-semibold flex items-center gap-2 leading-tight">
                                         <span>📐</span> Diseño & Detalle
                                     </h3>
-                                    <p className="mt-2 text-white/90 text-[13px] sm:text-sm md:text-base leading-relaxed">
+                                    <p className="mt-2 text-white/90 text-[13px] sm:text-sm md:text-base leading-relaxed text-justify mx-auto max-w-3xl">
                                         Las distribuciones se desarrollan con profesionales para aprovechar cada metro útil:
                                         iluminación, ventilación y flujo cotidiano. Cuidamos los detalles para que recibas un
                                         espacio funcional, estético y listo para convertirse en tu hogar.
