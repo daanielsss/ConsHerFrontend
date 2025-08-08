@@ -208,8 +208,8 @@ export default function HomePage() {
                         onClick={() => setSelectedTab(tab)}
                         className={`flex-1 py-2 font-medium relative rounded-sm transition-all duration-300
         ${selectedTab === tab
-                                ? "text-cyan-200 before:absolute before:top-0 before:left-0 before:w-full before:h-[2px] before:bg-cyan-200 before:shadow-[0_0_6px_#22d3ee] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-cyan-200 after:shadow-[0_0_6px_#22d3ee]"
-                                : "text-gray-400 hover:text-cyan-200"
+                                ? "text-[#7c3aed] before:absolute before:top-0 before:left-0 before:w-full before:h-[2px] before:bg-[#7c3aed] before:shadow-[0_0_8px_#7c3aed] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#7c3aed] after:shadow-[0_0_8px_#7c3aed]"
+                                : "text-gray-400 hover:text-[#7c3aed] hover:before:absolute hover:before:top-0 hover:before:left-0 hover:before:w-full hover:before:h-[2px] hover:before:bg-[#7c3aed]/50 hover:before:shadow-[0_0_6px_#7c3aed]/50 hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-[2px] hover:after:bg-[#7c3aed]/50 hover:after:shadow-[0_0_6px_#7c3aed]/50"
                             }`}
                     >
                         {tab === "preventa" && "🏗️ Preventa"}
