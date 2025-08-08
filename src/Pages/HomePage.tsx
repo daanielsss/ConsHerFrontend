@@ -208,8 +208,8 @@ export default function HomePage() {
                         onClick={() => setSelectedTab(tab)}
                         className={`flex-1 py-2 font-medium rounded-md transition-colors duration-300
         ${selectedTab === tab
-                                ? "bg-gray-400 text-black dark:bg-gray-700 dark:text-white"
-                                : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300"
+                                ? "bg-black/5 text-gray-900 dark:bg-white/10 dark:text-white"
+                                : "hover:bg-black/5 dark:hover:bg-white/10 text-gray-700 dark:text-gray-300"
                             }`}
                     >
                         {tab === "preventa" && "🏗️ Preventa"}
