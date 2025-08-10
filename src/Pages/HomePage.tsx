@@ -30,14 +30,19 @@ export default function HomePage() {
     const vendidas = houses?.filter((h) => h.status === "vendida") || [];
 
     useEffect(() => {
-        const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
-            threshold: 0.1,
-        });
-        if (footerRef.current) observer.observe(footerRef.current);
+        const observer = new IntersectionObserver(
+            ([entry]) => setVisible(entry.isIntersecting),
+            { threshold: 0.1 }
+        );
+
+        const footerElement = footerRef.current; // Guardamos referencia fija
+        if (footerElement) observer.observe(footerElement);
+
         return () => {
-            if (footerRef.current) observer.unobserve(footerRef.current);
+            if (footerElement) observer.unobserve(footerElement);
         };
     }, []);
+
 
     const SectionIntro = ({ text }: { text: string }) => {
         const [show, setShow] = useState(false);
