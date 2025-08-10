@@ -1,28 +1,26 @@
+// src/layouts/Layout.tsx
+
 import { Outlet, useLocation } from "react-router-dom";
 import { useSidebar } from "@/context/SidebarContext";
 import { getUserFromToken } from "@/lib/auth";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
-import { useEffect, useState } from "react";
+
+// No necesitamos useState ni useEffect aquí
 
 function Layout() {
   const { expanded } = useSidebar();
   const location = useLocation();
 
-  // Nuevo: estado controlado del usuario para evitar parpadeos
-  const [user, setUser] = useState<null | { name?: string; email: string }>(null);
+  // Obtenemos el usuario directamente en cada renderizado. Es instantáneo.
+  const user = getUserFromToken();
 
-  useEffect(() => {
-    const currentUser = getUserFromToken();
-    setUser(currentUser);
-  }, []);
-
-  // Mientras se determina el usuario, no renderizamos nada
-  if (user === null) return null;
+  // Ya no hay un `if (user === null) return null;`
+  // El layout se renderizará siempre, con o sin usuario.
 
   return (
     <div className="flex min-h-screen overflow-x-hidden">
-      {/* Sidebar solo si hay sesión iniciada */}
+      {/* El Sidebar se mostrará condicionalmente si existe un usuario */}
       {user && <Sidebar />}
 
       <div
@@ -32,7 +30,7 @@ function Layout() {
         <Header />
 
         <main className="flex-1">
-          {/* HomePage sin márgenes */}
+          {/* Tu lógica para los márgenes se mantiene */}
           {location.pathname === "/" ? (
             <Outlet />
           ) : (
