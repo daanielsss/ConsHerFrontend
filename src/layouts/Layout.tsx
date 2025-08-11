@@ -28,8 +28,7 @@ function Layout() {
           }`}
       >
         <Header />
-
-        <main className="flex-1">
+        <main> {/* Aquí, quita la clase flex-1 */}
           {location.pathname === "/" ? (
             <Outlet />
           ) : (
