@@ -189,15 +189,15 @@ export default function HomePage() {
                 </div>
             </section>
             {/*Botones de navegacion */}
-            <div className="flex w-full text-center mt-6 gap-1">
+            <div className="flex w-full p-1 mt-6 space-x-1 bg-gray-100 dark:bg-gray-800 rounded-full">
                 {(["preventa", "disponible", "vendida"] as TabKey[]).map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setSelectedTab(tab)}
-                        className={`flex-1 py-2 font-medium relative rounded-sm transition-all duration-300
-                ${selectedTab === tab
-                                ? "text-black dark:text-white before:absolute before:top-0 before:left-0 before:w-full before:h-[2px] before:bg-black dark:before:bg-white before:shadow-[0_0_8px_#7c3aed] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-black dark:after:bg-white after:shadow-[0_0_8px_#7c3aed]"
-                                : "text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:before:absolute hover:before:top-0 hover:before:left-0 hover:before:w-full hover:before:h-[2px] hover:before:bg-black dark:hover:before:bg-white hover:before:shadow-[0_0_6px_#7c3aed] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-[2px] hover:after:bg-black dark:hover:after:bg-white hover:after:shadow-[0_0_6px_#7c3aed]"
+                        className={`flex-1 py-2 font-medium text-center rounded-full transition-all duration-300 focus:outline-none
+        ${selectedTab === tab
+                                ? "bg-white text-gray-800 dark:bg-gray-900 dark:text-white shadow-sm" // Estilo del botón ACTIVO
+                                : "text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white" // Estilo del botón INACTIVO
                             }`}
                     >
                         {tab === "preventa" && "🏗️ Preventa"}
