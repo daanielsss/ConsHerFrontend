@@ -209,7 +209,7 @@ export default function HomePage() {
 
             <SectionIntro text={introByTab[selectedTab]} />
 
-            <main className="px-4 max-w-7xl mx-auto pb-6">
+            <main className="px-4 max-w-7xl mx-auto">
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-10 gap-4">
                         <span className="loading loading-infinity loading-xl text-primary" />
@@ -230,7 +230,7 @@ export default function HomePage() {
 
             <footer
                 ref={footerRef}
-                className={`bg-[#005187] py-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                className={`bg-[#005187] py-8 mt-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                     }`}
             >
                 <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 text-white">
