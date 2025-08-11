@@ -189,15 +189,15 @@ export default function HomePage() {
                 </div>
             </section>
             {/*Botones de navegacion */}
-            <div className="flex w-full p-1 mt-6 space-x-1 bg-gray-100 dark:bg-gray-800 rounded-full">
+            <div className="flex w-full p-1 mt-6 bg-slate-200 dark:bg-slate-800 rounded-full">
                 {(["preventa", "disponible", "vendida"] as TabKey[]).map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setSelectedTab(tab)}
-                        className={`flex-1 py-2 font-medium text-center rounded-full transition-all duration-300 focus:outline-none
+                        className={`flex-1 py-2 font-semibold rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2
         ${selectedTab === tab
-                                ? "bg-white text-gray-800 dark:bg-gray-900 dark:text-white shadow-sm" // Estilo del botón ACTIVO
-                                : "text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white" // Estilo del botón INACTIVO
+                                ? "bg-violet-600 text-white shadow" // ACTIVO: Fondo violeta, texto blanco
+                                : "text-slate-600 dark:text-slate-300 hover:bg-white/60 dark:hover:bg-black/10" // INACTIVO: Texto gris, con un leve fondo al pasar el mouse
                             }`}
                     >
                         {tab === "preventa" && "🏗️ Preventa"}
