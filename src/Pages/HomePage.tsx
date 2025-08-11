@@ -98,7 +98,7 @@ export default function HomePage() {
     };
 
     return (
-        <div className="flex flex-col"> {/* Eliminado min-h-screen */}
+        <div className="flex flex-col">
             {/* Hero principal */}
             <div className="relative w-full min-h-[50vh] sm:min-h-[90vh] overflow-hidden">
                 <picture>
@@ -111,8 +111,8 @@ export default function HomePage() {
                 </picture>
             </div>
 
-            {/* Sección bienvenida (se mantiene) */}
-            <section className="py-16 px-4 max-w-5xl mx-auto text-center">
+            {/* Sección bienvenida */}
+            <section className="py-10 px-4 max-w-5xl mx-auto text-center">
                 <h2 className="text-4xl font-semibold mb-4">Bienvenido a CONSHER</h2>
                 <p className="text-muted-foreground text-lg max-w-3xl mx-auto text-justify ">
                     Somos una empresa dedicada a la construcción y venta de viviendas de calidad.
@@ -121,7 +121,7 @@ export default function HomePage() {
                 </p>
             </section>
 
-            {/* NUEVA sección sobre imagen con efecto glass/blur */}
+            {/* Sección sobre imagen con efecto glass/blur */}
             <section className="px-4">
                 <div className="relative max-w-7xl mx-auto rounded-2xl overflow-hidden shadow-xl">
                     <div className="relative w-full md:aspect-[16/9]">
@@ -188,14 +188,14 @@ export default function HomePage() {
                     </div>
                 </div>
             </section>
-
-            <div className="flex w-full text-center mt-10 gap-1">
+            {/*Botones de navegacion */}
+            <div className="flex w-full text-center mt-6 gap-1">
                 {(["preventa", "disponible", "vendida"] as TabKey[]).map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setSelectedTab(tab)}
                         className={`flex-1 py-2 font-medium relative rounded-sm transition-all duration-300
-              ${selectedTab === tab
+                ${selectedTab === tab
                                 ? "text-black dark:text-white before:absolute before:top-0 before:left-0 before:w-full before:h-[2px] before:bg-black dark:before:bg-white before:shadow-[0_0_8px_#7c3aed] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-black dark:after:bg-white after:shadow-[0_0_8px_#7c3aed]"
                                 : "text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:before:absolute hover:before:top-0 hover:before:left-0 hover:before:w-full hover:before:h-[2px] hover:before:bg-black dark:hover:before:bg-white hover:before:shadow-[0_0_6px_#7c3aed] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-[2px] hover:after:bg-black dark:hover:after:bg-white hover:after:shadow-[0_0_6px_#7c3aed]"
                             }`}
@@ -209,7 +209,7 @@ export default function HomePage() {
 
             <SectionIntro text={introByTab[selectedTab]} />
 
-            <main className="px-4 max-w-7xl mx-auto pb-10">
+            <main className="px-4 max-w-7xl mx-auto pb-6">
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-10 gap-4">
                         <span className="loading loading-infinity loading-xl text-primary" />
@@ -230,7 +230,7 @@ export default function HomePage() {
 
             <footer
                 ref={footerRef}
-                className={`bg-[#005187] py-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                className={`bg-[#005187] py-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
                     }`}
             >
                 <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 text-white">
