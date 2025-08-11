@@ -67,6 +67,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                     }}
                     mousewheel={{
                         forceToAxis: true,
+                        releaseOnEdges: true,
                     }}
                     modules={[Autoplay, EffectCoverflow, Mousewheel]}
                     className="rounded-xl h-full"
