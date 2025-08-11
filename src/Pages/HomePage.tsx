@@ -230,16 +230,66 @@ export default function HomePage() {
 
             <footer
                 ref={footerRef}
-                className={`bg-[#005187] py-8 mt-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+                className={`bg-[#005187] py-10 mt-10 transition-all duration-700 ${visible
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-10"
                     }`}
             >
-                <div className="container mx-auto flex flex-col md:flex-row justify-between items-center px-4 text-white">
-                    <span className="text-2xl font-bold tracking-tight">ConsHer</span>
-                    <div className="mt-4 md:mt-0 flex flex-col md:flex-row gap-4 text-sm text-white">
-                        <span>📧 contacto@consher.mx</span>
-                        <span>📞 (55) 1234 5678</span>
-                        <span className="hover:underline cursor-pointer">Política de privacidad</span>
-                        <span className="hover:underline cursor-pointer">Términos del servicio</span>
+                <div className="container mx-auto px-4 text-white">
+                    {/* Logo y descripción */}
+                    <div className="flex flex-col md:flex-row justify-between gap-8">
+                        <div className="md:w-1/3">
+                            <span className="text-2xl font-bold tracking-tight block">ConsHer</span>
+                            <p className="mt-2 text-sm leading-relaxed text-gray-200">
+                                En ConsHer nos especializamos en brindar soluciones de alta calidad
+                                para nuestros clientes, garantizando confianza, compromiso y excelencia
+                                en cada proyecto que realizamos.
+                            </p>
+                        </div>
+
+                        {/* Redes sociales */}
+                        <div className="md:w-1/3">
+                            <h3 className="text-lg font-semibold mb-3">📱 Síguenos en nuestras redes sociales</h3>
+                            <div className="flex gap-4">
+                                <a href="https://www.instagram.com/consher.94?igsh=cDE2OGZkeTlkMnZy"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-gray-300 transition-colors">
+                                    <i className="fab fa-instagram text-2xl"></i>
+                                </a>
+                                <a href="https://www.facebook.com/share/1GdaYws2ha/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-gray-300 transition-colors">
+                                    <i className="fab fa-facebook text-2xl"></i>
+                                </a>
+                                <a href="https://www.tiktok.com/@consher84?_t=ZS-8ynARcMNWnA&_r=1"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="hover:text-gray-300 transition-colors">
+                                    <i className="fab fa-tiktok text-2xl"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* Contacto */}
+                        <div className="md:w-1/3">
+                            <h3 className="text-lg font-semibold mb-3">📩 Contáctanos</h3>
+                            <p className="text-sm">Si deseas más información sobre nuestros servicios, estamos para ayudarte.</p>
+                            <p className="mt-2">📧 contacto@consher.mx</p>
+                            <p>📞 (492) 218 7566</p>
+                            <p>📍 México</p>
+                        </div>
+                    </div>
+
+                    {/* Línea separadora */}
+                    <div className="border-t border-gray-400 mt-8 pt-4 text-center text-sm text-gray-300">
+                        <div className="flex flex-col md:flex-row gap-2 justify-center items-center">
+                            <span className="hover:underline cursor-pointer">Política de privacidad</span>
+                            <span>|</span>
+                            <span className="hover:underline cursor-pointer">Términos del servicio</span>
+                        </div>
+                        <p className="mt-2">© {new Date().getFullYear()} ConsHer. Todos los derechos reservados.</p>
                     </div>
                 </div>
             </footer>
