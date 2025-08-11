@@ -1,12 +1,14 @@
 // src/components/CasaCarrusel.tsx
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectCoverflow } from 'swiper/modules';
+import { Autoplay, EffectCoverflow, Mousewheel } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
+
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
+
 
 type Casa = {
     _id: string;
@@ -63,7 +65,10 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                         delay: 3000,
                         disableOnInteraction: false,
                     }}
-                    modules={[Autoplay, EffectCoverflow]}
+                    mousewheel={{
+                        forceToAxis: true,
+                    }}
+                    modules={[Autoplay, EffectCoverflow, Mousewheel]}
                     className="rounded-xl h-full"
                 >
                     {casa.imagenes.map((img, idx) => (
