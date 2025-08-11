@@ -35,14 +35,13 @@ export default function HomePage() {
             { threshold: 0.1 }
         );
 
-        const footerElement = footerRef.current; // Guardamos referencia fija
+        const footerElement = footerRef.current;
         if (footerElement) observer.observe(footerElement);
 
         return () => {
             if (footerElement) observer.unobserve(footerElement);
         };
     }, []);
-
 
     const SectionIntro = ({ text }: { text: string }) => {
         const [show, setShow] = useState(false);
@@ -55,7 +54,7 @@ export default function HomePage() {
         return (
             <p
                 className={`mt-2 mb-3 text-sm leading-relaxed text-center transition-all duration-300 ease-out text-gray-900 dark:text-white
-                ${show ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"}`}
+            ${show ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"}`}
             >
                 {text}
                 <br />
@@ -65,7 +64,6 @@ export default function HomePage() {
             </p>
         );
     };
-
 
     const CasaSection = ({ casas, emptyText }: { casas: Casa[]; emptyText: string }) => (
         <section className="mb-8">
@@ -90,7 +88,6 @@ export default function HomePage() {
         </section>
     );
 
-
     const introByTab: Record<TabKey, string> = {
         preventa:
             "Hogares en proceso de construcción o en las últimas fases de acabado. Una oportunidad para adquirir tu nuevo hogar a un precio preferencial por ser preventa.",
@@ -101,7 +98,7 @@ export default function HomePage() {
     };
 
     return (
-        <div className="flex flex-col min-h-screen">
+        <div className="flex flex-col"> {/* Eliminado min-h-screen */}
             {/* Hero principal */}
             <div className="relative w-full min-h-[50vh] sm:min-h-[90vh] overflow-hidden">
                 <picture>
@@ -127,9 +124,7 @@ export default function HomePage() {
             {/* NUEVA sección sobre imagen con efecto glass/blur */}
             <section className="px-4">
                 <div className="relative max-w-7xl mx-auto rounded-2xl overflow-hidden shadow-xl">
-                    {/* Contenedor: en móvil altura auto; en md+ forzamos 16:9 */}
                     <div className="relative w-full md:aspect-[16/9]">
-                        {/* Fondo que puede recortarse sin problema */}
                         <img
                             src="/fontext.webp"
                             alt="Fondo ConsHer"
@@ -138,13 +133,9 @@ export default function HomePage() {
                         />
                         <div className="absolute inset-0 bg-black/40" />
 
-                        {/* Contenido: en móvil flujo normal (no absolute) y grid 1 col; en md+ superpuesto 3 cols */}
                         <div className="p-3 sm:p-4 md:p-10 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4 md:gap-6 items-stretch md:absolute md:inset-0">
-                            {/* Lateral Izquierdo */}
                             <article className="relative rounded-xl shadow-lg overflow-hidden bg-white/10 border border-white/20 flex flex-col">
-                                {/* Blur solo para el texto */}
                                 <div className="absolute inset-0 backdrop-blur-xl bg-black/20 z-0" />
-                                {/* Texto */}
                                 <div className="relative z-10 p-3 sm:p-4 md:p-6">
                                     <h3 className="text-white text-lg sm:text-xl md:text-2xl font-semibold flex items-center gap-2 leading-tight">
                                         <span>🏗️</span> Proceso Constructivo
@@ -154,15 +145,12 @@ export default function HomePage() {
                                         Nuestros arquitectos e ingenieros, altamente capacitados, crean estructuras sólidas, resistentes y seguras,
                                         aplicando estrictos controles de calidad para garantizar su durabilidad y estabilidad.
                                     </p>
-
                                 </div>
-                                {/* Imagen: oculta en móvil, visible en md+; se muestra nítida y sin recorte forzado */}
                                 <div className="relative z-10 p-4 hidden md:block">
                                     <img src="/construct.webp" alt="Construcción" className="w-full h-auto object-contain rounded-md" />
                                 </div>
                             </article>
 
-                            {/* Bloque Central (principal) */}
                             <article className="backdrop-blur-2xl bg-white/15 border border-white/25 rounded-xl p-4 sm:p-6 md:p-8 shadow-2xl md:order-none order-first">
                                 <h3 className="text-white text-xl sm:text-2xl md:text-3xl font-bold leading-tight">
                                     Construimos hogares, no solo casas.
@@ -180,7 +168,6 @@ export default function HomePage() {
                                 </ul>
                             </article>
 
-                            {/* Lateral Derecho */}
                             <article className="relative rounded-xl shadow-lg overflow-hidden bg-white/10 border border-white/20 flex flex-col">
                                 <div className="absolute inset-0 backdrop-blur-xl bg-black/20 z-0" />
                                 <div className="relative z-10 p-3 sm:p-4 md:p-6">
@@ -193,7 +180,6 @@ export default function HomePage() {
                                         espacio funcional, estético y listo para convertirse en tu hogar.
                                     </p>
                                 </div>
-                                {/* Imagen: solo en md+ */}
                                 <div className="relative z-10 p-4 hidden md:block">
                                     <img src="/construct.webp" alt="Diseño" className="w-full h-auto object-contain rounded-md" />
                                 </div>
@@ -203,16 +189,13 @@ export default function HomePage() {
                 </div>
             </section>
 
-
-
-            {/* Botones de navegación negro/blanco con brillo ultravioleta */}
             <div className="flex w-full text-center mt-10 gap-1">
                 {(["preventa", "disponible", "vendida"] as TabKey[]).map((tab) => (
                     <button
                         key={tab}
                         onClick={() => setSelectedTab(tab)}
                         className={`flex-1 py-2 font-medium relative rounded-sm transition-all duration-300
-        ${selectedTab === tab
+              ${selectedTab === tab
                                 ? "text-black dark:text-white before:absolute before:top-0 before:left-0 before:w-full before:h-[2px] before:bg-black dark:before:bg-white before:shadow-[0_0_8px_#7c3aed] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-black dark:after:bg-white after:shadow-[0_0_8px_#7c3aed]"
                                 : "text-gray-500 dark:text-gray-300 hover:text-black dark:hover:text-white hover:before:absolute hover:before:top-0 hover:before:left-0 hover:before:w-full hover:before:h-[2px] hover:before:bg-black dark:hover:before:bg-white hover:before:shadow-[0_0_6px_#7c3aed] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-[2px] hover:after:bg-black dark:hover:after:bg-white hover:after:shadow-[0_0_6px_#7c3aed]"
                             }`}
@@ -224,14 +207,8 @@ export default function HomePage() {
                 ))}
             </div>
 
-
-
-
-
-            {/* Descripción con fade-in (espacio mínimo) */}
             <SectionIntro text={introByTab[selectedTab]} />
 
-            {/* Secciones con Carrusel */}
             <main className="px-4 max-w-7xl mx-auto pb-10">
                 {isLoading ? (
                     <div className="flex flex-col items-center justify-center py-10 gap-4">
@@ -251,7 +228,6 @@ export default function HomePage() {
                 )}
             </main>
 
-            {/* Footer */}
             <footer
                 ref={footerRef}
                 className={`bg-[#005187] py-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
