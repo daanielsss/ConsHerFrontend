@@ -196,7 +196,7 @@ export default function HomePage() {
                         onClick={() => setSelectedTab(tab)}
                         className={`flex-1 py-2 font-semibold rounded-full transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2
         ${selectedTab === tab
-                                ? "bg-violet-600 text-white shadow" // ACTIVO: Fondo violeta, texto blanco
+                                ? "bg-primary text-white shadow" // ACTIVO: Fondo violeta, texto blanco
                                 : "text-slate-600 dark:text-slate-300 hover:bg-white/60 dark:hover:bg-black/10" // INACTIVO: Texto gris, con un leve fondo al pasar el mouse
                             }`}
                     >
