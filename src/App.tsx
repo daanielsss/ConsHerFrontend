@@ -1,3 +1,4 @@
+import './globals.css'
 import AppRoutes from "./AppRoutes";
 
 function App() {
