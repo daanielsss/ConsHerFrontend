@@ -24,11 +24,10 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
     return (
         <div
             onClick={() => navigate(`/casa/${casa._id}`)}
-            className="relative cursor-pointer p-4 w-[90vw] max-w-6xl mx-auto mb-16 rounded-2xl overflow-hidden group"
+            className="relative cursor-pointer p-4 w-[90vw] max-w-6xl mx-auto rounded-2xl overflow-hidden group"
         >
             <h3
-                className="relative z-10 font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit
-                           text-[clamp(1.125rem,4vw,1.75rem)]"
+                className="relative z-10 font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit text-[clamp(1.125rem,4vw,1.75rem)]"
             >
                 {casa.ubicacion}
             </h3>
