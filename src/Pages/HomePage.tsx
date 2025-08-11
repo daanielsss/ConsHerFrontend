@@ -230,7 +230,7 @@ export default function HomePage() {
 
             <footer
                 ref={footerRef}
-                className={`bg-black/40 py-10 mt-10 transition-all duration-700 ${visible
+                className={`bg-primary py-10 mt-10 transition-all duration-700 ${visible
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-10"
                     }`}
