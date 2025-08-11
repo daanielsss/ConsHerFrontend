@@ -15,7 +15,7 @@ const houseIcon = L.divIcon({
 
 export default function HouseDetail() {
     const { id } = useParams();
-    const [expandMap, setExpandMap] = useState(false);
+    const [expandMap] = useState(false);
 
     const { data: house, isLoading } = useQuery(["house", id], async () => {
         const res = await api.get(`/houses/${id}`);
@@ -100,12 +100,7 @@ export default function HouseDetail() {
                             Ver en Google Maps
                         </a>
 
-                        <button
-                            onClick={() => setExpandMap((prev) => !prev)}
-                            className="text-sm text-blue-600 hover:underline"
-                        >
-                            {expandMap ? "Ocultar mapa" : "Ver más grande"}
-                        </button>
+
                     </div>
 
                     <MapContainer
@@ -117,7 +112,7 @@ export default function HouseDetail() {
                     >
                         <TileLayer
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                            attribution='&copy; <a href="https://www.openstreetmap.org/copyright"> contributors'
                         />
                         <Marker position={[house.lat, house.lng]} icon={houseIcon}>
                             <Popup>
