@@ -19,7 +19,7 @@ function Layout() {
   // El layout se renderizará siempre, con o sin usuario.
 
   return (
-    <div className="flex min-h-screen overflow-x-hidden">
+    <div className="flex overflow-x-hidden">
       {/* El Sidebar se mostrará condicionalmente si existe un usuario */}
       {user && <Sidebar />}
 
@@ -30,7 +30,6 @@ function Layout() {
         <Header />
 
         <main className="flex-1">
-          {/* Tu lógica para los márgenes se mantiene */}
           {location.pathname === "/" ? (
             <Outlet />
           ) : (
