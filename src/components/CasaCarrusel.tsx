@@ -69,7 +69,7 @@ export default function CasaCarrusel({ casa }: CasaCarruselProps) {
             <div
                 onClick={() => navigate(`/casa/${casa._id}`)}
                 onWheel={handleWheel} // Añadimos de nuevo el manejador del scroll
-                className="relative cursor-pointer w-[90vw] max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg"
+                className="relative cursor-pointer w-[90vw] max-w-4xl lg:max-w-6xl mx-auto rounded-2xl overflow-hidden shadow-lg"
             >
                 <div
                     className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-500 scale-110 blur-lg brightness-60"
