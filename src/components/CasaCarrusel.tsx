@@ -80,7 +80,7 @@ export default function CasaCarrusel({ casa }: CasaCarruselProps) {
                 <div className="relative z-10 flex flex-col p-4">
 
                     {/* 3. Lógica del carrusel (antes en ImageCarousel.tsx) */}
-                    <div className="relative w-full overflow-hidden aspect-[16/9] rounded-xl">
+                    <div className="relative w-full overflow-hidden aspect-[21/9] rounded-xl">
                         <Swiper
                             // @ts-expect-error El tipo de la prop 'ref' de Swiper no es directamente compatible con el de useRef.
                             ref={swiperRef} // Conectamos la referencia
