@@ -21,7 +21,6 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
     const navigate = useNavigate();
     const [activeIndex, setActiveIndex] = useState(0);
     const currentImage = casa.imagenes[activeIndex % casa.imagenes.length];
-
     const swiperRef = useRef<SwiperCore | null>(null);
     const scrollTimeoutRef = useRef<number | null>(null);
 
@@ -30,11 +29,9 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
             if (swiperRef.current && !swiperRef.current.destroyed) {
                 swiperRef.current.disable();
             }
-
             if (scrollTimeoutRef.current) {
                 clearTimeout(scrollTimeoutRef.current);
             }
-
             scrollTimeoutRef.current = window.setTimeout(() => {
                 if (swiperRef.current && !swiperRef.current.destroyed) {
                     swiperRef.current.enable();
@@ -61,23 +58,23 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                 className="absolute inset-0 z-0 bg-cover bg-center blur-md scale-110 brightness-75 transition-all duration-500"
                 style={{ backgroundImage: `url(${currentImage})` }}
             />
-
-            <div className="relative z-10 w-full p-4 sm:p-6 border border-white/10 rounded-2xl shadow-2xl overflow-hidden aspect-[10/6] md:aspect-[10/3.5]">
+            {/* Contenedor más alto para darle más presencia a la imagen central */}
+            <div className="relative z-10 w-full p-4 sm:p-6 border border-white/10 rounded-2xl shadow-2xl overflow-hidden aspect-[10/7] md:aspect-[10/5]">
                 <Swiper
                     onSwiper={(swiper) => (swiperRef.current = swiper)}
                     effect={'coverflow'}
                     grabCursor={true}
                     centeredSlides={true}
-                    slidesPerView={'auto'} // <-- CAMBIO: Mejor control sobre el tamaño.
+                    slidesPerView={'auto'}
                     loop={true}
-                    // Agregamos un espacio entre slides para que respiren
-                    spaceBetween={40} // <-- AÑADIDO
+                    spaceBetween={60} // <-- Aumentamos el espacio
                     coverflowEffect={{
-                        rotate: 40,       // <-- AJUSTE: Rotación de los slides laterales.
-                        stretch: 30,      // <-- CAMBIO CLAVE: "Estira" el espacio, haciendo los slides laterales más pequeños.
-                        depth: 260,       // <-- AJUSTE: Aumenta la profundidad para un efecto 3D más notorio.
-                        modifier: 1,      // Multiplicador del efecto.
-                        slideShadows: true, // <-- CAMBIO: Activa las sombras para dar más profundidad.
+                        // Aumentamos los valores para un efecto más extremo
+                        rotate: 50,      // <-- Más rotación
+                        stretch: 100,    // <-- CLAVE: Mucho más stretch para "encoger" las laterales
+                        depth: 400,      // <-- Más profundidad para acentuar la perspectiva
+                        modifier: 1,
+                        slideShadows: true,
                     }}
                     onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
                     autoplay={{
@@ -92,9 +89,8 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                     className="rounded-xl h-full"
                 >
                     {casa.imagenes.map((img, idx) => (
-                        // Asignamos un ancho base al slide para que 'slidesPerView: auto' funcione correctamente.
-                        // El slide activo se verá más grande por el efecto coverflow.
-                        <SwiperSlide key={idx} className="!w-[60%] sm:!w-[55%] md:!w-[50%]"> {/* <-- CAMBIO: Ancho del slide */}
+                        // Hacemos el slide base más ancho para que el central domine la vista
+                        <SwiperSlide key={idx} className="!w-[75%] md:!w-[65%]">
                             <img
                                 src={img}
                                 alt={`Imagen ${idx + 1}`}
