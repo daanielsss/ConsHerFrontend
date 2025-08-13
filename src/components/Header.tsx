@@ -8,6 +8,7 @@ export default function Header() {
   const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState(false);
 
+  // Al montar, revisar si ya estaba activado el modo oscuro
   useEffect(() => {
     if (document.documentElement.classList.contains('dark')) {
       setDarkMode(true);
@@ -21,14 +22,8 @@ export default function Header() {
   };
 
   return (
-    // 👇 CAMBIO PRINCIPAL AQUÍ 👇
-    <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-md border-b-2 border-primary py-4 px-6 flex justify-between items-center">
-      {/* 1. Se añadieron 'sticky top-0 z-50' para que se quede pegado arriba.
-        2. Se añadió 'bg-background/80 backdrop-blur-md' para un efecto translúcido al hacer scroll.
-        3. Se eliminaron 'pl-[4.5rem] md:pl-[14rem]' y 'transition-all'. El Layout se encarga de esto.
-        4. Se unificó el padding a 'px-6'.
-      */}
-      <Link to="/" className="text-2xl font-bold tracking-tight">
+    <header className="w-full bg-background border-b-2 border-primary py-4 px-4 pl-[4.5rem] md:pl-[14rem] transition-all duration-300 flex justify-between items-center">
+      <Link to="/" className="text-2xl font-bold tracking-tight ">
         ConsHer
       </Link>
 
@@ -36,7 +31,7 @@ export default function Header() {
         {/* Botón de modo claro/oscuro */}
         <button
           onClick={toggleDarkMode}
-          className="p-2 rounded-full hover:bg-primary/20 transition-colors"
+          className="p-2 rounded-full bg-accent hover:bg-primary transition-colors text-accent-foreground hover:text-white"
           aria-label="Toggle Dark Mode"
         >
           {darkMode ? <Sun size={18} /> : <Moon size={18} />}
@@ -51,7 +46,7 @@ export default function Header() {
         ) : (
           <button
             onClick={() => navigate("/login")}
-            className="hover:text-primary flex items-center gap-1 text-sm font-medium"
+            className=" hover:border-primary flex items-center gap-1 text-sm font-medium"
           >
             <LogIn size={16} />
             Iniciar sesión
@@ -61,3 +56,5 @@ export default function Header() {
     </header>
   );
 }
+
+
