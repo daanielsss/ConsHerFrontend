@@ -12,21 +12,26 @@ function Layout() {
   const user = getUserFromToken();
 
   return (
-    <div className="flex h-screen overflow-x-hidden">
+    // Contenedor general, ya NO es flex. Solo establece el fondo.
+    <div className="bg-gray-100 dark:bg-gray-900">
+
+      {/* El Sidebar se renderiza aquí. Asumimos que tiene position: fixed en su propio CSS */}
       {user && <Sidebar />}
 
-      {/* CAMBIO 1: Este div ahora se encargará del scroll. Añadimos 'overflow-y-auto' */}
+      {/* Este es AHORA el contenedor principal y el que se encargará del SCROLL */}
       <div
-        className={`flex-1 flex flex-col transition-all duration-300 overflow-y-auto ${user ? (expanded ? "pl-56" : "pl-0") : ""
+        className={`transition-all duration-300 h-screen overflow-y-auto ${user && expanded ? "ml-56" : "ml-0" // Usamos margin-left para hacer espacio
           }`}
       >
+        {/* El Header ahora vive DENTRO del contenedor que hace scroll */}
         <Header />
 
-        {/* CAMBIO 2: <main> ahora es flexible. Quitamos 'h-full' y 'overflow-y-auto' y añadimos 'flex-1' */}
-        <main className="flex-1">
+        {/* El <main> ya no necesita clases de layout, solo se encarga del contenido */}
+        <main>
           {location.pathname === "/" ? (
             <Outlet />
           ) : (
+            // Este div interior es para centrar y dar padding al contenido en páginas que no son el Home
             <div className="max-w-7xl mx-auto px-4 pt-6 pb-10">
               <Outlet />
             </div>
