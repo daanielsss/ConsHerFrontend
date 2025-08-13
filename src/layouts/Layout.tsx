@@ -6,21 +6,14 @@ import { getUserFromToken } from "@/lib/auth";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 
-// No necesitamos useState ni useEffect aquí
-
 function Layout() {
   const { expanded } = useSidebar();
   const location = useLocation();
-
-  // Obtenemos el usuario directamente en cada renderizado. Es instantáneo.
   const user = getUserFromToken();
 
-  // Ya no hay un `if (user === null) return null;`
-  // El layout se renderizará siempre, con o sin usuario.
-
   return (
-    <div className="flex overflow-x-hidden">
-      {/* El Sidebar se mostrará condicionalmente si existe un usuario */}
+    // CAMBIO 1: Añadimos 'h-screen' para que el layout ocupe toda la altura de la pantalla.
+    <div className="flex h-screen overflow-x-hidden">
       {user && <Sidebar />}
 
       <div
@@ -28,7 +21,9 @@ function Layout() {
           }`}
       >
         <Header />
-        <main> {/* Aquí, quita la clase flex-1 */}
+
+        {/* CAMBIO 2: Añadimos 'h-full' y 'overflow-y-auto' a la etiqueta <main> */}
+        <main className="h-full overflow-y-auto">
           {location.pathname === "/" ? (
             <Outlet />
           ) : (
