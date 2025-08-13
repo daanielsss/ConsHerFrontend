@@ -71,11 +71,11 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                     slidesPerView={'auto'} // <-- CAMBIO: Mejor control sobre el tamaño.
                     loop={true}
                     // Agregamos un espacio entre slides para que respiren
-                    spaceBetween={30} // <-- AÑADIDO
+                    spaceBetween={40} // <-- AÑADIDO
                     coverflowEffect={{
-                        rotate: 30,       // <-- AJUSTE: Rotación de los slides laterales.
-                        stretch: 20,      // <-- CAMBIO CLAVE: "Estira" el espacio, haciendo los slides laterales más pequeños.
-                        depth: 250,       // <-- AJUSTE: Aumenta la profundidad para un efecto 3D más notorio.
+                        rotate: 40,       // <-- AJUSTE: Rotación de los slides laterales.
+                        stretch: 30,      // <-- CAMBIO CLAVE: "Estira" el espacio, haciendo los slides laterales más pequeños.
+                        depth: 260,       // <-- AJUSTE: Aumenta la profundidad para un efecto 3D más notorio.
                         modifier: 1,      // Multiplicador del efecto.
                         slideShadows: true, // <-- CAMBIO: Activa las sombras para dar más profundidad.
                     }}
