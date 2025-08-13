@@ -17,6 +17,7 @@ const AppRoutes = () => {
             {/* Layout público */}
             <Route element={<Layout />}>
                 <Route path="/" element={<HomePage />} />
+                <Route path="/casa/:id" element={<HouseDetail />} />
             </Route>
 
             {/* Ruta login (sin layout) */}
@@ -28,7 +29,6 @@ const AppRoutes = () => {
                     <Route path="/admin" element={<AdminDashboard />} />
                     <Route path="/admin/houses" element={<AdminHouses />} />
                     <Route path="/admin/houses/:id/editar" element={<EditarCasa />} />
-                    <Route path="/casa/:id" element={<HouseDetail />} />
                     <Route path="/admin/calculadora" element={<AdminCalculator />} />
                     <Route path="/admin/gastos" element={<AdminExpenses />} />
                     <Route path="/admin/gastos/:id" element={<ProjectDetailPage />} />
