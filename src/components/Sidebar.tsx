@@ -1,3 +1,5 @@
+// src/components/Sidebar.tsx
+
 import {
     Home,
     LayoutDashboard,
@@ -38,13 +40,14 @@ export default function Sidebar() {
         navigate("/login");
     };
 
-    // Ocultar sidebar automáticamente en pantallas pequeñas
     useEffect(() => {
         const handleResize = () => {
-            if (window.innerWidth < 768) setExpanded(false);
+            if (window.innerWidth < 768) {
+                setExpanded(false);
+            }
         };
-        handleResize();
         window.addEventListener("resize", handleResize);
+        handleResize(); // Ejecutar al montar
         return () => window.removeEventListener("resize", handleResize);
     }, [setExpanded]);
 
@@ -52,77 +55,71 @@ export default function Sidebar() {
 
     return (
         <>
-            {/* Botón flotante para abrir sidebar */}
-            {!expanded && (
-                <button
-                    className="fixed top-4 left-4 z-50 bg-primary text-white rounded-full p-2 shadow-lg"
-                    onClick={toggleSidebar}
-                >
-                    <PanelLeftOpen />
-                </button>
-            )}
-
-            {/* Overlay oscuro al abrir en cualquier tamaño */}
-            {expanded && (
-                <div
-                    className="fixed inset-0 z-30 bg-black/40 md:bg-transparent"
-                    onClick={() => setExpanded(false)}
-                />
-            )}
-            {/* Sidebar con slide universal */}
-            <aside
-                className={`fixed top-0 left-0 h-screen w-56 z-40 bg-primary text-primary-foreground flex flex-col
-                    transform transition-transform duration-300
-                    ${expanded ? "translate-x-0" : "-translate-x-full"}
-                `}
+            {/* Botón flotante para ABRIR (z-index alto para estar sobre todo) */}
+            <button
+                className={`fixed top-4 left-4 z-50 bg-primary text-white rounded-full p-2 shadow-lg transition-opacity duration-300 ${!expanded ? "opacity-100" : "opacity-0 pointer-events-none"
+                    }`}
+                onClick={toggleSidebar}
             >
-                <div className="flex flex-col h-full justify-between">
-                    {/* Header */}
-                    <div>
-                        <div className="flex items-center justify-between px-4 py-4 border-b border-border">
-                            <h1 className="text-lg font-bold">ConsHer</h1>
-                            <button onClick={toggleSidebar}>
-                                <PanelLeftClose />
-                            </button>
-                        </div>
+                <PanelLeftOpen />
+            </button>
 
-                        {/* Perfil */}
-                        <div className="flex flex-col items-center mt-6 mb-4 px-2">
-                            <UserCircle size={40} className="text-accent-foreground" />
-                            <div className="mt-2 text-center">
-                                <p className="text-sm font-semibold">{user.name ?? "Admin"}</p>
-                                <p className="text-xs text-muted-foreground">{user.email}</p>
-                            </div>
-                        </div>
+            {/* Overlay oscuro (debe estar debajo del sidebar pero encima del contenido) */}
+            <div
+                className={`fixed inset-0 bg-black/50 transition-opacity duration-300 z-40 md:hidden ${expanded ? "opacity-100" : "opacity-0 pointer-events-none"
+                    }`}
+                onClick={() => setExpanded(false)}
+            />
 
-                        {/* Navegación */}
-                        <div className="flex flex-col gap-1">
-                            {navItems.map((item) => (
-                                <Link
-                                    key={item.path}
-                                    to={item.path}
-                                    onClick={() => setExpanded(false)}
-                                    className={`flex items-center justify-between px-4 py-3 transition text-sm font-medium rounded-md
-                                        ${location.pathname === item.path
-                                            ? "bg-accent text-accent-foreground font-semibold"
-                                            : "hover:bg-accent hover:text-accent-foreground"}
-                                    `}
-                                >
-                                    <span>{item.label}</span>
-                                    <span>{item.icon}</span>
-                                </Link>
-                            ))}
-                        </div>
+            {/* Sidebar (la capa más alta cuando está visible) */}
+            <aside
+                className={`fixed top-0 left-0 h-full w-56 bg-primary text-primary-foreground flex flex-col z-50
+            transition-transform duration-300 ease-in-out
+            ${expanded ? "translate-x-0" : "-translate-x-full"}
+          `}
+            >
+                <div className="flex flex-col flex-1">
+                    {/* Header del Sidebar */}
+                    <div className="flex items-center justify-between p-4 border-b border-primary-foreground/20">
+                        <h1 className="text-lg font-bold">ConsHer</h1>
+                        <button onClick={toggleSidebar}>
+                            <PanelLeftClose />
+                        </button>
                     </div>
 
-                    {/* Logout */}
-                    <div className="px-4 py-4 border-t border-border mt-auto">
+                    {/* Perfil del Usuario */}
+                    <div className="p-4 flex flex-col items-center text-center">
+                        <UserCircle size={40} className="mb-2" />
+                        <p className="text-sm font-semibold">{user.name ?? "Admin"}</p>
+                        <p className="text-xs opacity-70">{user.email}</p>
+                    </div>
+
+                    {/* Navegación Principal */}
+                    <nav className="flex-1 px-2 py-4">
+                        {navItems.map((item) => (
+                            <Link
+                                key={item.path}
+                                to={item.path}
+                                onClick={() => { if (window.innerWidth < 768) setExpanded(false); }}
+                                className={`flex items-center gap-3 px-3 py-2.5 transition text-sm font-medium rounded-md ${location.pathname === item.path
+                                    ? "bg-accent text-accent-foreground"
+                                    : "hover:bg-accent/20"
+                                    }`}
+                            >
+                                {item.icon}
+                                <span>{item.label}</span>
+                            </Link>
+                        ))}
+                    </nav>
+
+                    {/* Logout en la parte inferior */}
+                    <div className="p-2 border-t border-primary-foreground/20">
                         <button
                             onClick={handleLogout}
-                            className="w-full text-destructive hover:text-destructive-foreground flex items-center justify-between"
+                            className="w-full flex items-center gap-3 px-3 py-2.5 text-sm text-destructive-foreground hover:bg-destructive/80 rounded-md"
                         >
-                            <span>Cerrar sesión</span>
                             <LogOut size={18} />
+                            <span>Cerrar sesión</span>
                         </button>
                     </div>
                 </div>
