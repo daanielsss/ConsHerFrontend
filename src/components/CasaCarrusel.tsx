@@ -62,7 +62,7 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                 style={{ backgroundImage: `url(${currentImage})` }}
             />
 
-            <div className="relative z-10 w-full p-4 sm:p-6 border border-white/10 rounded-2xl shadow-2xl overflow-hidden aspect-[10/4] md:aspect-[10/3.5]">
+            <div className="relative z-10 w-full p-4 sm:p-6 border border-white/10 rounded-2xl shadow-2xl overflow-hidden aspect-[10/6] md:aspect-[10/3.5]">
                 <Swiper
                     onSwiper={(swiper) => (swiperRef.current = swiper)}
                     effect={'coverflow'}
