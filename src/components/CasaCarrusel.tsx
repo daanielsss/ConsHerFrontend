@@ -1,13 +1,13 @@
 // src/components/CasaCarrusel.tsx
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, EffectCoverflow, Mousewheel } from 'swiper/modules';
+import { Autoplay, Mousewheel } from 'swiper/modules'; // <-- CAMBIO: Quitamos EffectCoverflow
 import { useNavigate } from 'react-router-dom';
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import type { Swiper as SwiperCore } from 'swiper/types';
 
+// Asegúrate de tener el CSS base de Swiper
 import 'swiper/css';
-import 'swiper/css/effect-coverflow';
 
 type Casa = {
     _id: string;
@@ -19,8 +19,7 @@ type Casa = {
 
 export default function CasaCarrusel({ casa }: { casa: Casa }) {
     const navigate = useNavigate();
-    const [activeIndex, setActiveIndex] = useState(0);
-    const currentImage = casa.imagenes[activeIndex % casa.imagenes.length];
+    // Ya no necesitamos el fondo blur, así que quitamos el activeIndex
     const swiperRef = useRef<SwiperCore | null>(null);
     const scrollTimeoutRef = useRef<number | null>(null);
 
@@ -41,65 +40,76 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
     };
 
     return (
-        <div
-            onClick={() => navigate(`/casa/${casa._id}`)}
-            onWheel={handleWheel}
-            className="relative cursor-pointer p-4 w-[90vw] max-w-6xl mx-auto rounded-2xl overflow-hidden group"
-        >
-            <h3 className="relative z-10 font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit text-[clamp(1.125rem,4vw,1.75rem)]">
-                {casa.ubicacion}
-            </h3>
-
-            <p className="relative z-10 font-bold text-green-400 px-3 py-1 mt-1 rounded-md bg-black/30 backdrop-blur-sm w-fit text-[clamp(1rem,3.5vw,1.5rem)]">
-                ${casa.precio.toLocaleString()}
-            </p>
+        <>
+            {/* CAMBIO CLAVE: Añadimos CSS para controlar el estilo de los slides activos e inactivos */}
+            <style>
+                {`
+                    .casa-carrusel .swiper-slide {
+                        transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+                        transform: scale(0.75) translateY(15%);
+                        opacity: 0.4;
+                    }
+                    .casa-carrusel .swiper-slide-active {
+                        transform: scale(1) translateY(0);
+                        opacity: 1;
+                    }
+                `}
+            </style>
 
             <div
-                className="absolute inset-0 z-0 bg-cover bg-center blur-md scale-110 brightness-75 transition-all duration-500"
-                style={{ backgroundImage: `url(${currentImage})` }}
-            />
-            {/* Contenedor más alto para darle más presencia a la imagen central */}
-            <div className="relative z-10 w-full p-4 sm:p-6 border border-white/10 rounded-2xl shadow-2xl overflow-hidden aspect-[10/7] md:aspect-[10/5]">
-                <Swiper
-                    onSwiper={(swiper) => (swiperRef.current = swiper)}
-                    effect={'coverflow'}
-                    grabCursor={true}
-                    centeredSlides={true}
-                    slidesPerView={'auto'}
-                    loop={true}
-                    spaceBetween={60} // <-- Aumentamos el espacio
-                    coverflowEffect={{
-                        // Aumentamos los valores para un efecto más extremo
-                        rotate: 50,      // <-- Más rotación
-                        stretch: 100,    // <-- CLAVE: Mucho más stretch para "encoger" las laterales
-                        depth: 400,      // <-- Más profundidad para acentuar la perspectiva
-                        modifier: 1,
-                        slideShadows: true,
-                    }}
-                    onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-                    autoplay={{
-                        delay: 3500,
-                        disableOnInteraction: false,
-                    }}
-                    mousewheel={{
-                        forceToAxis: true,
-                        releaseOnEdges: true,
-                    }}
-                    modules={[Autoplay, EffectCoverflow, Mousewheel]}
-                    className="rounded-xl h-full"
-                >
-                    {casa.imagenes.map((img, idx) => (
-                        // Hacemos el slide base más ancho para que el central domine la vista
-                        <SwiperSlide key={idx} className="!w-[75%] md:!w-[65%]">
-                            <img
-                                src={img}
-                                alt={`Imagen ${idx + 1}`}
-                                className="rounded-xl object-cover shadow-xl w-full h-full"
-                            />
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
+                onClick={() => navigate(`/casa/${casa._id}`)}
+                onWheel={handleWheel}
+                className="relative cursor-pointer w-[90vw] max-w-6xl mx-auto" // <-- Limpiamos el contenedor principal
+            >
+                {/* Posicionamos el texto sobre el carrusel */}
+                <div className="absolute top-4 left-4 z-20">
+                    <h3 className="font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit text-[clamp(1.125rem,4vw,1.75rem)]">
+                        {casa.ubicacion}
+                    </h3>
+                    <p className="font-bold text-green-400 px-3 py-1 mt-2 rounded-md bg-black/30 backdrop-blur-sm w-fit text-[clamp(1rem,3.5vw,1.5rem)]">
+                        ${casa.precio.toLocaleString()}
+                    </p>
+                </div>
+
+                {/* Eliminamos el div de fondo con blur */}
+                {/* El contenedor ahora solo envuelve al Swiper con una relación de aspecto panorámica */}
+                <div className="relative w-full overflow-hidden aspect-[16/8] rounded-2xl">
+                    <Swiper
+                        // Le damos una clase al Swiper para apuntar nuestro CSS
+                        className="casa-carrusel h-full"
+                        onSwiper={(swiper) => (swiperRef.current = swiper)}
+                        // Ya no usamos 'effect'
+                        grabCursor={true}
+                        centeredSlides={true}
+                        slidesPerView={'auto'}
+                        loop={true}
+                        spaceBetween={-40} // <-- CAMBIO: Usamos un valor negativo para acercar los previews
+
+                        // Eliminamos por completo la configuración de 'coverflowEffect'
+
+                        autoplay={{
+                            delay: 4000,
+                            disableOnInteraction: false,
+                        }}
+                        mousewheel={{
+                            forceToAxis: true,
+                            releaseOnEdges: true,
+                        }}
+                        modules={[Autoplay, Mousewheel]} // <-- Quitamos EffectCoverflow de los módulos
+                    >
+                        {casa.imagenes.map((img, idx) => (
+                            // El ancho del slide ahora controla qué tan grande se ve el preview
+                            <SwiperSlide key={idx} className="!w-[70%] md:!w-[60%]">
+                                <img
+                                    src={img}
+                                    alt={`Imagen ${idx + 1}`}
+                                    className="rounded-2xl object-cover shadow-2xl w-full h-full"
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
             </div>
-        </div>
+        </>
     );
 }
