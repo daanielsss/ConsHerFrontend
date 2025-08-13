@@ -3,8 +3,8 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, EffectCoverflow, Mousewheel } from 'swiper/modules';
 import { useNavigate } from 'react-router-dom';
-import { useState, useRef } from 'react'; // Importa useRef
-import type { Swiper as SwiperCore } from 'swiper/types'; // Importa el tipo de Swiper
+import { useState, useRef } from 'react';
+import type { Swiper as SwiperCore } from 'swiper/types';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -22,36 +22,31 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
     const [activeIndex, setActiveIndex] = useState(0);
     const currentImage = casa.imagenes[activeIndex % casa.imagenes.length];
 
-    // Referencias para controlar Swiper y el temporizador
     const swiperRef = useRef<SwiperCore | null>(null);
     const scrollTimeoutRef = useRef<number | null>(null);
 
-    // Función que maneja el evento de la rueda del ratón
     const handleWheel = (e: React.WheelEvent) => {
-        // Solo actuar si el scroll es principalmente vertical
         if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
             if (swiperRef.current && !swiperRef.current.destroyed) {
-                swiperRef.current.disable(); // Deshabilita Swiper
+                swiperRef.current.disable();
             }
 
-            // Limpia cualquier temporizador pendiente
             if (scrollTimeoutRef.current) {
                 clearTimeout(scrollTimeoutRef.current);
             }
 
-            // Vuelve a habilitar Swiper después de un breve momento sin scroll
             scrollTimeoutRef.current = window.setTimeout(() => {
                 if (swiperRef.current && !swiperRef.current.destroyed) {
                     swiperRef.current.enable();
                 }
-            }, 500); // 500ms es un buen punto de partida
+            }, 500);
         }
     };
 
     return (
         <div
             onClick={() => navigate(`/casa/${casa._id}`)}
-            onWheel={handleWheel} // Adjunta el manejador de eventos aquí
+            onWheel={handleWheel}
             className="relative cursor-pointer p-4 w-[90vw] max-w-6xl mx-auto rounded-2xl overflow-hidden group"
         >
             <h3 className="relative z-10 font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit text-[clamp(1.125rem,4vw,1.75rem)]">
@@ -69,22 +64,24 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
 
             <div className="relative z-10 w-full p-4 sm:p-6 border border-white/10 rounded-2xl shadow-2xl overflow-hidden aspect-[10/4] md:aspect-[10/3.5]">
                 <Swiper
-                    onSwiper={(swiper) => (swiperRef.current = swiper)} // Obtiene la instancia de Swiper
+                    onSwiper={(swiper) => (swiperRef.current = swiper)}
                     effect={'coverflow'}
                     grabCursor={true}
                     centeredSlides={true}
-                    slidesPerView={3}
+                    slidesPerView={'auto'} // <-- CAMBIO: Mejor control sobre el tamaño.
                     loop={true}
+                    // Agregamos un espacio entre slides para que respiren
+                    spaceBetween={30} // <-- AÑADIDO
                     coverflowEffect={{
-                        rotate: 30,
-                        stretch: 0,
-                        depth: 100,
-                        modifier: 1,
-                        slideShadows: false,
+                        rotate: 30,       // <-- AJUSTE: Rotación de los slides laterales.
+                        stretch: 20,      // <-- CAMBIO CLAVE: "Estira" el espacio, haciendo los slides laterales más pequeños.
+                        depth: 250,       // <-- AJUSTE: Aumenta la profundidad para un efecto 3D más notorio.
+                        modifier: 1,      // Multiplicador del efecto.
+                        slideShadows: true, // <-- CAMBIO: Activa las sombras para dar más profundidad.
                     }}
                     onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
                     autoplay={{
-                        delay: 3000,
+                        delay: 3500,
                         disableOnInteraction: false,
                     }}
                     mousewheel={{
@@ -95,7 +92,9 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
                     className="rounded-xl h-full"
                 >
                     {casa.imagenes.map((img, idx) => (
-                        <SwiperSlide key={idx}>
+                        // Asignamos un ancho base al slide para que 'slidesPerView: auto' funcione correctamente.
+                        // El slide activo se verá más grande por el efecto coverflow.
+                        <SwiperSlide key={idx} className="!w-[60%] sm:!w-[55%] md:!w-[50%]"> {/* <-- CAMBIO: Ancho del slide */}
                             <img
                                 src={img}
                                 alt={`Imagen ${idx + 1}`}
