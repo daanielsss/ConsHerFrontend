@@ -1,14 +1,14 @@
 // src/components/CasaCarrusel.tsx
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Mousewheel } from 'swiper/modules'; // <-- CAMBIO: Quitamos EffectCoverflow
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRef } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Mousewheel } from 'swiper/modules';
 import type { Swiper as SwiperCore } from 'swiper/types';
 
-// Asegúrate de tener el CSS base de Swiper
 import 'swiper/css';
 
+// El tipo de dato para la casa
 type Casa = {
     _id: string;
     nombre: string;
@@ -17,12 +17,21 @@ type Casa = {
     imagenes: string[];
 };
 
-export default function CasaCarrusel({ casa }: { casa: Casa }) {
+// El tipo para las props del componente
+type CasaCarruselProps = {
+    casa: Casa;
+};
+
+export default function CasaCarrusel({ casa }: CasaCarruselProps) {
     const navigate = useNavigate();
-    // Ya no necesitamos el fondo blur, así que quitamos el activeIndex
+    const [activeIndex, setActiveIndex] = useState(0);
+    const currentImage = casa.imagenes[activeIndex % casa.imagenes.length];
+
+    // Referencias para el Swiper y el scroll del ratón
     const swiperRef = useRef<SwiperCore | null>(null);
     const scrollTimeoutRef = useRef<number | null>(null);
 
+    // Mantenemos la función para manejar el scroll vertical
     const handleWheel = (e: React.WheelEvent) => {
         if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
             if (swiperRef.current && !swiperRef.current.destroyed) {
@@ -41,73 +50,71 @@ export default function CasaCarrusel({ casa }: { casa: Casa }) {
 
     return (
         <>
-            {/* CAMBIO CLAVE: Añadimos CSS para controlar el estilo de los slides activos e inactivos */}
+            {/* 1. CSS integrado para el estilo del carrusel */}
             <style>
                 {`
-                    .casa-carrusel .swiper-slide {
-                        transition: transform 0.4s ease-out, opacity 0.4s ease-out;
-                        transform: scale(0.75) translateY(15%);
-                        opacity: 0.4;
-                    }
-                    .casa-carrusel .swiper-slide-active {
-                        transform: scale(1) translateY(0);
-                        opacity: 1;
-                    }
-                `}
+            .single-file-carousel .swiper-slide {
+                transition: transform 0.4s ease-out, opacity 0.4s ease-out;
+                transform: scale(0.7) translateY(10%);
+                opacity: 0.5;
+            }
+            .single-file-carousel .swiper-slide-active {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        `}
             </style>
 
+            {/* 2. Contenedor principal con el fondo borroso */}
             <div
                 onClick={() => navigate(`/casa/${casa._id}`)}
-                onWheel={handleWheel}
-                className="relative cursor-pointer w-[90vw] max-w-6xl mx-auto" // <-- Limpiamos el contenedor principal
+                onWheel={handleWheel} // Añadimos de nuevo el manejador del scroll
+                className="relative cursor-pointer w-[90vw] max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-lg"
             >
-                {/* Posicionamos el texto sobre el carrusel */}
-                <div className="absolute top-4 left-4 z-20">
-                    <h3 className="font-semibold text-white px-3 py-1 rounded-md bg-black/40 backdrop-blur-sm w-fit text-[clamp(1.125rem,4vw,1.75rem)]">
-                        {casa.ubicacion}
-                    </h3>
-                    <p className="font-bold text-green-400 px-3 py-1 mt-2 rounded-md bg-black/30 backdrop-blur-sm w-fit text-[clamp(1rem,3.5vw,1.5rem)]">
-                        ${casa.precio.toLocaleString()}
-                    </p>
-                </div>
+                <div
+                    className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-500 scale-110 blur-lg brightness-60"
+                    style={{ backgroundImage: `url(${currentImage})` }}
+                />
 
-                {/* Eliminamos el div de fondo con blur */}
-                {/* El contenedor ahora solo envuelve al Swiper con una relación de aspecto panorámica */}
-                <div className="relative w-full overflow-hidden aspect-[16/8] rounded-2xl">
-                    <Swiper
-                        // Le damos una clase al Swiper para apuntar nuestro CSS
-                        className="casa-carrusel h-full"
-                        onSwiper={(swiper) => (swiperRef.current = swiper)}
-                        // Ya no usamos 'effect'
-                        grabCursor={true}
-                        centeredSlides={true}
-                        slidesPerView={'auto'}
-                        loop={true}
-                        spaceBetween={-40} // <-- CAMBIO: Usamos un valor negativo para acercar los previews
+                {/* Contenedor para el contenido sobre el fondo */}
+                <div className="relative z-10 flex flex-col p-4">
 
-                        // Eliminamos por completo la configuración de 'coverflowEffect'
+                    {/* 3. Lógica del carrusel (antes en ImageCarousel.tsx) */}
+                    <div className="relative w-full overflow-hidden aspect-[16/9] rounded-xl">
+                        <Swiper
+                            // @ts-expect-error El tipo de la prop 'ref' de Swiper no es directamente compatible con el de useRef.
+                            ref={swiperRef} // Conectamos la referencia
+                            className="single-file-carousel h-full"
+                            modules={[Autoplay, Mousewheel]}
+                            grabCursor={true}
+                            centeredSlides={true}
+                            slidesPerView={'auto'}
+                            loop={true}
+                            spaceBetween={0}
+                            autoplay={{ delay: 4000, disableOnInteraction: false }}
+                            mousewheel={{ forceToAxis: true, releaseOnEdges: true }}
+                            onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+                        >
+                            {casa.imagenes.map((img, idx) => (
+                                <SwiperSlide key={idx} className="!w-[70%]">
+                                    <img
+                                        src={img}
+                                        alt={`Imagen de la propiedad ${idx + 1}`}
+                                        className="w-full h-full object-cover shadow-2xl rounded-xl"
+                                    />
+                                </SwiperSlide>
+                            ))}
+                        </Swiper>
+                    </div>
 
-                        autoplay={{
-                            delay: 4000,
-                            disableOnInteraction: false,
-                        }}
-                        mousewheel={{
-                            forceToAxis: true,
-                            releaseOnEdges: true,
-                        }}
-                        modules={[Autoplay, Mousewheel]} // <-- Quitamos EffectCoverflow de los módulos
-                    >
-                        {casa.imagenes.map((img, idx) => (
-                            // El ancho del slide ahora controla qué tan grande se ve el preview
-                            <SwiperSlide key={idx} className="!w-[70%] md:!w-[60%]">
-                                <img
-                                    src={img}
-                                    alt={`Imagen ${idx + 1}`}
-                                    className="rounded-2xl object-cover shadow-2xl w-full h-full"
-                                />
-                            </SwiperSlide>
-                        ))}
-                    </Swiper>
+                    {/* 4. Lógica de la información (antes en CasaInfo.tsx) */}
+                    <div className="p-4 bg-white/5 backdrop-blur-sm rounded-b-xl -mt-1">
+                        <h3 className="text-xl font-bold text-white truncate">{casa.ubicacion}</h3>
+                        <p className="text-lg font-semibold text-green-400 mt-1">
+                            ${casa.precio.toLocaleString('es-MX')} MXN
+                        </p>
+                    </div>
+
                 </div>
             </div>
         </>
