@@ -22,7 +22,7 @@ export default function Header() {
   };
 
   return (
-    <header className="w-full bg-background border-b-2 border-primary py-4 px-4 pl-[4.5rem] md:pl-[14rem] transition-all duration-300 flex justify-between items-center">
+    <header className="sticky top-0 z-50 w-full bg-background border-b-2 border-primary py-4 px-4 pl-[4.5rem] md:pl-[14rem] transition-all duration-300 flex justify-between items-center">
       <Link to="/" className="text-2xl font-bold tracking-tight ">
         ConsHer
       </Link>
