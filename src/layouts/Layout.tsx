@@ -12,18 +12,18 @@ function Layout() {
   const user = getUserFromToken();
 
   return (
-    // CAMBIO 1: Añadimos 'h-screen' para que el layout ocupe toda la altura de la pantalla.
     <div className="flex h-screen overflow-x-hidden">
       {user && <Sidebar />}
 
+      {/* CAMBIO 1: Este div ahora se encargará del scroll. Añadimos 'overflow-y-auto' */}
       <div
-        className={`flex-1 flex flex-col transition-all duration-300 ${user ? (expanded ? "pl-56" : "pl-0") : ""
+        className={`flex-1 flex flex-col transition-all duration-300 overflow-y-auto ${user ? (expanded ? "pl-56" : "pl-0") : ""
           }`}
       >
         <Header />
 
-        {/* CAMBIO 2: Añadimos 'h-full' y 'overflow-y-auto' a la etiqueta <main> */}
-        <main className="h-full overflow-y-auto">
+        {/* CAMBIO 2: <main> ahora es flexible. Quitamos 'h-full' y 'overflow-y-auto' y añadimos 'flex-1' */}
+        <main className="flex-1">
           {location.pathname === "/" ? (
             <Outlet />
           ) : (
