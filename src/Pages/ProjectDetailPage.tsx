@@ -1,7 +1,7 @@
 // src/pages/ProjectDetailPage.tsx
 
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 import { Trash2 } from "lucide-react";
 import api from "@/lib/axios";
@@ -56,7 +56,7 @@ export default function ProjectDetailPage() {
     const { id } = useParams<{ id: string }>();
     const [activeTab, setActiveTab] = useState<"gastos" | "nomina" | "materiales">("gastos");
     const queryClient = useQueryClient();
-
+    const navigate = useNavigate();
     const { data: proyecto, isLoading } = useQuery<Proyecto>(["proyecto", id], async () => {
         const res = await api.get(`/proyectos/${id}`);
         return res.data;
@@ -73,6 +73,19 @@ export default function ProjectDetailPage() {
         }
     );
 
+    const deleteProjectMutation = useMutation(
+        async () => {
+            await api.delete(`/proyectos/${id}`);
+        },
+        {
+            onSuccess: () => {
+                // Invalida la lista de proyectos para que se actualice
+                queryClient.invalidateQueries("proyectos");
+                // Redirige al usuario a la página principal de gastos/proyectos
+                navigate('/admin/gastos');
+            },
+        }
+    );
     const updateStatusMutation = useMutation(
         async (newStatus: string) => {
             await api.patch(`/proyectos/${id}`, { estado: newStatus });
@@ -88,6 +101,19 @@ export default function ProjectDetailPage() {
         const newStatus = proyecto?.estado === 'En proceso' ? 'Finalizado' : 'En proceso';
         updateStatusMutation.mutate(newStatus);
     };
+
+    const handleDeleteProject = () => {
+        const confirmacion = window.confirm(
+            "¿Estás seguro de que quieres eliminar este proyecto?\n\nTodos los gastos, nóminas y materiales asociados se perderán para siempre. Esta acción es irreversible."
+        );
+
+        if (confirmacion) {
+            deleteProjectMutation.mutate();
+        }
+    };
+
+
+    if (isLoading || !proyecto) return <p className="p-6">Cargando proyecto...</p>;
 
     if (isLoading || !proyecto) return <p className="p-6">Cargando proyecto...</p>;
 
@@ -177,7 +203,22 @@ export default function ProjectDetailPage() {
                             </tbody>
                         </table>
                     )}
+                    <div className="mt-10 pt-6 border-t border-destructive/20">
+                        <h3 className="text-lg font-semibold text-destructive mb-2">Zona de Peligro</h3>
+                        <p className="text-sm text-muted-foreground mb-4">
+                            La eliminación de un proyecto no se puede deshacer. Asegúrate de que realmente quieres continuar.
+                        </p>
+                        <button
+                            onClick={handleDeleteProject}
+                            disabled={deleteProjectMutation.isLoading}
+                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors px-4 py-2 rounded-md text-sm font-medium"
+                        >
+                            {deleteProjectMutation.isLoading ? "Eliminando..." : "Eliminar Proyecto"}
+                        </button>
+                    </div>
                 </div>
+
+
             )}
 
             {activeTab === "nomina" && (
