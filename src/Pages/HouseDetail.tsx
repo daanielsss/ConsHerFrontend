@@ -187,7 +187,7 @@ export default function HouseDetail() {
                     <p className="mt-2 max-w-2xl mx-auto text-muted-foreground">
                         Esta es una oportunidad única. Si deseas más información o agendar una visita, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte a encontrar el hogar de tus sueños.
                     </p>
-                    <a href="https://wa.me/3312345678?text=Hola,%20me%20interesa%20la%20propiedad:%20'${house.title}'" target="_blank" rel="noopener noreferrer" className="mt-6 inline-block bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-primary/90 transition-transform hover:scale-105">
+                    <a href="https://wa.me/524922187566?text=Hola,%20me%20interesa%20la%20propiedad:%20'${house.title}'" target="_blank" rel="noopener noreferrer" className="mt-6 inline-block bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-primary/90 transition-transform hover:scale-105">
                         Contactar Ahora
                     </a>
 
