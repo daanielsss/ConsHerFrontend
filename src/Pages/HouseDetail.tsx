@@ -188,7 +188,7 @@ export default function HouseDetail() {
                         Esta es una oportunidad única. Si deseas más información o agendar una visita, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte a encontrar el hogar de tus sueños.
                     </p>
                     <a href={`https://wa.me/524922187566?text=Hola, me interesa la propiedad: ${encodeURIComponent(house.title)}`} target="_blank" rel="noopener noreferrer" className="mt-6 inline-block bg-primary text-primary-foreground font-semibold px-8 py-3 rounded-lg shadow-lg hover:bg-primary/90 transition-transform hover:scale-105">
-                        Contactar Ahora
+                        Contactar Ahora por WhatsApp!
                     </a>
 
                     <div className="mt-8 pt-6 border-t border-slate-300 dark:border-slate-600">
