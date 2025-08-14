@@ -1,24 +1,30 @@
-import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
-import api from "@/lib/axios";
+// src/pages/ProjectDetailPage.tsx
+
 import { useState } from "react";
+import { useParams } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "react-query";
+import { Trash2 } from "lucide-react";
+import api from "@/lib/axios";
 import { FormGasto, FormNomina, FormMaterial } from "@/components/GastoFormComponents";
 
 function formatCurrency(value: number | null | undefined): string {
     if (typeof value !== "number" || isNaN(value)) return "$0.00";
-    return value.toLocaleString("en-US", {
+    return value.toLocaleString("es-MX", {
         style: "currency",
-        currency: "USD",
+        currency: "MXN",
     });
 }
 
+// Interfaces con _id para identificar cada registro
 interface Gasto {
+    _id: string;
     descripcion: string;
     monto: number;
     fecha: string;
 }
 
 interface Nomina {
+    _id: string;
     semana: string;
     trabajador: string;
     sueldo: number;
@@ -27,6 +33,7 @@ interface Nomina {
 }
 
 interface Material {
+    _id: string;
     material: string;
     cantidad: number;
     precio: number;
@@ -35,6 +42,7 @@ interface Material {
 }
 
 interface Proyecto {
+    _id: string;
     nombre: string;
     direccion: string;
     fechaInicio: string;
@@ -45,23 +53,46 @@ interface Proyecto {
 }
 
 export default function ProjectDetailPage() {
-    const { id } = useParams();
+    const { id } = useParams<{ id: string }>();
     const [activeTab, setActiveTab] = useState<"gastos" | "nomina" | "materiales">("gastos");
+    const queryClient = useQueryClient();
 
     const { data: proyecto, isLoading } = useQuery<Proyecto>(["proyecto", id], async () => {
         const res = await api.get(`/proyectos/${id}`);
         return res.data;
     });
 
+    const deleteMutation = useMutation(
+        async ({ endpoint, itemId }: { endpoint: string; itemId: string }) => {
+            await api.delete(`/proyectos/${id}/${endpoint}/${itemId}`);
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(["proyecto", id]);
+            },
+        }
+    );
+
+    const updateStatusMutation = useMutation(
+        async (newStatus: string) => {
+            await api.patch(`/proyectos/${id}`, { estado: newStatus });
+        },
+        {
+            onSuccess: () => {
+                queryClient.invalidateQueries(["proyecto", id]);
+            },
+        }
+    );
+
     if (isLoading || !proyecto) return <p className="p-6">Cargando proyecto...</p>;
 
     const totalGastos = proyecto.gastos.reduce((acc, g) => acc + (g.monto || 0), 0);
     const totalNomina = proyecto.nomina.reduce((acc, n) => acc + (n.pago || 0), 0);
-    const totalMateriales = proyecto.materiales.reduce((acc, m) => acc + (m.precio || 0), 0);
+    const totalMateriales = proyecto.materiales.reduce((acc, m) => acc + ((m.precio || 0) * (m.cantidad || 0)), 0);
 
     const estadoColors: Record<string, string> = {
         "En proceso": "bg-yellow-100 text-yellow-800 dark:bg-yellow-200/20 dark:text-yellow-300",
-        "Finalizado": "bg-green-100 text-green-800 dark:bg-green-200/20 dark:text-green-300",
+        "Terminado": "bg-green-100 text-green-800 dark:bg-green-200/20 dark:text-green-300",
         "Pausado": "bg-red-100 text-red-800 dark:bg-red-200/20 dark:text-red-300",
     };
 
@@ -69,19 +100,20 @@ export default function ProjectDetailPage() {
         <div className="p-6 max-w-6xl mx-auto">
             <h2 className="text-2xl font-bold text-foreground mb-4">{proyecto.nombre}</h2>
 
-            <div className="flex flex-wrap gap-4 mb-6">
+            <div className="flex flex-wrap gap-4 mb-6 items-center">
                 <div className="bg-muted rounded-md px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm">
                     📍 Dirección: <span className="font-semibold text-foreground">{proyecto.direccion}</span>
                 </div>
                 <div className="bg-muted rounded-md px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm">
-                    📅 Fecha de inicio:{" "}
-                    <span className="font-semibold text-foreground">
-                        {new Date(proyecto.fechaInicio).toLocaleDateString()}
-                    </span>
+                    📅 Fecha de inicio: <span className="font-semibold text-foreground">{new Date(proyecto.fechaInicio).toLocaleDateString()}</span>
                 </div>
-                <div className={`rounded-md px-4 py-2 text-sm font-medium shadow-sm ${estadoColors[proyecto.estado]}`}>
+                <button
+                    onClick={() => updateStatusMutation.mutate("Terminado")}
+                    disabled={proyecto.estado === "Terminado" || updateStatusMutation.isLoading}
+                    className={`rounded-md px-4 py-2 text-sm font-medium shadow-sm transition ${estadoColors[proyecto.estado]} ${proyecto.estado !== "Terminado" ? 'cursor-pointer hover:opacity-80' : 'cursor-not-allowed'}`}
+                >
                     🔄 Estado: <span className="font-semibold">{proyecto.estado}</span>
-                </div>
+                </button>
             </div>
 
             <div className="flex gap-4 mb-4">
@@ -99,123 +131,142 @@ export default function ProjectDetailPage() {
                 ))}
             </div>
 
-            {/* TAB: GASTOS */}
             {activeTab === "gastos" && (
                 <div className="bg-card shadow p-6 rounded-lg text-card-foreground">
                     <FormGasto projectId={id!} />
-                    <h3 className="text-lg font-semibold mt-6 mb-2">Gastos Generales</h3>
+                    <div className="flex justify-between items-center mt-6 mb-2">
+                        <h3 className="text-lg font-semibold">Gastos Generales</h3>
+                        <div className="inline-block bg-green-100 dark:bg-green-900/30 px-4 py-2 rounded-md text-sm font-semibold text-green-800 dark:text-green-300 shadow-sm">
+                            Total: {formatCurrency(totalGastos)}
+                        </div>
+                    </div>
                     {proyecto.gastos.length === 0 ? (
                         <p className="text-muted-foreground">No hay gastos registrados.</p>
                     ) : (
-                        <>
-                            <table className="w-full text-sm table-auto">
-                                <thead>
-                                    <tr className="bg-muted text-left text-muted-foreground">
-                                        <th className="p-2">Descripción</th>
-                                        <th className="p-2">Monto</th>
-                                        <th className="p-2">Fecha</th>
+                        <table className="w-full text-sm table-auto">
+                            <thead>
+                                <tr className="bg-muted text-left text-muted-foreground">
+                                    <th className="p-2">Descripción</th>
+                                    <th className="p-2">Monto</th>
+                                    <th className="p-2">Fecha</th>
+                                    <th className="p-2 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {proyecto.gastos.map((g) => (
+                                    <tr key={g._id} className="border-b border-border">
+                                        <td className="p-2">{g.descripcion}</td>
+                                        <td className="p-2 font-medium">{formatCurrency(g.monto)}</td>
+                                        <td className="p-2">{new Date(g.fecha).toLocaleDateString()}</td>
+                                        <td className="p-2 text-right">
+                                            <button
+                                                onClick={() => deleteMutation.mutate({ endpoint: 'gastos', itemId: g._id })}
+                                                className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition"
+                                                aria-label="Borrar gasto"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {proyecto.gastos.map((g, i) => (
-                                        <tr key={i} className="border-b border-border">
-                                            <td className="p-2">{g.descripcion}</td>
-                                            <td className="p-2 text-green-600 dark:text-green-400 font-medium">
-                                                {formatCurrency(g.monto)}
-                                            </td>
-                                            <td className="p-2">{new Date(g.fecha).toLocaleDateString()}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                            <div className="mt-4 text-right">
-                                <div className="inline-block bg-green-100 dark:bg-green-900/30 px-4 py-2 rounded-md text-sm font-semibold text-green-800 dark:text-green-300 shadow-sm">
-                                    Total: {formatCurrency(totalGastos)}
-                                </div>
-                            </div>
-                        </>
+                                ))}
+                            </tbody>
+                        </table>
                     )}
                 </div>
             )}
 
-            {/* TAB: NOMINA */}
             {activeTab === "nomina" && (
                 <div className="bg-card shadow p-6 rounded-lg text-card-foreground">
                     <FormNomina projectId={id!} />
-                    <h3 className="text-lg font-semibold mt-6 mb-2">Nómina</h3>
+                    <div className="flex justify-between items-center mt-6 mb-2">
+                        <h3 className="text-lg font-semibold">Nómina</h3>
+                        <div className="inline-block bg-green-100 dark:bg-green-900/30 px-4 py-2 rounded-md text-sm font-semibold text-green-800 dark:text-green-300 shadow-sm">
+                            Total: {formatCurrency(totalNomina)}
+                        </div>
+                    </div>
                     {proyecto.nomina.length === 0 ? (
                         <p className="text-muted-foreground">No hay registros de nómina.</p>
                     ) : (
-                        <>
-                            <table className="w-full text-sm table-auto">
-                                <thead>
-                                    <tr className="bg-muted text-left text-muted-foreground">
-                                        <th className="p-2">Semana</th>
-                                        <th className="p-2">Trabajador</th>
-                                        <th className="p-2">Sueldo</th>
-                                        <th className="p-2">Pago</th>
-                                        <th className="p-2">Observaciones</th>
+                        <table className="w-full text-sm table-auto">
+                            <thead>
+                                <tr className="bg-muted text-left text-muted-foreground">
+                                    <th className="p-2">Semana</th>
+                                    <th className="p-2">Trabajador</th>
+                                    <th className="p-2">Sueldo</th>
+                                    <th className="p-2">Pago</th>
+                                    <th className="p-2">Observaciones</th>
+                                    <th className="p-2 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {proyecto.nomina.map((n) => (
+                                    <tr key={n._id} className="border-b border-border">
+                                        <td className="p-2">{n.semana}</td>
+                                        <td className="p-2">{n.trabajador}</td>
+                                        <td className="p-2">{formatCurrency(n.sueldo)}</td>
+                                        <td className="p-2">{formatCurrency(n.pago)}</td>
+                                        <td className="p-2">{n.observaciones}</td>
+                                        <td className="p-2 text-right">
+                                            <button
+                                                onClick={() => deleteMutation.mutate({ endpoint: 'nomina', itemId: n._id })}
+                                                className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition"
+                                                aria-label="Borrar nómina"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {proyecto.nomina.map((n, i) => (
-                                        <tr key={i} className="border-b border-border">
-                                            <td className="p-2">{n.semana}</td>
-                                            <td className="p-2">{n.trabajador}</td>
-                                            <td className="p-2">{formatCurrency(n.sueldo)}</td>
-                                            <td className="p-2">{formatCurrency(n.pago)}</td>
-                                            <td className="p-2">{n.observaciones}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                            <div className="mt-4 text-right">
-                                <div className="inline-block bg-green-100 dark:bg-green-900/30 px-4 py-2 rounded-md text-sm font-semibold text-green-800 dark:text-green-300 shadow-sm">
-                                    Total: {formatCurrency(totalNomina)}
-                                </div>
-                            </div>
-                        </>
+                                ))}
+                            </tbody>
+                        </table>
                     )}
                 </div>
             )}
 
-            {/* TAB: MATERIALES */}
             {activeTab === "materiales" && (
                 <div className="bg-card shadow p-6 rounded-lg text-card-foreground">
                     <FormMaterial projectId={id!} />
-                    <h3 className="text-lg font-semibold mt-6 mb-2">Materiales</h3>
+                    <div className="flex justify-between items-center mt-6 mb-2">
+                        <h3 className="text-lg font-semibold">Materiales</h3>
+                        <div className="inline-block bg-green-100 dark:bg-green-900/30 px-4 py-2 rounded-md text-sm font-semibold text-green-800 dark:text-green-300 shadow-sm">
+                            Total: {formatCurrency(totalMateriales)}
+                        </div>
+                    </div>
                     {proyecto.materiales.length === 0 ? (
                         <p className="text-muted-foreground">No hay materiales registrados.</p>
                     ) : (
-                        <>
-                            <table className="w-full text-sm table-auto">
-                                <thead>
-                                    <tr className="bg-muted text-left text-muted-foreground">
-                                        <th className="p-2">Material</th>
-                                        <th className="p-2">Cantidad</th>
-                                        <th className="p-2">Precio</th>
-                                        <th className="p-2">Unidad</th>
-                                        <th className="p-2">Detalles</th>
+                        <table className="w-full text-sm table-auto">
+                            <thead>
+                                <tr className="bg-muted text-left text-muted-foreground">
+                                    <th className="p-2">Material</th>
+                                    <th className="p-2">Cantidad</th>
+                                    <th className="p-2">Precio</th>
+                                    <th className="p-2">Unidad</th>
+                                    <th className="p-2">Detalles</th>
+                                    <th className="p-2 text-right">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {proyecto.materiales.map((m) => (
+                                    <tr key={m._id} className="border-b border-border">
+                                        <td className="p-2">{m.material}</td>
+                                        <td className="p-2">{m.cantidad}</td>
+                                        <td className="p-2">{formatCurrency(m.precio)}</td>
+                                        <td className="p-2">{m.unidad}</td>
+                                        <td className="p-2">{m.detalles}</td>
+                                        <td className="p-2 text-right">
+                                            <button
+                                                onClick={() => deleteMutation.mutate({ endpoint: 'materiales', itemId: m._id })}
+                                                className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-100 transition"
+                                                aria-label="Borrar material"
+                                            >
+                                                <Trash2 size={16} />
+                                            </button>
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    {proyecto.materiales.map((m, i) => (
-                                        <tr key={i} className="border-b border-border">
-                                            <td className="p-2">{m.material}</td>
-                                            <td className="p-2">{m.cantidad}</td>
-                                            <td className="p-2">{formatCurrency(m.precio)}</td>
-                                            <td className="p-2">{m.unidad}</td>
-                                            <td className="p-2">{m.detalles}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-                            <div className="mt-4 text-right">
-                                <div className="inline-block bg-green-100 dark:bg-green-900/30 px-4 py-2 rounded-md text-sm font-semibold text-green-800 dark:text-green-300 shadow-sm">
-                                    Total: {formatCurrency(totalMateriales)}
-                                </div>
-                            </div>
-                        </>
+                                ))}
+                            </tbody>
+                        </table>
                     )}
                 </div>
             )}
