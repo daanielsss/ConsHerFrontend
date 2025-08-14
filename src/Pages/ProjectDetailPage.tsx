@@ -1,5 +1,3 @@
-// src/pages/ProjectDetailPage.tsx
-
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "react-query";
@@ -57,6 +55,7 @@ export default function ProjectDetailPage() {
     const [activeTab, setActiveTab] = useState<"gastos" | "nomina" | "materiales">("gastos");
     const queryClient = useQueryClient();
     const navigate = useNavigate();
+
     const { data: proyecto, isLoading } = useQuery<Proyecto>(["proyecto", id], async () => {
         const res = await api.get(`/proyectos/${id}`);
         return res.data;
@@ -79,13 +78,12 @@ export default function ProjectDetailPage() {
         },
         {
             onSuccess: () => {
-                // Invalida la lista de proyectos para que se actualice
                 queryClient.invalidateQueries("proyectos");
-                // Redirige al usuario a la página principal de gastos/proyectos
                 navigate('/admin/gastos');
             },
         }
     );
+
     const updateStatusMutation = useMutation(
         async (newStatus: string) => {
             await api.patch(`/proyectos/${id}`, { estado: newStatus });
@@ -96,8 +94,8 @@ export default function ProjectDetailPage() {
             },
         }
     );
+
     const handleStatusToggle = () => {
-        // Determina el nuevo estado basado en el actual
         const newStatus = proyecto?.estado === 'En proceso' ? 'Finalizado' : 'En proceso';
         updateStatusMutation.mutate(newStatus);
     };
@@ -112,9 +110,6 @@ export default function ProjectDetailPage() {
         }
     };
 
-
-    if (isLoading || !proyecto) return <p className="p-6">Cargando proyecto...</p>;
-
     if (isLoading || !proyecto) return <p className="p-6">Cargando proyecto...</p>;
 
     const totalGastos = proyecto.gastos.reduce((acc, g) => acc + (g.monto || 0), 0);
@@ -123,7 +118,8 @@ export default function ProjectDetailPage() {
 
     const estadoColors: Record<string, string> = {
         "En proceso": "bg-yellow-100 text-yellow-800 dark:bg-yellow-200/20 dark:text-yellow-300",
-        "Terminado": "bg-green-100 text-green-800 dark:bg-green-200/20 dark:text-green-300",
+        // ✅ CORRECCIÓN: Usar "Finalizado" para coincidir con el backend
+        "Finalizado": "bg-green-100 text-green-800 dark:bg-green-200/20 dark:text-green-300",
         "Pausado": "bg-red-100 text-red-800 dark:bg-red-200/20 dark:text-red-300",
     };
 
@@ -131,6 +127,7 @@ export default function ProjectDetailPage() {
         <div className="p-6 max-w-6xl mx-auto">
             <h2 className="text-2xl font-bold text-foreground mb-4">{proyecto.nombre}</h2>
 
+            {/* ✅ SECCIÓN SUPERIOR ACTUALIZADA */}
             <div className="flex flex-wrap gap-4 mb-6 items-center">
                 <div className="bg-muted rounded-md px-4 py-2 text-sm font-medium text-muted-foreground shadow-sm">
                     📍 Dirección: <span className="font-semibold text-foreground">{proyecto.direccion}</span>
@@ -139,11 +136,24 @@ export default function ProjectDetailPage() {
                     📅 Fecha de inicio: <span className="font-semibold text-foreground">{new Date(proyecto.fechaInicio).toLocaleDateString()}</span>
                 </div>
                 <button
-                    onClick={handleStatusToggle} // Llama a la nueva función
-                    disabled={updateStatusMutation.isLoading} // Solo se deshabilita mientras carga
+                    onClick={handleStatusToggle}
+                    disabled={updateStatusMutation.isLoading}
                     className={`rounded-md px-4 py-2 text-sm font-medium shadow-sm transition cursor-pointer hover:opacity-80 ${estadoColors[proyecto.estado]}`}
                 >
                     🔄 Estado: <span className="font-semibold">{proyecto.estado}</span>
+                </button>
+                {/* BOTÓN DE ELIMINAR PROYECTO REUBICADO AQUÍ */}
+                <button
+                    onClick={handleDeleteProject}
+                    disabled={deleteProjectMutation.isLoading}
+                    className="bg-destructive/10 text-destructive hover:bg-destructive/20 p-2 rounded-md transition"
+                    aria-label="Eliminar proyecto"
+                >
+                    {deleteProjectMutation.isLoading ? (
+                        <div className="w-5 h-5 border-2 border-t-transparent border-destructive rounded-full animate-spin"></div>
+                    ) : (
+                        <Trash2 size={20} />
+                    )}
                 </button>
             </div>
 
@@ -162,6 +172,7 @@ export default function ProjectDetailPage() {
                 ))}
             </div>
 
+            {/* Pestaña de Gastos */}
             {activeTab === "gastos" && (
                 <div className="bg-card shadow p-6 rounded-lg text-card-foreground">
                     <FormGasto projectId={id!} />
@@ -203,24 +214,11 @@ export default function ProjectDetailPage() {
                             </tbody>
                         </table>
                     )}
-                    <div className="mt-10 pt-6 border-t border-destructive/20">
-                        <h3 className="text-lg font-semibold text-destructive mb-2">Eliminar Proyecto</h3>
-                        <p className="text-sm text-muted-foreground mb-4">
-                            La eliminación de un proyecto no se puede deshacer. Asegúrate de que realmente quieres continuar.
-                        </p>
-                        <button
-                            onClick={handleDeleteProject}
-                            disabled={deleteProjectMutation.isLoading}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90 transition-colors px-4 py-2 rounded-md text-sm font-medium"
-                        >
-                            {deleteProjectMutation.isLoading ? "Eliminando..." : "Eliminar Proyecto"}
-                        </button>
-                    </div>
+                    {/* ✅ ZONA DE PELIGRO ELIMINADA DE AQUÍ */}
                 </div>
-
-
             )}
 
+            {/* Pestaña de Nómina */}
             {activeTab === "nomina" && (
                 <div className="bg-card shadow p-6 rounded-lg text-card-foreground">
                     <FormNomina projectId={id!} />
@@ -269,6 +267,7 @@ export default function ProjectDetailPage() {
                 </div>
             )}
 
+            {/* Pestaña de Materiales */}
             {activeTab === "materiales" && (
                 <div className="bg-card shadow p-6 rounded-lg text-card-foreground">
                     <FormMaterial projectId={id!} />
