@@ -83,6 +83,11 @@ export default function ProjectDetailPage() {
             },
         }
     );
+    const handleStatusToggle = () => {
+        // Determina el nuevo estado basado en el actual
+        const newStatus = proyecto?.estado === 'En proceso' ? 'Finalizado' : 'En proceso';
+        updateStatusMutation.mutate(newStatus);
+    };
 
     if (isLoading || !proyecto) return <p className="p-6">Cargando proyecto...</p>;
 
@@ -108,9 +113,9 @@ export default function ProjectDetailPage() {
                     📅 Fecha de inicio: <span className="font-semibold text-foreground">{new Date(proyecto.fechaInicio).toLocaleDateString()}</span>
                 </div>
                 <button
-                    onClick={() => updateStatusMutation.mutate("Terminado")}
-                    disabled={proyecto.estado === "Terminado" || updateStatusMutation.isLoading}
-                    className={`rounded-md px-4 py-2 text-sm font-medium shadow-sm transition ${estadoColors[proyecto.estado]} ${proyecto.estado !== "Terminado" ? 'cursor-pointer hover:opacity-80' : 'cursor-not-allowed'}`}
+                    onClick={handleStatusToggle} // Llama a la nueva función
+                    disabled={updateStatusMutation.isLoading} // Solo se deshabilita mientras carga
+                    className={`rounded-md px-4 py-2 text-sm font-medium shadow-sm transition cursor-pointer hover:opacity-80 ${estadoColors[proyecto.estado]}`}
                 >
                     🔄 Estado: <span className="font-semibold">{proyecto.estado}</span>
                 </button>

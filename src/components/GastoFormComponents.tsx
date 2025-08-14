@@ -16,9 +16,16 @@ const formatNumber = (value: string | number) => {
 const unformatNumber = (value: string) => {
     return value.replace(/,/g, '');
 };
+const getTodayDateString = () => {
+    return new Date().toISOString().split('T')[0];
+};
 
 export function FormGasto({ projectId }: { projectId: string }) {
-    const [form, setForm] = useState({ descripcion: "", monto: "", fecha: "" });
+    const [form, setForm] = useState({
+        descripcion: "",
+        monto: "",
+        fecha: getTodayDateString(),
+    });
     const queryClient = useQueryClient();
 
     const mutation = useMutation(
