@@ -204,7 +204,7 @@ export default function ProjectDetailPage() {
                         </table>
                     )}
                     <div className="mt-10 pt-6 border-t border-destructive/20">
-                        <h3 className="text-lg font-semibold text-destructive mb-2">Zona de Peligro</h3>
+                        <h3 className="text-lg font-semibold text-destructive mb-2">Eliminar Proyecto</h3>
                         <p className="text-sm text-muted-foreground mb-4">
                             La eliminación de un proyecto no se puede deshacer. Asegúrate de que realmente quieres continuar.
                         </p>
