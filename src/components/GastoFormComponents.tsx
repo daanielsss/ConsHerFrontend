@@ -35,7 +35,12 @@ export function FormGasto({ projectId }: { projectId: string }) {
         {
             onSuccess: () => {
                 queryClient.invalidateQueries(["proyecto", projectId]);
-                setForm({ descripcion: "", monto: "", fecha: "" });
+                // Asegura que al resetear, la fecha vuelva a ser la de hoy
+                setForm({
+                    descripcion: "",
+                    monto: "",
+                    fecha: getTodayDateString(), // <-- Línea correcta
+                });
             },
         }
     );

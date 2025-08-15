@@ -199,7 +199,14 @@ export default function ProjectDetailPage() {
                                     <tr key={g._id} className="border-b border-border">
                                         <td className="p-2">{g.descripcion}</td>
                                         <td className="p-2 font-medium">{formatCurrency(g.monto)}</td>
-                                        <td className="p-2">{new Date(g.fecha).toLocaleDateString()}</td>
+                                        <td className="p-2">
+                                            {(() => {
+                                                const date = new Date(g.fecha);
+                                                // Ajusta la fecha sumando el desfase de la zona horaria para mostrar el día correcto
+                                                date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+                                                return date.toLocaleDateString();
+                                            })()}
+                                        </td>
                                         <td className="p-2 text-right">
                                             <button
                                                 onClick={() => deleteMutation.mutate({ endpoint: 'gastos', itemId: g._id })}
