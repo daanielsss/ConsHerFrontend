@@ -15,6 +15,7 @@ type Casa = {
     ubicacion: string;
     precio: number;
     imagenes: string[];
+    status: string;
 };
 
 type CasaCarruselProps = {
@@ -29,13 +30,6 @@ export default function CasaCarrusel({ casa }: CasaCarruselProps) {
 
     // Mantenemos la referencia para Swiper, pero ya no para el timeout del scroll
     const swiperRef = useRef<SwiperCore | null>(null);
-
-    // 1. Elimina TODA esta función handleWheel. Ya no es necesaria.
-    /*
-    const handleWheel = (e: React.WheelEvent) => {
-        // ... todo el código de esta función se va
-    };
-    */
 
     return (
         <>
@@ -98,9 +92,15 @@ export default function CasaCarrusel({ casa }: CasaCarruselProps) {
 
                     <div className="p-4 bg-white/5 backdrop-blur-sm rounded-b-xl -mt-1">
                         <h3 className="text-xl font-bold text-white truncate">{casa.ubicacion}</h3>
-                        <p className="text-lg font-semibold text-green-400 mt-1">
-                            ${casa.precio.toLocaleString('es-MX')} MXN
-                        </p>
+                        {casa.status === 'vendida' ? (
+                            <p className="text-lg font-bold text-red-500 mt-1">
+                                VENDIDA
+                            </p>
+                        ) : (
+                            <p className="text-lg font-semibold text-green-400 mt-1">
+                                ${casa.precio.toLocaleString('es-MX')} MXN
+                            </p>
+                        )}
                     </div>
                 </div>
             </div>

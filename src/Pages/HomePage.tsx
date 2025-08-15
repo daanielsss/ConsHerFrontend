@@ -80,6 +80,7 @@ export default function HomePage() {
                                 ubicacion: house.address,
                                 precio: house.price,
                                 imagenes: house.images || [],
+                                status: house.status,
                             }}
                         />
                     ))}
