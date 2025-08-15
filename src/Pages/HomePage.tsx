@@ -182,7 +182,7 @@ export default function HomePage() {
                                     </p>
                                 </div>
                                 <div className="relative z-10 p-4 hidden md:block">
-                                    <img src="/construct.webp" alt="Diseño" className="w-full h-auto object-contain rounded-md" />
+                                    <img src="/design.webp" alt="Diseño" className="w-full h-auto object-contain rounded-md" />
                                 </div>
                             </article>
                         </div>
