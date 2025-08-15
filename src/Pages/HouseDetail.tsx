@@ -55,7 +55,7 @@ export default function HouseDetail() {
     return (
         <div className="bg-background">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
-                <Link to="/" className="text-sm text-primary hover:underline mb-6 inline-block">
+                <Link to="/" className="text-sm hover:underline mb-6 inline-block">
                     ← Volver al catálogo
                 </Link>
 
