@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Calculator, X } from "lucide-react";
+import { useState } from "react";
+import { Calculator, X, Printer } from "lucide-react"; // 1. Importar el icono Printer
 
 const MATERIAL_DATA = [
     { name: "Ladrillos", unidad: "pieza", baseCantidad: 14500, precio: 0 },
@@ -23,11 +23,6 @@ export default function AdminCalculator() {
     const [showCalc, setShowCalc] = useState(false);
     const [calcValue, setCalcValue] = useState("");
 
-    // Forzar actualización al cambiar metrosConstruccion
-    useEffect(() => {
-        setMateriales([...materiales]);
-    }, [metrosConstruccion]);
-
     const handlePrecioChange = (index: number, value: number) => {
         const copia = [...materiales];
         copia[index].precio = value;
@@ -48,6 +43,50 @@ export default function AdminCalculator() {
         return acc + cantidad * (mat.precio || 0);
     }, 0);
 
+    // 3. Función para generar y descargar la cotización
+    const handleImprimirCotizacion = () => {
+        // Filtrar solo los materiales que tienen un precio ingresado
+        const materialesCotizados = materiales.filter(mat => mat.precio > 0);
+
+        if (materialesCotizados.length === 0) {
+            alert("Por favor, ingrese el precio de al menos un material para generar la cotización.");
+            return;
+        }
+
+        // Formatear los números a dos decimales
+        const formatCurrency = (num: number) => num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+        // Construir el contenido del archivo de texto
+        let contenido = `*** COTIZACIÓN DE MATERIALES ***\n`;
+        contenido += `Fecha: ${new Date().toLocaleString()}\n`;
+        contenido += `Metros de Construcción: ${metrosConstruccion} m²\n`;
+        contenido += `------------------------------------\n\n`;
+
+        materialesCotizados.forEach(mat => {
+            const cantidad = calcularCantidad(mat.baseCantidad);
+            const total = totalPorMaterial(cantidad, mat.precio);
+            contenido += `${mat.name}:\n`;
+            contenido += `  - Cantidad: ${cantidad.toFixed(2)} ${mat.unidad}\n`;
+            contenido += `  - Precio Unitario: $${formatCurrency(mat.precio)}\n`;
+            contenido += `  - Subtotal: $${formatCurrency(total)}\n\n`;
+        });
+
+        contenido += `------------------------------------\n`;
+        contenido += `TOTAL ESTIMADO: $${formatCurrency(totalGlobal)}\n`;
+
+        // Crear y descargar el archivo
+        const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'cotizacion.txt';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+
+
     const handleCalcInput = (val: string) => {
         if (val === "C") return setCalcValue("");
         if (val === "=") {
@@ -62,12 +101,26 @@ export default function AdminCalculator() {
         }
     };
 
+    const isCotizacionDisabled = totalGlobal === 0 || !metrosConstruccion;
+
     return (
         <div className="space-y-6 px-4 pt-4 pb-10 max-w-6xl mx-auto">
             <div className="bg-card rounded-xl shadow-md p-4 sm:p-6">
-                <h2 className="text-xl font-bold mb-4 text-foreground">
-                    Calculadora de Materiales
-                </h2>
+
+                {/* 2. Encabezado con título y nuevo botón */}
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-bold text-foreground">
+                        Calculadora de Materiales
+                    </h2>
+                    <button
+                        onClick={handleImprimirCotizacion}
+                        disabled={isCotizacionDisabled}
+                        className="flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-semibold shadow hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        <Printer size={16} />
+                        Imprimir Cotización
+                    </button>
+                </div>
 
                 {/* Campo de metros cuadrados + total estimado */}
                 <div className="grid sm:grid-cols-2 gap-4 items-end mb-6">
@@ -81,13 +134,6 @@ export default function AdminCalculator() {
                             value={metrosConstruccion}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                 const value = e.target.value;
-                                console.log("Input value:", value); // Depuración
-                                if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
-                                    setMetrosConstruccion(value);
-                                }
-                            }}
-                            onInput={(e: React.FormEvent<HTMLInputElement>) => {
-                                const value = (e.target as HTMLInputElement).value;
                                 if (value === "" || /^[0-9]*\.?[0-9]*$/.test(value)) {
                                     setMetrosConstruccion(value);
                                 }

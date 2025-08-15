@@ -144,8 +144,14 @@ export default function HouseDetail() {
                     {/* Columna lateral con datos clave (sticky) */}
                     <aside className="lg:sticky top-8 self-start">
                         <div className="bg-card border border-border rounded-lg shadow-lg p-6">
-                            <p className="text-3xl font-bold text-foreground mb-4">${Number(house.price).toLocaleString("es-MX", { currency: "MXN" })} MXN</p>
-
+                            {/* --- CÓDIGO NUEVO --- */}
+                            {house.status.toLowerCase() === 'vendida' ? (
+                                <p className="text-3xl font-bold text-red-600 mb-4">VENDIDA</p>
+                            ) : (
+                                <p className="text-3xl font-bold text-foreground mb-4">
+                                    ${Number(house.price).toLocaleString("es-MX", { currency: "MXN" })} MXN
+                                </p>
+                            )}
                             <div className="space-y-4">
                                 <div className="flex items-center gap-3">
                                     <BedDouble className="text-primary" size={24} />
