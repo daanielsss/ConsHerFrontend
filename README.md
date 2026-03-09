@@ -43,6 +43,7 @@ El objetivo es **centralizar la operación interna del negocio y mejorar la efic
 
 El frontend funciona como cliente web que consume la API del backend.
 
+```
 Usuario
 │
 ▼
@@ -53,7 +54,7 @@ API Backend
 │
 ▼
 Base de datos
-
+```
 
 ---
 
